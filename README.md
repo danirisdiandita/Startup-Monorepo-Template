@@ -8,8 +8,26 @@ Folder Structure
 # Project Folder Structure
 
 ## Root
-- **Startup-Monorepo-Template/**
-  - **README.md**
-  - **frontend/**
-  - **backend/**
+Startup-Monorepo-Template/
+├── README.md
+├── .gitignore
+├── frontend/
+├── backend/
+├── src/
+│   ├── main.py
+│   ├── utils.py
+│   ├── config/
+│   │   ├── config.yaml
+│   │   └── logging.conf
+│   └── modules/
+│       ├── module1.py
+│       └── module2.py
+├── tests/
+│   ├── test_main.py
+│   └── test_utils.py
+├── docs/
+│   ├── index.md
+│   └── api/
+│       ├── overview.md
+│       └── endpoints.md
 ```
