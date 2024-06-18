@@ -70,15 +70,12 @@ const AuthForm = ({ type }: { type: string }) => {
   return (
     <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
-        <div className="flex flex-col gap-1 md:gap-3">
+        <div className="flex flex-col gap-1 md:gap-3 mb-2">
           <h1 className="text-18 lg:text-24 font-semibold text-gray-900 ">
             {type === "sign-in" ? "Sign in to your Account" : "Sign Up"}
             <p className="text-16 font-normal text-gray-600 mt-4">
-              {user
-                ? "Link your account to get started"
-                : "Not a member?"}
-
-                <Link className="ml-2 font-bold" href="/sign-up">Register your Email</Link>
+              {type === 'sign-in' ?  "Not a member?" : "Already have an account?"}
+                <Link className="ml-2 form-link" href="/sign-up">Register your Account</Link>
             </p>
           </h1>
         </div>
@@ -157,7 +154,9 @@ const AuthForm = ({ type }: { type: string }) => {
               label="Password"
               placeholder="Enter your Password"
             />
+            
             <div className="flex flex-col gap-4 items-center">
+            <Link href="/forgot-password" className="form-link ml-auto">Forgot Password?</Link>
               <Button className="bg-slate-800 text-white rounded-full py-4 w-full" type="submit" disabled={isLoading}>
                 {isLoading ? (
                   <>
@@ -180,17 +179,7 @@ const AuthForm = ({ type }: { type: string }) => {
           </form>
         </Form>
         <footer className="flex justify-center gap-1">
-          <p className="text-14 font-normal text-gray-600">
-            {type === "sign-in"
-              ? "Don't have an account?"
-              : "Already have an account?"}
-          </p>
-          <Link
-            href={type === "sign-in" ? "/sign-up" : "/sign-in"}
-            className="form-link"
-          >
-            {type === "sign-in" ? "Sign Up" : "Sign In"}
-          </Link>
+       
         </footer>
       </>
     </section>
