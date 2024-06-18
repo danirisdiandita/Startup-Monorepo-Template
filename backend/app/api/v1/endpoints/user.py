@@ -4,12 +4,20 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from app.core.config import settings 
+from sqlalchemy.orm import Session 
+import datetime 
+from typing import Optional
+
+from app.crud.user import get_one_user_by_email
+from app.db.base import get_db 
 
 router = APIRouter() 
 
 class User(BaseModel):
     email: str
     password: str
+    first_name: Optional[str] = None 
+    last_name: Optional[str] = None 
 
 class Settings(BaseModel):
     authjwt_secret_key: str = settings.JWT_SECRET_KEY
@@ -25,9 +33,26 @@ def login(user: User, Authorize: AuthJWT = Depends()):
 
     # Use create_access_token() and create_refresh_token() to create our
     # access and refresh tokens
-    access_token = Authorize.create_access_token(subject=user.email)
-    refresh_token = Authorize.create_refresh_token(subject=user.email)
+    access_token = Authorize.create_access_token(subject=user.email, expires_time=datetime.timedelta(days=1))
+    refresh_token = Authorize.create_refresh_token(subject=user.email, expires_time=datetime.timedelta(days=7))
     return {"access_token": access_token, "refresh_token": refresh_token}
+
+@router.post("/register")
+def register(user: User, db: Session = Depends(get_db)): 
+    # check user within database or not 
+
+    user_array = get_one_user_by_email(user.email, db)
+
+    if len(user_array) > 0:
+        # throw error if the user is already registered 
+        raise HTTPException(status_code=409, detail="Email already registered")
+    
+
+
+
+
+
+    return {}
 
 @router.post('/refresh')
 def refresh(Authorize: AuthJWT = Depends()):
@@ -40,8 +65,9 @@ def refresh(Authorize: AuthJWT = Depends()):
     Authorize.jwt_refresh_token_required()
 
     current_user = Authorize.get_jwt_subject()
-    new_access_token = Authorize.create_access_token(subject=current_user)
-    return {"access_token": new_access_token}
+    new_access_token = Authorize.create_access_token(subject=current_user, expires_time=datetime.timedelta(days=1))
+    new_refresh_token = Authorize.create_refresh_token(subject=current_user, expires_time=datetime.timedelta(days=7))
+    return {"access_token": new_access_token, "refresh_token": new_refresh_token}
 
 @router.get('/protected')
 def protected(Authorize: AuthJWT = Depends()):
