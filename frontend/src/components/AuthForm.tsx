@@ -71,12 +71,17 @@ const AuthForm = ({ type }: { type: string }) => {
       <header className="flex flex-col gap-5 md:gap-8">
         <div className="flex flex-col gap-1 md:gap-3 mb-2">
           <h1 className="text-18 lg:text-24 font-semibold text-gray-900 ">
-            {type === "sign-in" ? "Sign in to Your Account" : "Sign Up to Create Your Account"}
+            {type === "sign-in"
+              ? "Sign in to Your Account"
+              : "Sign Up to Create Your Account"}
             <p className="text-16 font-normal text-gray-600 mt-4">
               {type === "sign-in"
                 ? "Not a member?"
                 : "Already have an account?"}
-              <Link className="ml-2 form-link" href={type === 'sign-in' ? "/sign-up" : "/sign-in"}>
+              <Link
+                className="ml-2 form-link"
+                href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              >
                 {type === "sign-in"
                   ? "Register your Account"
                   : "Login to your account"}
@@ -96,14 +101,12 @@ const AuthForm = ({ type }: { type: string }) => {
                     control={form.control}
                     name="firstName"
                     label="First Name"
-                    controlButton={null}
                     placeholder="Enter your First Name"
                   />
                   <CustomInput
                     control={form.control}
                     name="lastName"
                     label="Last Name"
-                    controlButton={null}
                     placeholder="Enter your Last Name"
                   />
                 </div>
@@ -144,19 +147,20 @@ const AuthForm = ({ type }: { type: string }) => {
                   "Sign up"
                 )}
               </Button>
-              or
-              <Button
-                className="bg-slate-100 text-black rounded-full py-4 w-full"
-                type="submit"
-                disabled={isLoading}
-              >
-                {type === "sign-in"
-                  ? "Sign in With Google"
-                  : "Sign Up With Google"}
-              </Button>
             </div>
           </form>
         </Form>
+        <div className="flex flex-col items-center">
+        <p className="mb-8">or</p>
+        <Button
+          className="bg-slate-100 text-black rounded-full py-4 w-full"
+          type="submit"
+          disabled={isLoading}
+        >
+          <Image className="mr-2" src="/icons/google-icon.svg" width={20} height={20} alt='google-sign-in-icon' />
+          {type === "sign-in" ? "Sign in With Google" : "Sign Up With Google"}
+        </Button>
+        </div>
         <footer className="flex justify-center gap-1"></footer>
       </>
     </section>
