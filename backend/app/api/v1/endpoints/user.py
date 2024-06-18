@@ -1,56 +1,51 @@
-from fastapi import APIRouter, Depends
-from typing import List
-from app.db import get_db
-from datetime import timedelta
-from typing import Annotated
-from app.schemas.jwt_token import Token, TokenData
-import jwt
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-from app.utils.jwtutils import authenticate_user, create_access_token, get_current_active_user, get_current_user
+from fastapi import APIRouter, FastAPI, HTTPException, Depends, Request
+from fastapi.responses import JSONResponse
+from fastapi_jwt_auth import AuthJWT
+from fastapi_jwt_auth.exceptions import AuthJWTException
+from pydantic import BaseModel
 from app.core.config import settings 
-from app.schemas.user import User
-
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
 
 router = APIRouter() 
 
+class User(BaseModel):
+    email: str
+    password: str
 
-@router.post("/token")
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-) -> Token:
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
-    return Token(access_token=access_token, token_type="bearer")
+class Settings(BaseModel):
+    authjwt_secret_key: str = settings.JWT_SECRET_KEY
 
+@AuthJWT.load_config
+def get_config():
+    return Settings()
 
-@router.get("/users/me/", response_model=User)
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-):
-    return current_user
+@router.post('/login')
+def login(user: User, Authorize: AuthJWT = Depends()):
+    if user.email != "test" or user.password != "test":
+        raise HTTPException(status_code=401,detail="Bad username or password")
 
+    # Use create_access_token() and create_refresh_token() to create our
+    # access and refresh tokens
+    access_token = Authorize.create_access_token(subject=user.email)
+    refresh_token = Authorize.create_refresh_token(subject=user.email)
+    return {"access_token": access_token, "refresh_token": refresh_token}
 
-@router.get("/users/me/items/")
-async def read_own_items(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-):
-    return [{"item_id": "Foo", "owner": current_user.username}]
+@router.post('/refresh')
+def refresh(Authorize: AuthJWT = Depends()):
+    """
+    The jwt_refresh_token_required() function insures a valid refresh
+    token is present in the request before running any code below that function.
+    we can use the get_jwt_subject() function to get the subject of the refresh
+    token, and use the create_access_token() function again to make a new access token
+    """
+    Authorize.jwt_refresh_token_required()
+
+    current_user = Authorize.get_jwt_subject()
+    new_access_token = Authorize.create_access_token(subject=current_user)
+    return {"access_token": new_access_token}
+
+@router.get('/protected')
+def protected(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+
+    current_user = Authorize.get_jwt_subject()
+    return {"user": current_user}
