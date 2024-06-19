@@ -7,17 +7,13 @@ from app.core.config import settings
 from sqlalchemy.orm import Session 
 import datetime 
 from typing import Optional
-
+from app.schemas.user import User 
 from app.crud.user import get_one_user_by_email
 from app.db.base import get_db 
 
 router = APIRouter() 
 
-class User(BaseModel):
-    email: str
-    password: str
-    first_name: Optional[str] = None 
-    last_name: Optional[str] = None 
+
 
 class Settings(BaseModel):
     authjwt_secret_key: str = settings.JWT_SECRET_KEY
@@ -40,12 +36,17 @@ def login(user: User, Authorize: AuthJWT = Depends()):
 @router.post("/register")
 def register(user: User, db: Session = Depends(get_db)): 
     # check user within database or not 
-
     user_array = get_one_user_by_email(user.email, db)
 
     if len(user_array) > 0:
         # throw error if the user is already registered 
         raise HTTPException(status_code=409, detail="Email already registered")
+    
+    # insert new user 
+
+    
+    
+    
     
 
 

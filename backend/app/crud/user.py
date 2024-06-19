@@ -12,7 +12,7 @@ def get_one_user_by_email(email: str, db: Session):
     query = f"""
     select 
         users.email,
-        users.hashed_password,
+        users.password,
         users.first_name,
         users.last_name
     from users where email = '{email}'
@@ -22,3 +22,12 @@ def get_one_user_by_email(email: str, db: Session):
     for doc_ in docs:
         output.append(doc_)
     return output 
+
+def insert_user_during_registration(email: str, password: str, first_name: str, last_name: str, db: Session):
+
+    query = f"""
+    insert into users (email, password, first_name, last_name) 
+    values ('{email}', '{password}', '{first_name}', '{last_name}')
+    """
+
+    db.execute(text(query))

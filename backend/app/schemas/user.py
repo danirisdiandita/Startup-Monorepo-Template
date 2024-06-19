@@ -1,18 +1,11 @@
 from pydantic import BaseModel
-from typing import Union
-
+from typing import Optional
 
 class User(BaseModel):
-    username: str
-    email: Union[str, None] = None
-    full_name: Union[str, None] = None
-    disabled: Union[bool, None] = None
-
-class UserInDB(User):
-    hashed_password: str
-
-class NewUser(BaseModel): 
     email: str 
     password: str 
-    first_name: str 
-    last_name: str 
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None 
+    verified: Optional[bool] = False 
+
+
