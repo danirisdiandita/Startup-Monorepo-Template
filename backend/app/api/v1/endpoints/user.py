@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 import datetime 
 from typing import Optional
 from app.schemas.user import User 
-from app.crud.user import get_one_user_by_email
+from app.crud.user import get_one_user_by_email, insert_user_during_registration
 from app.db.base import get_db 
 
 router = APIRouter() 
@@ -41,10 +41,20 @@ def register(user: User, db: Session = Depends(get_db)):
     if len(user_array) > 0:
         # throw error if the user is already registered 
         raise HTTPException(status_code=409, detail="Email already registered")
+    # hash the password 
+
+
     
     # insert new user 
 
-    
+    # insert_user_during_registration(user.email, )
+
+
+
+
+
+
+
     
     
     
