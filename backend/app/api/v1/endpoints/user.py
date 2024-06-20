@@ -6,9 +6,9 @@ from pydantic import BaseModel
 from app.core.config import settings 
 import datetime 
 from typing import Optional
-from app.schemas.user import User 
-from app.crud.user import get_one_user_by_email, insert_user_during_registration
-# from app.db.base import get_db 
+from app.models.user import User 
+from app.crud.user import insert_user_during_registration #  get_one_user_by_email
+from app.utils.password_utils import password_utils 
 
 router = APIRouter() 
 
@@ -33,24 +33,29 @@ def login(user: User, Authorize: AuthJWT = Depends()):
     return {"access_token": access_token, "refresh_token": refresh_token}
 
 @router.post("/register")
-def register(user: User, db: Session = Depends(get_db)): 
+def register(user: User): 
     # check user within database or not 
-    user_array = get_one_user_by_email(user.email, db)
+    # user_array = get_one_user_by_email(user.email, db)
 
-    if len(user_array) > 0:
+    # if len(user_array) > 0:
         # throw error if the user is already registered 
-        raise HTTPException(status_code=409, detail="Email already registered")
-    # hash the password 
+        # raise HTTPException(status_code=409, detail="Email already registered")
 
-
-    
     # insert new user 
+    registered_user = {} 
 
-    # insert_user_during_registration(user.email, )
+    # encrypt password 
+
+    user.password = password_utils.get_password_hash(user.password)
+
+    try: 
+        registered_user_data_model = insert_user_during_registration(user)
+        registered_user = registered_user_data_model.dict() 
+    except Exception as e: 
+        raise HTTPException(status_code=409, detail='Email already registered')
 
 
-
-    return {}
+    return JSONResponse(status_code=200, content=registered_user) 
 
 @router.post('/refresh')
 def refresh(Authorize: AuthJWT = Depends()):

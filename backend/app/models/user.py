@@ -5,8 +5,8 @@ from sqlalchemy.sql import schema, sqltypes
 
 class User(SQLModel, table=True): 
     __tablename__ = "users"
-    id: int | None = Field(default=None, primary_key=True, index=True)
-    email: str = Field(index=False)
+    id: int | None = Field(default=None, primary_key=True)
+    email: str = Field(index=False, unique=True)
     password: str = Field(index=False, nullable=False)
     first_name: str | None = Field(default=None)
     last_name: str | None = Field(default=None)
