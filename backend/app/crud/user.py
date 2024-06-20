@@ -1,8 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from app.models.item import Item
+# from app.models.item import Item
 from sqlalchemy.sql import text
-from app.db import get_db 
+# from app.db import get_db 
 
 def get_one_user_by_email(email: str, db: Session):
     #  db: Session = Depends(get_db)

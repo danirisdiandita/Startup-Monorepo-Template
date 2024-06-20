@@ -4,12 +4,11 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from app.core.config import settings 
-from sqlalchemy.orm import Session 
 import datetime 
 from typing import Optional
 from app.schemas.user import User 
 from app.crud.user import get_one_user_by_email, insert_user_during_registration
-from app.db.base import get_db 
+# from app.db.base import get_db 
 
 router = APIRouter() 
 
@@ -48,18 +47,6 @@ def register(user: User, db: Session = Depends(get_db)):
     # insert new user 
 
     # insert_user_during_registration(user.email, )
-
-
-
-
-
-
-
-    
-    
-    
-
-
 
 
 

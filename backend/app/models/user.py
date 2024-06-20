@@ -1,14 +1,16 @@
-from sqlalchemy import Column, Integer, String, Boolean
-from app.db import Base
+from sqlmodel import Field, SQLModel
+from sqlalchemy import Index
+from sqlalchemy.sql import schema, sqltypes 
 
-class User(Base):
+
+class User(SQLModel, table=True): 
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(255), nullable=False, unique=True, index=True)
-    password = Column(String(255), nullable=False)
-    first_name = Column(String(255))
-    last_name = Column(String(255))
-    verified = Column(Boolean, default=False)
+    id: int | None = Field(default=None, primary_key=True, index=True)
+    email: str = Field(index=False)
+    password: str = Field(index=False, nullable=False)
+    first_name: str | None = Field(default=None)
+    last_name: str | None = Field(default=None)
+    verified: bool = Field(default=False)
 
 
-
+Index('ix_users_email', User.email, postgresql_using='hash')
