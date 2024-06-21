@@ -8,8 +8,11 @@ from app.models.user import User
 def get_one_user_by_email(user: User):
     with Session(engine) as session: 
         statement = select(User).where(User.email == user.email)
-        results = session.exec(statement)
-        return results 
+        docs = session.exec(statement)
+        output = []
+        for  doc_ in docs:
+            output.append(doc_.dict())
+        return output 
 
 def insert_user_during_registration(user: User):
     with Session(engine) as session: 

@@ -53,7 +53,6 @@ def register(user: User):
     except Exception as e: 
         raise HTTPException(status_code=409, detail='Email already registered')
 
-
     return JSONResponse(status_code=200, content=registered_user) 
 
 @router.post('/refresh')
