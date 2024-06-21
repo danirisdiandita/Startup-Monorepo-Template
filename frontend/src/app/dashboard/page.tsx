@@ -11,7 +11,7 @@ const DashboardPage = () => {
     router.push("/sign-in");
   };
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-slate-100">
       <div>DashboardPage</div>
       <Button
         className="bg-slate-100 text-black rounded-full py-4 w-40"
