@@ -7,7 +7,7 @@ from app.core.config import settings
 import datetime 
 from typing import Optional
 from app.models.user import User 
-from app.crud.user import insert_user_during_registration #  get_one_user_by_email
+from app.crud.user import get_one_user_by_email, insert_user_during_registration #  get_one_user_by_email
 from app.utils.password_utils import password_utils 
 
 router = APIRouter() 
@@ -35,15 +35,14 @@ def login(user: User, Authorize: AuthJWT = Depends()):
 @router.post("/register")
 def register(user: User): 
     # check user within database or not 
-    # user_array = get_one_user_by_email(user.email, db)
+    user_array = get_one_user_by_email(user)
 
-    # if len(user_array) > 0:
+    if len(user_array) > 0:
         # throw error if the user is already registered 
-        # raise HTTPException(status_code=409, detail="Email already registered")
+        raise HTTPException(status_code=409, detail="Email already registered")
 
     # insert new user 
     registered_user = {} 
-
     # encrypt password 
 
     user.password = password_utils.get_password_hash(user.password)

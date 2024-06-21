@@ -5,24 +5,11 @@ from sqlalchemy.sql import text
 from app.models.user import User
 
 
-# def get_one_user_by_email(email: str, db: Session):
-#     #  db: Session = Depends(get_db)
-
-
-#     # create initialisation that email should be indexed to avoid "evil query"
-#     query = f"""
-#     select 
-#         users.email,
-#         users.password,
-#         users.first_name,
-#         users.last_name
-#     from users where email = '{email}'
-#     """
-#     docs = db.execute(text(query))
-#     output = [] 
-#     for doc_ in docs:
-#         output.append(doc_)
-#     return output 
+def get_one_user_by_email(user: User):
+    with Session(engine) as session: 
+        statement = select(User).where(User.email == user.email)
+        results = session.exec(statement)
+        return results 
 
 def insert_user_during_registration(user: User):
     with Session(engine) as session: 
