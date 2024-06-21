@@ -21,11 +21,22 @@ import { authFormSchema } from "../../lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "../../lib/actions/user.action";
+import {
+  signIn as signInWithSocialPlatform,
+  useSession,
+} from "next-auth/react";
+import { PagePath } from "@/common/constants/page-path.constant";
 
 // import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  if (status === "authenticated") {
+    router.push(PagePath.DASHBOARD);
+  }
+
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,7 +69,7 @@ const AuthForm = ({ type }: { type: string }) => {
           email: data.email,
           password: data.password,
         });
-        if (response) router.push("/");
+        if (response) router.push("/dashboard");
       }
     } catch (err) {
       console.log(err);
@@ -66,6 +77,7 @@ const AuthForm = ({ type }: { type: string }) => {
       setIsLoading(false);
     }
   };
+
   return (
     <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
@@ -151,15 +163,22 @@ const AuthForm = ({ type }: { type: string }) => {
           </form>
         </Form>
         <div className="flex flex-col items-center">
-        <p className="mb-8">or</p>
-        <Button
-          className="bg-slate-100 text-black rounded-full py-4 w-full"
-          type="submit"
-          disabled={isLoading}
-        >
-          <Image className="mr-2" src="/icons/google-icon.svg" width={20} height={20} alt='google-sign-in-icon' />
-          {type === "sign-in" ? "Sign in With Google" : "Sign Up With Google"}
-        </Button>
+          <p className="mb-8">or</p>
+          <Button
+            className="bg-slate-100 text-black rounded-full py-4 w-full"
+            type="submit"
+            disabled={isLoading}
+            onClick={() => signInWithSocialPlatform("google")}
+          >
+            <Image
+              className="mr-2"
+              src="/icons/google-icon.svg"
+              width={20}
+              height={20}
+              alt="google-sign-in-icon"
+            />
+            {type === "sign-in" ? "Sign in With Google" : "Sign Up With Google"}
+          </Button>
         </div>
         <footer className="flex justify-center gap-1"></footer>
       </>

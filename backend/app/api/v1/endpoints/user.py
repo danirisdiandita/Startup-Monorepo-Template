@@ -38,13 +38,13 @@ def register(user: User):
     user_array = get_one_user_by_email(user)
 
     if len(user_array) > 0:
-        # throw error if the user is already registered 
         raise HTTPException(status_code=409, detail="Email already registered")
 
     # insert new user 
     registered_user = {} 
+    
+    
     # encrypt password 
-
     user.password = password_utils.get_password_hash(user.password)
 
     try: 

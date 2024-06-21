@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import SessionWrapper from "@/components/SessionWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
-const plus_jakarta_san = Plus_Jakarta_Sans({ subsets: ["latin"] }); 
+const plus_jakarta_san = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={plus_jakarta_san.className}>{children}</body>
-    </html>
+    <SessionWrapper>
+      <html lang="en">
+        <body className={plus_jakarta_san.className}>{children}</body>
+      </html>
+    </SessionWrapper>
   );
 }

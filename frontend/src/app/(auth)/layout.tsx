@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-const RootLayout = ({children}: Readonly<{children:React.ReactNode }>) => {
+const AuthLayout = ({children}: Readonly<{children:React.ReactNode }>) => {
   return (
     <main className='min-h-screen flex w-full justify-between'>
         {children}
@@ -19,4 +19,4 @@ const RootLayout = ({children}: Readonly<{children:React.ReactNode }>) => {
   )
 }
 
-export default RootLayout
+export default AuthLayout
