@@ -23,6 +23,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MyComponent } from "@/components/mycomponent/mycomponent";
+import { useGetPokemonByNameQuery } from "@/lib/services/pokemon";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
@@ -48,6 +49,7 @@ function classNames(...classes) {
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data, error, isLoading } = useGetPokemonByNameQuery("bulbasaur");
 
   return (
     <>
@@ -265,8 +267,9 @@ export default function DashboardPage() {
         <div className="lg:pl-72">
           <main className="py-10 h-screen bg-slate-600">
             <div className="px-4 sm:px-6 lg:px-8 bg-slate-400">
-              <MyComponent/>
-              </div>
+              <MyComponent />
+              {JSON.stringify(data)}
+            </div>
           </main>
         </div>
       </div>

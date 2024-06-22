@@ -24,9 +24,6 @@ export const authOptions: NextAuthOptions = {
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };#
         const user = {name: credentials?.email, password: credentials?.password}
 
-
-        console.log('user', user)
-
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
           return user;
