@@ -22,9 +22,10 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "../../lib/actions/user.action";
 import {
-  signIn as signInWithSocialPlatform,
+  signIn as signInWithNextAuth,
   useSession,
 } from "next-auth/react";
+
 import { PagePath } from "@/common/constants/page-path.constant";
 
 // import PlaidLink from "./PlaidLink";
@@ -65,10 +66,9 @@ const AuthForm = ({ type }: { type: string }) => {
         const newUser = await signUp(userData);
         setUser(newUser);
       } else if (type === "sign-in") {
-        const response = await signIn({
-          email: data.email,
-          password: data.password,
-        });
+        
+        const response = await signInWithNextAuth('credentials', {email: data?.email, password: data?.password})
+        console.log('response', response)
         if (response) router.push("/dashboard");
       }
     } catch (err) {
@@ -168,7 +168,7 @@ const AuthForm = ({ type }: { type: string }) => {
             className="bg-slate-100 text-black rounded-full py-4 w-full"
             type="submit"
             disabled={isLoading}
-            onClick={() => signInWithSocialPlatform("google")}
+            onClick={() => signInWithNextAuth("google")}
           >
             <Image
               className="mr-2"
