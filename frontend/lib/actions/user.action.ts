@@ -1,5 +1,4 @@
 'use server'
-import { cookies } from "next/headers"
 import { parseStringify } from "../utils";
 export const signIn = async ({ email, password }: signInProps) => {
     try {
@@ -15,6 +14,8 @@ export const signIn = async ({ email, password }: signInProps) => {
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
     const { email, firstName, lastName } = userData;
+
+    // saving to database 
 
     try {
         console.log(email, firstName, lastName)

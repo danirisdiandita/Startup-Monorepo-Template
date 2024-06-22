@@ -1,12 +1,13 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider  from "next-auth/providers/credentials";
+import { Env } from "@/common/env";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: Env.googleClientId as string,
+      clientSecret: Env.googleClientSecret as string,
     }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
