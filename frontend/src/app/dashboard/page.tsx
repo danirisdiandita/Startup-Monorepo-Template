@@ -22,10 +22,7 @@ import {
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+import { MyComponent } from "@/components/mycomponent/mycomponent";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
@@ -54,14 +51,6 @@ export default function DashboardPage() {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Dialog
           className="relative z-50 lg:hidden"
@@ -275,7 +264,9 @@ export default function DashboardPage() {
 
         <div className="lg:pl-72">
           <main className="py-10 h-screen bg-slate-600">
-            <div className="px-4 sm:px-6 lg:px-8 bg-slate-400">fsjdi{/* Your content */}</div>
+            <div className="px-4 sm:px-6 lg:px-8 bg-slate-400">
+              <MyComponent/>
+              </div>
           </main>
         </div>
       </div>

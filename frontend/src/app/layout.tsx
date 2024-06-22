@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const plus_jakarta_san = Plus_Jakarta_Sans({ subsets: ["latin"] });
@@ -18,9 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <SessionWrapper>
+      <StoreProvider>
       <html lang="en">
         <body className={plus_jakarta_san.className}>{children}</body>
       </html>
+      </StoreProvider>
     </SessionWrapper>
   );
 }
