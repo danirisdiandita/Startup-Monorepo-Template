@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector, useAppStore } from "@/app/lib/hooks";
+import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/hooks";
 import { getInitialState, updateCallStatus } from "@/lib/features/callStatus/callStatusSlice";
 import { useEffect } from "react";
 
