@@ -40,6 +40,8 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
         }
         const results = await backendService.request("/v1/users/register", config)
 
+        console.log('results', results)
+
         
         // sample results shown below 
 

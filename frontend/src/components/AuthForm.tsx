@@ -27,6 +27,7 @@ import {
 } from "next-auth/react";
 
 import { PagePath } from "@/common/constants/page-path.constant";
+import { toast } from 'sonner'; 
 
 // import PlaidLink from "./PlaidLink";
 
@@ -64,7 +65,7 @@ const AuthForm = ({ type }: { type: string }) => {
         };
 
         const newUser = await signUp(userData);
-        console.log('newUser')
+        console.log('newUser', newUser)
         setUser(newUser);
       } else if (type === "sign-in") {
         
@@ -73,7 +74,21 @@ const AuthForm = ({ type }: { type: string }) => {
         if (response) router.push("/dashboard");
       }
     } catch (err) {
-      console.log(err);
+
+      // console.log('err', err)
+
+      let errorMessage: string = ''; 
+
+      if (err instanceof Error) {
+        errorMessage = err.message; 
+      } else if (typeof err === "string") {
+        errorMessage = err 
+      } 
+
+   
+      toast.error(errorMessage, {position: 'bottom-center'})
+      
+
     } finally {
       setIsLoading(false);
     }
