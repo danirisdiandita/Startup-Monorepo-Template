@@ -90,15 +90,20 @@ export default class BackendService {
         : await fetch(fullURL.toString(), options);
 
       // Check if the request was successful
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(await response.text());
+
+        // console.log("error gitu", response?.status, await response.text())
       }
 
       // Parse the JSON response
       return await response.json();
     } catch (error) {
       // Handle errors
-      throw error;
+
+      console.log("error", JSON.parse(error as string)?.detail ?  JSON.parse(error as string)?.detail : "Unknown Error, Please Try Again")
+      // throw error;
     }
   }
 }

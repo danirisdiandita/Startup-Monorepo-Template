@@ -39,6 +39,8 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
             }
         }
         const results = await backendService.request("/v1/users/register", config)
+
+        
         // sample results shown below 
 
         // results {
