@@ -7,7 +7,7 @@ from app.core.config import settings
 import datetime 
 from typing import Optional
 from app.models.user import User 
-from app.crud.user import get_one_user_by_email, insert_user_during_registration #  get_one_user_by_email
+from app.crud.user import get_one_user_by_email, insert_user_during_registration, send_email_verification #  get_one_user_by_email
 from app.utils.password_utils import password_utils 
 
 router = APIRouter() 
@@ -75,4 +75,12 @@ def protected(Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     current_user = Authorize.get_jwt_subject()
+    return {"user": current_user}
+
+
+@router.post("/verify")
+def verify(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+    current_user = Authorize.get_jwt_subject()
+    send_email_verification() 
     return {"user": current_user}
