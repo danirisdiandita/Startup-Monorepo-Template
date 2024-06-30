@@ -82,5 +82,7 @@ def protected(Authorize: AuthJWT = Depends()):
 def verify(Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
     current_user = Authorize.get_jwt_subject()
-    send_email_verification() 
-    return {"user": current_user}
+    send_email_verification(body="") 
+    # return {"user": current_user}
+    return {'user': 'gitu'}
+    
