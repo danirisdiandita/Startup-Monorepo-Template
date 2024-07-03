@@ -25,11 +25,11 @@ def insert_user_during_registration(user: User):
         return user 
     
 
-def send_email_verification(body):
+def send_email_verification(body, subject, from_email, to_email):
     msg = EmailMessage() 
-    msg['Subject'] = 'Subject of mail sent by Python code'
-    msg['From'] = "norma.risdiandita@gmail.com" #  settings.SMTP_EMAIL # EMAIL_ADDRESS
-    msg['To'] = "norma.risdiandita@gmail.com" # EMAIL_ADDRESS
+    msg['Subject'] = subject 
+    msg['From'] = from_email
+    msg['To'] = to_email
     msg.set_content(body)
     context = ssl.create_default_context()
     with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as smtp:

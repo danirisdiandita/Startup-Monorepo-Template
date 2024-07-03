@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class Email(BaseModel): 
+class EmailVerification(BaseModel): 
     subject: str 
     recipient: str 
     sender: str 

@@ -42,6 +42,7 @@ export default class BackendService {
 
     // Construct the full URL with parameters
     const fullURL = new URL(baseURL + url);
+
     if (params) {
       Object.keys(params).forEach((key) =>
         fullURL.searchParams.append(key, params[key])
@@ -90,8 +91,6 @@ export default class BackendService {
         : await fetch(fullURL.toString(), options);
 
       // Check if the request was successful
-
-      
 
       if (!response.ok) {
         let errorMessage = JSON.parse(await response.text())?.detail

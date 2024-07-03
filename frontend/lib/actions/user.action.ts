@@ -2,6 +2,10 @@
 import { Env } from "@/common/env";
 import { parseStringify } from "../utils";
 import BackendService, { HttpMethod } from "@/common/backend.service";
+import { render, renderAsync } from "@react-email/components";
+import VerificationEmail from '../../emails/verifyEmail';
+import VercelInviteUserEmail from "../../emails/vercelInviteUserEmail";
+
 export const signIn = async ({ email, password }: signInProps) => {
     try {
         console.log(email, password)
@@ -15,10 +19,10 @@ export const signIn = async ({ email, password }: signInProps) => {
 }
 
 interface SignUpParams {
-    email?: string; 
-    firstName?: string; 
-    lastName?: string; 
-    password?: string; 
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    password?: string;
 }
 
 
@@ -27,24 +31,32 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 
     // saving to database 
 
-    const backendService = new BackendService(); 
+    const backendService = new BackendService();
     try {
         const config = {
-            method: HttpMethod.POST, 
+            method: HttpMethod.POST,
             data: {
-                email, 
-                first_name: firstName, 
-                last_name: lastName, 
-                password, 
+                email,
+                first_name: firstName,
+                last_name: lastName,
+                password,
             }
         }
-        const results = await backendService.request("/v1/users/register", config)
+        let results = await backendService.request("/v1/users/register", config)
+        
+        const verificationConfig = {
+            method: HttpMethod.POST,
+            data: {
+                subject: "Verify Your Account",
+                recipient: email,
+                sender: "norma.risdiandita@gmail.com",
+                body: await  renderAsync(VercelInviteUserEmail({  })) // url: "https://google.com", user: firstName + " " + lastName
+            }
+        }
 
-        // const subject = {
-        //     to: 
-        //     from: 
-        // }
-
+        // do verification here 
+        const verificationEmail = await backendService.request("/v1/users/verify", verificationConfig)
+       
         // sample results shown below 
 
         // results {
@@ -58,7 +70,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
         return parseStringify(results)
 
     } catch (error) {
-        throw error 
+        throw error
     }
 }
 

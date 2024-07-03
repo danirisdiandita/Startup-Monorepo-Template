@@ -1,28 +1,28 @@
 import {
   Button,
   Html,
-  render,
   Tailwind,
   Container,
   Text,
+  Head, 
 } from "@react-email/components";
 
-const verificationEmail = ({ url }: { url: string }) => {
+const VerificationEmail = ({ url, user }: { url: string, user: string }) => {
   return (
     <Html>
       <Tailwind
-        config={{
-          theme: {
-            extend: {
-              colors: {
-                brand: "#007291",
-              },
-            },
-          },
-        }}
+        // config={{
+        //   theme: {
+        //     extend: {
+        //       colors: {
+        //         brand: "#007291",
+        //       },
+        //     },
+        //   },
+        // }}
       >
         <Container className="flex-col items-center justify-between space-y-5">
-          <Text>Hi User</Text>
+          <Text>{`Hi ${user}`}</Text>
           <Text>
             You're almost there! Please ensure this is your most recent
             verification email
@@ -49,4 +49,4 @@ const verificationEmail = ({ url }: { url: string }) => {
   );
 };
 
-export default verificationEmail;
+export default VerificationEmail;
