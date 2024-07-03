@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 const Navbar = () => {
   const session = useSession();
+  console.log('session', session)
   const router = useRouter();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -28,7 +29,7 @@ const Navbar = () => {
               session?.data?.user?.name ? session?.data?.user?.name : "Guest"
             }
             email={
-              session?.data?.user?.email ? session?.data?.user?.email : "-"
+              session?.data?.user?.email ? session?.data?.user?.email : session?.data?.user?.name
             }
           />
           

@@ -34,7 +34,7 @@ def login(user: User, Authorize: AuthJWT = Depends()):
     return {"access_token": access_token, "refresh_token": refresh_token}
 
 @router.post("/register")
-def register(user: User): 
+def register(user: User, Authorize: AuthJWT = Depends()): 
     # check user within database or not 
     user_array = get_one_user_by_email(user)
 
@@ -51,8 +51,20 @@ def register(user: User):
     try: 
         registered_user_data_model = insert_user_during_registration(user)
         registered_user = registered_user_data_model.dict() 
+
+        # create verification token 
+        try: 
+            print("user.email", user.email)
+            verification_token = Authorize.create_access_token(subject=user.email, expires_time=datetime.timedelta(hours=12))
+            print('verification token', verification_token)
+        except Exception as e: 
+            print(e)
+        # print('verification_token', verification_token)
+        # registered_user['verification_token'] = verification_token 
+
     except Exception as e: 
-        raise HTTPException(status_code=409, detail='Email already registered')
+        print("e", e)
+        raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
 
     return JSONResponse(status_code=200, content=registered_user) 
 
