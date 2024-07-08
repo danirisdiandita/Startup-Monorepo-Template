@@ -12,18 +12,27 @@ from app.utils.password_utils import get_current_active_user, password_utils
 from ....models.token import Token 
 from datetime import timedelta 
 from ....core.config import settings
-from ....utils.password_utils import password_utils 
+from ....utils.password_utils import PasswordUtils  
 
 
 router = APIRouter() 
+password_utils = PasswordUtils() 
 
 user_service = UserService() 
 
 @router.post('/login')
 def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: Response) -> Token:
-    if form_data.username != 'test' or form_data.password != 'test': 
-        raise HTTPException(status_code=401,detail="Bad username or password")
+    user_data = user_service.get_one_user_by_email(User(email=form_data.username, password=form_data.password))
+    # verify email and password 
+
+    if len(user_data) < 1: 
+        raise HTTPException(status_code="Email is not Registered")
     
+
+
+    password_verified = password_utils.verify_password(form_data.password, user_data[0].get('password', ''))
+    if password_verified == False: 
+        raise HTTPException(status_code=401, detail="Incorrect Password")
 
 
     access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
