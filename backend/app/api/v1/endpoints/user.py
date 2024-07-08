@@ -13,6 +13,7 @@ from ....models.token import Token
 from datetime import timedelta 
 from ....core.config import settings
 from ....utils.password_utils import PasswordUtils  
+import json 
 
 
 router = APIRouter() 
@@ -33,7 +34,10 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
     password_verified = password_utils.verify_password(form_data.password, user_data[0].get('password', ''))
     if password_verified == False: 
         raise HTTPException(status_code=401, detail="Incorrect Password")
-
+    
+    # check user email verification 
+    if user_data[0].get('verified') == False: 
+        raise HTTPException(status_code=401, detail="Email is not verified")
 
     access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
     access_token = password_utils.create_access_token(
@@ -67,18 +71,23 @@ def register(user: User):
 
     try: 
         registered_user_data_model = user_service.insert_user_during_registration(user)
-        registered_user = registered_user_data_model.dict() 
+        registered_user = registered_user_data_model.model_dump()
 
         # create verification token 
         try: 
-            print('create verification token')
+            # 12 hours jwt token 
+            verification_token = password_utils.create_access_token({'email': registered_user.get('email'), 'token_type': 'verification'}, expires_delta=timedelta(hours=12))
+            registered_user["verification_token"] = verification_token 
         except Exception as e: 
-            print(e)
+            print('error', e)
+            raise Exception(status_code=500, detail="Unknown Error while generating verification token")
         # print('verification_token', verification_token)
         # registered_user['verification_token'] = verification_token 
 
     except Exception as e: 
         raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
+    
+    del registered_user['password']
 
     return JSONResponse(status_code=200, content=registered_user) 
 
