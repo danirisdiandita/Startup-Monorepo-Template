@@ -1,42 +1,50 @@
-from fastapi import APIRouter, FastAPI, HTTPException, Depends, Request
+from fastapi import APIRouter, FastAPI, HTTPException, Depends, Request, Response
 from fastapi.responses import JSONResponse
-from fastapi_jwt_auth import AuthJWT
-from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from app.core.config import settings 
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import datetime 
-from typing import Optional
+from typing import Optional, Annotated
 from app.models.email import EmailVerification
 from app.models.user import User 
-from app.crud.user import get_one_user_by_email, insert_user_during_registration, send_email_verification #  get_one_user_by_email
-from app.utils.password_utils import password_utils 
+from app.crud.user import UserService
+from app.utils.password_utils import get_current_active_user, password_utils 
+from ....models.token import Token 
+from datetime import timedelta 
+from ....core.config import settings
+from ....utils.password_utils import password_utils 
+
 
 router = APIRouter() 
 
-
-
-class Settings(BaseModel):
-    authjwt_secret_key: str = settings.JWT_SECRET_KEY
-
-@AuthJWT.load_config
-def get_config():
-    return Settings()
+user_service = UserService() 
 
 @router.post('/login')
-def login(user: User, Authorize: AuthJWT = Depends()):
-    if user.email != "test" or user.password != "test":
+def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: Response) -> Token:
+    if form_data.username != 'test' or form_data.password != 'test': 
         raise HTTPException(status_code=401,detail="Bad username or password")
+    
 
-    # Use create_access_token() and create_refresh_token() to create our
-    # access and refresh tokens
-    access_token = Authorize.create_access_token(subject=user.email, expires_time=datetime.timedelta(days=1))
-    refresh_token = Authorize.create_refresh_token(subject=user.email, expires_time=datetime.timedelta(days=7))
-    return {"access_token": access_token, "refresh_token": refresh_token}
+
+    access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
+    access_token = password_utils.create_access_token(
+        data={"sub": form_data.username}, expires_delta=access_token_expires
+    )
+
+    refresh_token_expires = timedelta(days=30)
+
+
+    refresh_token = password_utils.create_access_token(
+        data={"sub": form_data.username}, expires_delta=refresh_token_expires
+    )
+
+    response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=refresh_token_expires)
+    return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
 
 @router.post("/register")
-def register(user: User, Authorize: AuthJWT = Depends()): 
+def register(user: User): 
     # check user within database or not 
-    user_array = get_one_user_by_email(user)
+    user_array = user_service.get_one_user_by_email(user)
 
     if len(user_array) > 0:
         raise HTTPException(status_code=409, detail="Email already registered")
@@ -49,54 +57,50 @@ def register(user: User, Authorize: AuthJWT = Depends()):
     user.password = password_utils.get_password_hash(user.password)
 
     try: 
-        registered_user_data_model = insert_user_during_registration(user)
+        registered_user_data_model = user_service.insert_user_during_registration(user)
         registered_user = registered_user_data_model.dict() 
 
         # create verification token 
         try: 
-            print("user.email", user.email)
-            verification_token = Authorize.create_access_token(subject=user.email, expires_time=datetime.timedelta(hours=12))
-            print('verification token', verification_token)
+            print('create verification token')
         except Exception as e: 
             print(e)
         # print('verification_token', verification_token)
         # registered_user['verification_token'] = verification_token 
 
     except Exception as e: 
-        print("e", e)
         raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
 
     return JSONResponse(status_code=200, content=registered_user) 
 
+
+
+@router.get("/me", response_model=User)
+async def get_me(current_user: Annotated[User, Depends(get_current_active_user)],): 
+    print('current_user', current_user)
+    return User(id=1, email='norma.risdiandita@gmail.com', password='gitugiut', first_name='normadani', 
+                        last_name='risdiandita', verified=False)
+
 @router.post('/refresh')
-def refresh(Authorize: AuthJWT = Depends()):
+def refresh():
     """
     The jwt_refresh_token_required() function insures a valid refresh
     token is present in the request before running any code below that function.
     we can use the get_jwt_subject() function to get the subject of the refresh
     token, and use the create_access_token() function again to make a new access token
     """
-    Authorize.jwt_refresh_token_required()
+    return {'access_token': '', 'refresh_token': ''}
+    # Authorize.jwt_refresh_token_required()
 
-    current_user = Authorize.get_jwt_subject()
-    new_access_token = Authorize.create_access_token(subject=current_user, expires_time=datetime.timedelta(days=1))
-    new_refresh_token = Authorize.create_refresh_token(subject=current_user, expires_time=datetime.timedelta(days=7))
-    return {"access_token": new_access_token, "refresh_token": new_refresh_token}
-
-@router.get('/protected')
-def protected(Authorize: AuthJWT = Depends()):
-    Authorize.jwt_required()
-
-    current_user = Authorize.get_jwt_subject()
-    return {"user": current_user}
-
+    # current_user = Authorize.get_jwt_subject()
+    # new_access_token = Authorize.create_access_token(subject=current_user, expires_time=datetime.timedelta(days=1))
+    # new_refresh_token = Authorize.create_refresh_token(subject=current_user, expires_time=datetime.timedelta(days=7))
+    # return {"access_token": new_access_token, "refresh_token": new_refresh_token}
 
 @router.post("/verify")
-def verify(emailVerification: EmailVerification): # ,  Authorize: AuthJWT = Depends()
-    # Authorize.jwt_required()
-    # current_user = Authorize.get_jwt_subject()
-    send_email_verification(body=emailVerification.body, subject=emailVerification.subject, 
+def verify(emailVerification: EmailVerification):
+    user_service.send_email_verification(body=emailVerification.body, subject=emailVerification.subject, 
                             from_email=emailVerification.sender, to_email=emailVerification.recipient) 
-    # return {"user": current_user}
+    
     return {'user': 'gitu'}
     

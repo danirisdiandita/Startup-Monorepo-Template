@@ -5,8 +5,7 @@ from fastapi.responses import JSONResponse
 from app.models.hero import Hero
 from app.models.user import User 
 from app.db.base import create_db_and_tables, engine 
-from fastapi_jwt_auth import AuthJWT
-from fastapi_jwt_auth.exceptions import AuthJWTException
+
 
 app = FastAPI()
 
@@ -21,12 +20,6 @@ def on_startup():
 def read_root():
     return {"message": "Welcome to the FastAPI project!"}
 
-@app.exception_handler(AuthJWTException)
-def authjwt_exception_handler(request: Request, exc: AuthJWTException):
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"detail": exc.message}
-    )
 
 
 @app.post("/heroes/")
