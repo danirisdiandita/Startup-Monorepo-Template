@@ -1,6 +1,5 @@
 from sqlmodel import Session, select 
 from app.db.base import engine 
-from sqlalchemy.sql import text
 from app.models.user import User
 import smtplib
 from email.message import EmailMessage
@@ -28,6 +27,20 @@ class UserService:
             session.commit()
             session.refresh(user)
             return user 
+        
+    def verify_user_by_email(email: str):
+        user_ = None 
+        with Session(engine) as session: 
+            statement = select(User).where(User.email == email)
+            results = session.exec(statement)
+            user_ = results.one() 
+            user_.verified = True 
+            session.add(user_)
+        return user_ 
+        
+        
+
+
     
 
     def send_email_verification(self, body, subject, from_email, to_email):

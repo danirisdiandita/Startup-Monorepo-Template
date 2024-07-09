@@ -112,7 +112,13 @@ def refresh():
     # new_refresh_token = Authorize.create_refresh_token(subject=current_user, expires_time=datetime.timedelta(days=7))
     # return {"access_token": new_access_token, "refresh_token": new_refresh_token}
 
-@router.get("/verify/")
+@router.get("/verify/{verification_token}")
+def verify_email(verification_token: str): 
+
+    verification_payload = password_utils.decode_verification_token(verification_token)
+    user_ = user_service.verify_user_by_email(verification_payload.get("email"))
+    print('user_', user_)
+    return {"user": "gitu"}
 
 
 @router.post("/send-email-verification")

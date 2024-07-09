@@ -65,7 +65,7 @@ const AuthForm = ({ type }: { type: string }) => {
         };
 
         const newUser = await signUp(userData);
-        router.push("/please-confirm")
+        router.push(`/please-confirm/${data.email}`)
         setUser(newUser);
       } else if (type === "sign-in") {
         

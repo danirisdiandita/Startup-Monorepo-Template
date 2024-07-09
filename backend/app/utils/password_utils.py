@@ -57,8 +57,44 @@ class PasswordUtils:
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
 
-        
         return encoded_jwt
+    
+    def decode_verification_token(self, verification_token):
+        invalid_token = HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        user_not_found_error = HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User Not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        try: 
+            payload = jwt.decode(verification_token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]) 
+            invalid_token_type = HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token type",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+            if payload.get("token_type") != 'verification':
+                raise invalid_token_type 
+            
+            user_email = payload.get("email")
+            if user_email == None:
+                raise user_not_found_error
+
+            return payload 
+        except Exception as e: 
+            raise invalid_token
+
+        
+
+
+            
+
     
     
     

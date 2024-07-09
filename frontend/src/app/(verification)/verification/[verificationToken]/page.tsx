@@ -9,7 +9,10 @@ const VerificationPage = ({
   // extract verification token (create backend for verification token)
 
 
-  return <div>{params?.verificationToken ? params?.verificationToken: 'gitu'}</div>;
+  // return <div>{params?.verificationToken ? params?.verificationToken: 'gitu'}</div>;
+
+
+
 };
 
 export default VerificationPage;
