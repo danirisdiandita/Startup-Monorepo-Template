@@ -41,9 +41,6 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     };
     let results = await backendService.request("/v1/users/register", config);
 
-
-    console.log('rsults', results)
-
     const verificationConfig = {
       method: HttpMethod.POST,
       data: {
@@ -53,15 +50,15 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
         body: await renderAsync(
           VerifyEmail({
             username: firstName + " " + lastName,
-            inviteLink: "https://google.com",
+            inviteLink: Env.nextAuthURL + "/verification/" + results["verification_token"],
           })
-        ), // url: "https://google.com", user: firstName + " " + lastName
+        ), 
       },
     };
 
     // do verification here
     const verificationEmail = await backendService.request(
-      "/v1/users/verify",
+      "/v1/users/send-email-verification",
       verificationConfig
     );
 

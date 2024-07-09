@@ -79,10 +79,7 @@ def register(user: User):
             verification_token = password_utils.create_access_token({'email': registered_user.get('email'), 'token_type': 'verification'}, expires_delta=timedelta(hours=12))
             registered_user["verification_token"] = verification_token 
         except Exception as e: 
-            print('error', e)
             raise Exception(status_code=500, detail="Unknown Error while generating verification token")
-        # print('verification_token', verification_token)
-        # registered_user['verification_token'] = verification_token 
 
     except Exception as e: 
         raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
@@ -115,7 +112,10 @@ def refresh():
     # new_refresh_token = Authorize.create_refresh_token(subject=current_user, expires_time=datetime.timedelta(days=7))
     # return {"access_token": new_access_token, "refresh_token": new_refresh_token}
 
-@router.post("/verify")
+@router.get("/verify/")
+
+
+@router.post("/send-email-verification")
 def verify(emailVerification: EmailVerification):
     user_service.send_email_verification(body=emailVerification.body, subject=emailVerification.subject, 
                             from_email=emailVerification.sender, to_email=emailVerification.recipient) 
