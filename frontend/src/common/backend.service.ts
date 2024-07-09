@@ -105,4 +105,12 @@ export default class BackendService {
       throw error;
     }
   }
+
+
+  async updateVerificationStatus(verificationToken: any) {
+    const verificationConfig = {
+      method: HttpMethod.GET,
+    };
+    return await this.request(`verify/${verificationToken}`, verificationConfig)
+  }
 }

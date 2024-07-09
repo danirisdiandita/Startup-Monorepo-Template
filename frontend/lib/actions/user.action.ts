@@ -56,8 +56,8 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
       },
     };
 
-    // do verification here
-    const verificationEmail = await backendService.request(
+    // sending email verification here 
+    await backendService.request(
       "/v1/users/send-email-verification",
       verificationConfig
     );

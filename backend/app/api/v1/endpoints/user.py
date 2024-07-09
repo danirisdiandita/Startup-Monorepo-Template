@@ -116,6 +116,7 @@ def refresh():
 def verify_email(verification_token: str): 
 
     verification_payload = password_utils.decode_verification_token(verification_token)
+    print('verification_payload.get("email")', verification_payload.get("email"))
     user_ = user_service.verify_user_by_email(verification_payload.get("email"))
     print('user_', user_)
     return {"user": "gitu"}

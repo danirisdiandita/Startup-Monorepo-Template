@@ -28,7 +28,7 @@ class UserService:
             session.refresh(user)
             return user 
         
-    def verify_user_by_email(email: str):
+    def verify_user_by_email(self, email: str):
         user_ = None 
         with Session(engine) as session: 
             statement = select(User).where(User.email == email)
@@ -36,6 +36,8 @@ class UserService:
             user_ = results.one() 
             user_.verified = True 
             session.add(user_)
+            session.commit() 
+            session.refresh(user_)
         return user_ 
         
         
