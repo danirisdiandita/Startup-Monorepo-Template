@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider  from "next-auth/providers/credentials";
 import { Env } from "@/common/env";
+import BackendService from "@/common/backend.service";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -25,6 +26,17 @@ export const authOptions: NextAuthOptions = {
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };#
         const user = {name: credentials?.email, password: credentials?.password}
 
+        console.log('credentials from authorize', credentials)
+
+
+        const backendService = new BackendService() 
+
+        const loginConfig = {
+          
+        }
+        await backendService.request("/v1/users/login", )
+        // backendService.request("")
+
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
           return user;
@@ -39,11 +51,11 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log("user", user);
-      console.log("account", account);
-      console.log("profile", profile);
-      console.log("email", email);
-      console.log("credentials", credentials);
+      console.log("user from signIn", user);
+      console.log("account from signIn", account);
+      console.log("profile from signIn", profile);
+      console.log("email from signIn", email);
+      console.log("credentials from signIn", credentials);
 
       if (account?.provider === "google") {
         // do sign in to the backend to get refresh token

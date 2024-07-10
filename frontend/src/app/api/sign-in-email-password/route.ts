@@ -13,3 +13,7 @@ export async function GET(request: NextApiRequest) {
   console.log('verification results ', results)
   return NextResponse.json({ results })
 }
+
+export async function POST(request: NextApiRequest, response: NextApiResponse) {
+    console.log('POST GITU', request)
+}

@@ -10,17 +10,6 @@ import { PrimaryFeatures } from "@/components/landingpage/PrimaryFeatures";
 import { SecondaryFeatures } from "@/components/landingpage/SecondaryFeatures";
 import { Testimonials } from "@/components/landingpage/Testimonials";
 
-// const HomePage = () => {
-//   return (
-//     <div>
-//       <div>Landing Page</div>
-//     </div>
-//   );
-// };
-
-// export default HomePage;
-
-
 export default function HomePage() {
   return (
     <>
