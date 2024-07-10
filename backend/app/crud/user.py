@@ -40,10 +40,6 @@ class UserService:
             session.refresh(user_)
         return user_ 
         
-        
-
-
-    
 
     def send_email_verification(self, body, subject, from_email, to_email):
         msg = EmailMessage() 
