@@ -5,6 +5,7 @@ async function verifyEmail(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
       const { verificationToken } = req.query;
+      console.log('verificationToken', verificationToken)
       const backendService = new BackendService();
       const response = await backendService.updateVerificationStatus(
         verificationToken

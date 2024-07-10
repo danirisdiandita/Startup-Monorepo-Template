@@ -17,6 +17,8 @@ const VerificationPage = ({
     console.log('fetching data')
     if (data) {
       console.log("data verificaiton", data);
+    } else {
+      console.log('fkldsjfklds', data)
     }
   }, [data]);
   return (

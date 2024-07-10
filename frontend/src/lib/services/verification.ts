@@ -7,10 +7,10 @@ interface Verification {
 
 export const verificationApi = createApi({
     reducerPath: 'verificationApi', 
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000'+ '/api/v1/users/'}), 
+    baseQuery: fetchBaseQuery({ baseUrl:  Env.nextAuthURL + '/'}), 
     endpoints: (builder) => ({
         getVerifyStatusToTrue: builder.query<Verification, string>({
-            query: (verificationToken) => `verify/${verificationToken}`, 
+            query: (verificationToken) => `verify-email/${verificationToken}`, 
         }), 
     })
 })
