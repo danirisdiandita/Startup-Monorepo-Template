@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  pages: {signIn: '/sign-in', error: '/login'}, 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "google") {
@@ -92,7 +93,7 @@ export const authOptions: NextAuthOptions = {
 
       // do refresh token if access_token is expired 
 
-      
+
 
       return token;
     },
