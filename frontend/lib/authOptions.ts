@@ -22,6 +22,8 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+
+        console.log('req req ', req)
         // Add logic here to look up the user from the credentials supplied
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };#
         const user = {
@@ -45,43 +47,19 @@ export const authOptions: NextAuthOptions = {
         try {
           const results = await backendService.login(loginConfig)
           user.token = results
+          if (results?.access_token) {
+            return user 
+          } else {
+            return null 
+          }
         } catch (error) {
           return null 
-        }
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user;
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
     }),
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log("user from signIn", user);
-
-      // export interface DefaultUser {
-      //   id: string
-      //   name?: string | null
-      //   email?: string | null
-      //   image?: string | null
-      // }
-      console.log("account from signIn", account);
-      console.log("profile from signIn", profile);
-      console.log("email from signIn", email);
-      console.log("credentials from signIn", credentials);
-
-      // credentials from signIn {                                                                                        
-      //   email: 'norma.risdiandita@gmail.com',                 
-      //   password: 'ug3tug3tug3t',                             
-      //   csrfToken: '4a7d33d35c277778d7a0dc613fd077394352512ce238dcf95260ee8190206db0',                                 
-      //   callbackUrl: 'http://127.0.0.1:3000/sign-in',         
-      //   json: 'true'                                          
-      // }        
-
       if (account?.provider === "google") {
         // do sign in to the backend to get refresh token
         console.log("doing google auth");
@@ -94,24 +72,27 @@ export const authOptions: NextAuthOptions = {
           return false 
         }
       } else  {
-        console.log("account?.provider", account?.provider);
+        return false; 
       }
       return true;
     },
 
     async jwt({ token, user, account }) {
-      console.log("jwt", account);
-      // jwt undefined
-      console.log("jwt user", user);
-      // jwt user undefined 
+      // jwt user {                                              
+      //   name: 'norma.risdiandita@gmail.com',                  
+      //   password: 'ug3tug3tug3t',
+      //   token: {              
+      //     access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYS5yaXNkaWFuZGl0YUBnbWFpbC5jb20iLCJleHAiO
+      // jE3MjA3OTAzMjF9.9En07tFan3HHtUXWYz5sIXiGTk88xAyf6LE_nbWc_OE',
+      //     refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYS5yaXNkaWFuZGl0YUBnbWFpbC5jb20iLCJleHAi
+      // OjE3MjMyOTU5MjF9.JfwKfeWO8dhbrXj1O_e8BAIX5ewTiZ7D8XQxJ0vyrbs',
+      //     token_type: 'bearer'                                
+      //   }                                                     
+      // } 
 
-      console.log("jwt token", token);
-      // jwt token {
-      //   name: 'norma.risdiandita@gmail.com',
-      //   iat: 1720647132,
-      //   exp: 1723239132,
-      //   jti: '2354297a-5f7c-4f49-9b95-b129d248b69d'
-      // }
+      // do refresh token if access_token is expired 
+
+      
 
       return token;
     },
