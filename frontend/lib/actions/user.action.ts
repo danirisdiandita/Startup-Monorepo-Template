@@ -41,8 +41,6 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     };
     let results = await backendService.request("/v1/users/register", config);
 
-    console.log('email email email', email)
-
     const verificationConfig = {
       method: HttpMethod.POST,
       data: {
