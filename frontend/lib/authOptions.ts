@@ -31,26 +31,29 @@ export const authOptions: NextAuthOptions = {
 
         console.log("credentials from authorize", credentials);
 
-        // const backendService = new BackendService()
+        const backendService = new BackendService()
 
-        // const loginConfig = {
+        const loginConfig = {
+          method: HttpMethod.POST,
+          headers: {'Content-Type': 'application/json'}, 
+          data: {
+            username: credentials?.email,
+            password: credentials?.password
+          }
+        }
 
-        //   method: HttpMethod.POST,
-        //   data: {
-        //     username: credentials?.email,
-        //     password: credentials?.password
-        //   }
-
-        // }
-        // await backendService.request("/v1/users/login", )
-
+        try {
+          const results = await backendService.login(loginConfig)
+          user.token = results
+        } catch (error) {
+          return null 
+        }
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
           return user;
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
-
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
@@ -59,15 +62,38 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.log("user from signIn", user);
+
+      // export interface DefaultUser {
+      //   id: string
+      //   name?: string | null
+      //   email?: string | null
+      //   image?: string | null
+      // }
       console.log("account from signIn", account);
       console.log("profile from signIn", profile);
       console.log("email from signIn", email);
       console.log("credentials from signIn", credentials);
 
+      // credentials from signIn {                                                                                        
+      //   email: 'norma.risdiandita@gmail.com',                 
+      //   password: 'ug3tug3tug3t',                             
+      //   csrfToken: '4a7d33d35c277778d7a0dc613fd077394352512ce238dcf95260ee8190206db0',                                 
+      //   callbackUrl: 'http://127.0.0.1:3000/sign-in',         
+      //   json: 'true'                                          
+      // }        
+
       if (account?.provider === "google") {
         // do sign in to the backend to get refresh token
         console.log("doing google auth");
-      } else {
+      } else if (
+        account?.provider === "credentials"
+      ) {
+        if (user) {
+          return true 
+        } else {
+          return false 
+        }
+      } else  {
         console.log("account?.provider", account?.provider);
       }
       return true;

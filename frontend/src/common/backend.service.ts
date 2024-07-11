@@ -102,15 +102,45 @@ export default class BackendService {
       // Parse the JSON response
       return await response.json();
     } catch (error) {
+      console.log('error', error)
       throw error;
     }
   }
 
 
-  async updateVerificationStatus(verificationToken: any) {
-    const verificationConfig = {
-      method: HttpMethod.GET,
+  async login(config: any) {
+    const myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("grant_type", "");
+    urlencoded.append("username", config?.data?.username);
+    urlencoded.append("password", config?.data?.password);
+    urlencoded.append("scope", "");
+    urlencoded.append("client_id", "");
+    urlencoded.append("client_secret", "");
+
+    const requestOptions = {
+      method: config?.method ? config?.method : HttpMethod.GET,
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow"
     };
-    return await this.request(`verify/${verificationToken}`, verificationConfig)
+
+    const results = await fetch(Env.backendUrl + "/api/v1/users/login", requestOptions)
+      .then((response) => response.text())
+      .then((result) => { return JSON.parse(result) })
+      .catch((error) => { throw new Error(error)})
+
+    return results
   }
+
+
+  // async updateVerificationStatus(verificationToken: any) {
+  //   const verificationConfig = {
+  //     method: HttpMethod.GET,
+  //   };
+  //   return await this.request(`verify/${verificationToken}`, verificationConfig)
+  // }
 }
