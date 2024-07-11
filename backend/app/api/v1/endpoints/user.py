@@ -27,7 +27,7 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
     # verify email and password 
 
     if len(user_data) < 1: 
-        raise HTTPException(status_code="Email is not Registered")
+        raise HTTPException(status_code=401, detail="Email not registered. Please sign up")
     
 
 
@@ -129,3 +129,6 @@ def verify(emailVerification: EmailVerification):
     
     return {'user': 'gitu'}
     
+@router.post("/send-forgot-password-email")
+def send_forgot_password_email(email: str):
+    return {'forgot password': 'sent'}

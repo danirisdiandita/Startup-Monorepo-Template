@@ -69,9 +69,21 @@ const AuthForm = ({ type }: { type: string }) => {
         setUser(newUser);
       } else if (type === "sign-in") {
         
-        const response = await signInWithNextAuth('credentials', {email: data?.email, password: data?.password})
-        console.log('response', response)
-        if (response) router.push("/dashboard");
+        const response = await signInWithNextAuth('credentials', {email: data?.email, password: data?.password, redirect: false})   
+        // if error show below                
+        // {
+        //   "error": "Incorrect Password",
+        //   "status": 200,
+        //   "ok": true,
+        //   "url": null
+        // }
+        if (response?.error) {
+          // console.log('error reason', response?.error)
+          toast.error(response?.error, {position: 'bottom-center'})
+        } else {
+          router.push("/dashboard");
+        }
+
       }
     } catch (err) {
 

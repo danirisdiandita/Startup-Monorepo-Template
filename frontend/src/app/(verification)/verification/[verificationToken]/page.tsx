@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/catalyst/button";
+import { Link } from "@/components/catalyst/link";
 import { Text } from "@/components/catalyst/text";
 import { useGetVerifyStatusToTrueQuery } from "@/lib/services/verification";
 import React, { useEffect } from "react";
@@ -20,7 +21,8 @@ const VerificationPage = ({
         {/* <p className="mt-2 text-gray-600">Thank you! Your email has been successfully verified.</p> */}
         <Text>Thank you! Your email has been successfully verified.</Text>
         <div className="mt-4">
-          <Button className="cursor-pointer w-full">Go to Dashboard</Button>
+          <Button className="cursor-pointer w-full" href="/sign-in">Sign In</Button>
+        
         </div>
       </div>
     </div>

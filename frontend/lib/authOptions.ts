@@ -22,8 +22,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-
-        console.log('req req ', req)
         // Add logic here to look up the user from the credentials supplied
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };#
         const user = {
@@ -31,88 +29,92 @@ export const authOptions: NextAuthOptions = {
           password: credentials?.password,
         };
 
-        console.log("credentials from authorize", credentials);
+        // credentials from authorize {                                                                                                                                                                   email: 'norma.risdiandita@gmail.com',
+        //   password: 'ug3tug3tug3tfdfds',
+        //   csrfToken: 'dd6b27ccc546fd2075cd7ba68f079cc7916d3ee760a50dea5e7dc05b29a08e07',
+        //   callbackUrl: 'http://localhost:3000/sign-in?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fsign-in&error=CredentialsSignin',
+        //   json: 'true'
+        // }
 
-        const backendService = new BackendService()
+        const backendService = new BackendService();
 
         const loginConfig = {
           method: HttpMethod.POST,
-          headers: {'Content-Type': 'application/json'}, 
+          headers: { "Content-Type": "application/json" },
           data: {
             username: credentials?.email,
-            password: credentials?.password
-          }
-        }
+            password: credentials?.password,
+          },
+        };
 
         try {
-          const results = await backendService.login(loginConfig)
-          user.token = results
+          const results = await backendService.login(loginConfig);
+
           if (results?.access_token) {
-            return user 
+            user.access_token = results 
+            return user;
           } else {
-            return null 
+            return results;
           }
         } catch (error) {
-          return null 
+          return null;
         }
       },
     }),
   ],
-  pages: {signIn: '/sign-in', error: '/login'}, 
+  pages: { signIn: "/sign-in", error: "/login" },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "google") {
         // do sign in to the backend to get refresh token
-        console.log("doing google auth");
-      } else if (
-        account?.provider === "credentials"
-      ) {
-        if (user) {
-          return true 
+        console.log('ninaninu')
+        // if already registered then do sign in 
+
+        // if not registered then do sign up to the backend 
+
+
+        // 
+      } else if (account?.provider === "credentials") {
+        if (user?.access_token) {
+          return true;
         } else {
-          return false 
+          if (user?.detail) {
+            throw new Error(user?.detail);
+          }
         }
-      } else  {
-        return false; 
+      } else {
+        return false;
       }
-      return true;
     },
 
     async jwt({ token, user, account }) {
-      // jwt user {                                              
-      //   name: 'norma.risdiandita@gmail.com',                  
+      // jwt user {
+      //   name: 'norma.risdiandita@gmail.com',
       //   password: 'ug3tug3tug3t',
-      //   token: {              
+      //   token: {
       //     access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYS5yaXNkaWFuZGl0YUBnbWFpbC5jb20iLCJleHAiO
       // jE3MjA3OTAzMjF9.9En07tFan3HHtUXWYz5sIXiGTk88xAyf6LE_nbWc_OE',
       //     refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYS5yaXNkaWFuZGl0YUBnbWFpbC5jb20iLCJleHAi
       // OjE3MjMyOTU5MjF9.JfwKfeWO8dhbrXj1O_e8BAIX5ewTiZ7D8XQxJ0vyrbs',
-      //     token_type: 'bearer'                                
-      //   }                                                     
-      // } 
+      //     token_type: 'bearer'
+      //   }
+      // }
 
-      // do refresh token if access_token is expired 
-
-
+      // do refresh token if access_token is expired
 
       return token;
     },
 
     async session({ session, user, token }) {
-      console.log("session - session", session);
-
-      // session - session {                          
+      // session - session {
       //   user: {
       //     name: 'norma.risdiandita@gmail.com',
-      //     email: undefined,            
-      //     image: undefined                                                                          
+      //     email: undefined,
+      //     image: undefined
       //   },
       //   expires: '2024-08-09T21:37:11.741Z'
       // }
-
-      console.log("session - user", user);
       // session - user undefined
-      console.log("session - token", token);
       // session - token {
       //   name: 'norma.risdiandita@gmail.com',
       //   iat: 1720647431,
@@ -130,15 +132,14 @@ export const authOptions: NextAuthOptions = {
     },
   },
   jwt: {
-    maxAge: 60 * 60 * 24
-  }, 
+    maxAge: 60 * 60 * 24,
+  },
   session: {
-    maxAge: 60 * 60 * 24 
-  }
+    maxAge: 60 * 60 * 24,
+  },
 };
 
-
-// below is session data from client 
+// below is session data from client
 // {
 //   "data": {
 //     "user": {

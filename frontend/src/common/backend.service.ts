@@ -131,7 +131,8 @@ export default class BackendService {
     const results = await fetch(Env.backendUrl + "/api/v1/users/login", requestOptions)
       .then((response) => response.text())
       .then((result) => { return JSON.parse(result) })
-      .catch((error) => { throw new Error(error)})
+      .catch((error) => { 
+        throw new Error(error)})
 
     return results
   }
