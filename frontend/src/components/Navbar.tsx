@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import ProfileDropdowns from "./molecules/ProfileDropdowns";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Button } from "./catalyst/button";
 const Navbar = () => {
   const session = useSession();
   console.log('session', session)
@@ -24,6 +24,7 @@ const Navbar = () => {
       <header className="bg-white">
         <nav className="flex justify-between px-10 py-3">
           <div>This is logo</div>
+          <Button>Catalyst Button</Button>
           <ProfileDropdowns
             name={
               session?.data?.user?.name ? session?.data?.user?.name : "Guest"
