@@ -3,7 +3,7 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
 import StoreProvider from "./StoreProvider";
-import { Toaster } from 'sonner'; 
+import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 const plus_jakarta_san = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
       <StoreProvider>
         <html lang="en">
           <body className={`${inter.className}`}>{children}</body>
-          <Toaster richColors/>
+          <Toaster richColors />
         </html>
       </StoreProvider>
     </SessionWrapper>

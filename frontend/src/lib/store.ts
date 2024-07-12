@@ -3,10 +3,12 @@ import callStatusSlice from "./features/callStatus/callStatusSlice";
 import { pokemonApi } from "./services/pokemon";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { verificationApi } from "./services/verification";
+import themeSlice from "./features/theme/themeSlice";
 export const makeStore = () => {
   return configureStore({
     reducer: {
       callStatus: callStatusSlice,
+      theme: themeSlice, 
       [pokemonApi.reducerPath]: pokemonApi.reducer,
       [verificationApi.reducerPath]: verificationApi.reducer,
     },
