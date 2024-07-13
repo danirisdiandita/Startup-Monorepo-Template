@@ -54,9 +54,7 @@ import { Strong, Text } from "@/components/catalyst/text";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/atoms/themeToggle";
 import clsx from "clsx";
-import {
-  updateThemeMode,
-} from "@/lib/features/theme/themeSlice";
+import { updateThemeMode } from "@/lib/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/hooks";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -67,22 +65,32 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-      dispatch(updateThemeMode(theme));
-    }
+    // if (typeof window !== "undefined") {
+    //   const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    //     ? "dark"
+    //     : "light";
+    //   dispatch(updateThemeMode(theme));
+    // }
+    dispatch(updateThemeMode("system"));
   }, []);
 
   useEffect(() => {
-    if (value.mode === 'dark') {
-      document.body.classList.add('dark')
+    if (value.mode === "dark") {
+      document.body.classList.add("dark");
+    } else if (value.mode === "system") {
+      if (typeof window !== "undefined") {
+        const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+
+        if (theme === "dark") {
+          document.body.classList.add("dark");
+        }
+      }
     } else {
-      document.body.classList.remove('dark')
+      document.body.classList.remove("dark");
     }
-    
-  }, [value.mode])
+  }, [value.mode]);
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
@@ -90,7 +98,15 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   };
 
   return (
-    <main className={value.mode}>
+    <main
+      className={
+        value.mode === "system"
+          ? window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light"
+          : value.mode
+      }
+    >
       <SidebarLayout
         navbar={
           <Navbar>
@@ -265,7 +281,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     <DropdownLabel>Privacy policy</DropdownLabel>
                   </DropdownItem>
                   <DropdownItem href="/share-feedback">
-                    <LightBulbIcon/>
+                    <LightBulbIcon />
                     <DropdownLabel>Share feedback</DropdownLabel>
                   </DropdownItem>
                   <DropdownDivider />

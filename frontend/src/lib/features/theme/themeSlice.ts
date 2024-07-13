@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ThemeModeState {
-  mode: "dark" | "light";
+  mode: "dark" | "light" | "system";
 }
 
 // const initialState: ThemeModeState = {
@@ -19,7 +19,7 @@ export const repositoriesSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    updateThemeMode(state, action: PayloadAction<"dark" | "light">) {
+    updateThemeMode(state, action: PayloadAction<"dark" | "light" | "system">) {
       state.mode = action.payload;
     }
   },
