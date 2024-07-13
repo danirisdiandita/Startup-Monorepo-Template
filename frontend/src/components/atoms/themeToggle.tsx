@@ -1,3 +1,5 @@
+import { updateThemeMode } from "@/lib/features/theme/themeSlice";
+import { useAppDispatch } from "@/lib/hooks";
 import {
   ComputerDesktopIcon,
   MoonIcon,
@@ -5,41 +7,46 @@ import {
 } from "@heroicons/react/16/solid";
 import React from "react";
 
-const ThemeToggle = ({
-  setMode,
-}: {
-  setMode: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const ThemeToggle = () => {
+  const dispatch = useAppDispatch();
   return (
     <div className="flex">
       <button
-        className="rounded-l-full  border-l-[1px] border-y-[1px] items-center"
+        className="rounded-l-full  border-l-[1px] border-y-[1px] items-center dark:border-white border-zinc-900"
         onClick={() => {
-          setMode(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark': 'light')
+          if (typeof window !== "undefined") {
+            dispatch(
+              updateThemeMode(
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+                  ? "dark"
+                  : "light"
+              )
+            );
+          }
         }}
       >
         <div className="p-1">
-          <ComputerDesktopIcon className="text-white w-4 h-4" />
+          <ComputerDesktopIcon className="text-zinc-900 dark:text-white w-4 h-4" />
         </div>
       </button>
       <button
-        className="border-x-[1px] border-y-[1px] text-white flex items-center"
+        className="border-x-[1px] border-y-[1px] text-white flex items-center border-zinc-900 dark:border-white"
         onClick={() => {
-          setMode("light");
+          dispatch(updateThemeMode("light"));
         }}
       >
         <div className="p-1">
-          <SunIcon className="text-white w-4 h-4" />
+          <SunIcon className="text-zinc-900 dark:text-white w-4 h-4" />
         </div>
       </button>
       <button
-        className="rounded-r-full items-center border-r-[1px] border-y-[1px]"
+        className="rounded-r-full items-center border-r-[1px] border-y-[1px] dark:border-white border-zinc-900"
         onClick={() => {
-          setMode("dark");
+          dispatch(updateThemeMode("dark"));
         }}
       >
         <div className="p-1">
-          <MoonIcon className="text-white w-4 h-4" />
+          <MoonIcon className="text-zinc-900 dark:text-white w-4 h-4" />
         </div>
       </button>
     </div>

@@ -21,12 +21,9 @@ export const repositoriesSlice = createSlice({
   reducers: {
     updateThemeMode(state, action: PayloadAction<"dark" | "light">) {
       state.mode = action.payload;
-    }, 
-    getInitialState() {
-        return initialState 
     }
   },
 });
 
-export const { updateThemeMode, getInitialState } = repositoriesSlice.actions;
+export const { updateThemeMode } = repositoriesSlice.actions;
 export default repositoriesSlice.reducer;

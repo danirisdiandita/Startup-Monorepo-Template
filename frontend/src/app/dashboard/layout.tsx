@@ -1,47 +1,13 @@
-// import Navbar from "@/components/Navbar";
-// import React from "react";
-// const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-//   return (
-//     <main>
-//       <Navbar/>
-//       {children}
-//     </main>
-//   );
-// };
-
-// export default RootLayout;
-
-// import SidebarMain from "@/components/SidebarMain";
-// import { Sidebar } from "@/components/catalyst/sidebar";
-// import { SidebarLayout } from "@/components/catalyst/sidebar-layout";
-
-// const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-//   return (
-//     <SidebarLayout
-//       sidebar={<Sidebar><SidebarMain/></Sidebar>}
-//       navbar={<></>}
-//     >
-//       {/* Your page content */}
-//       {children}
-//     </SidebarLayout>
-//   );
-// };
-
-// export default RootLayout
-
 "use client";
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   Cog8ToothIcon,
-  ComputerDesktopIcon,
   LightBulbIcon,
-  MoonIcon,
   PaintBrushIcon,
   PlusIcon,
   ShieldCheckIcon,
-  SunIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
 import {
@@ -88,20 +54,35 @@ import { Strong, Text } from "@/components/catalyst/text";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/atoms/themeToggle";
 import clsx from "clsx";
-import { ThemeModeState, getInitialState } from "@/lib/features/theme/themeSlice";
+import {
+  updateThemeMode,
+} from "@/lib/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/hooks";
-
-
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
   const router = useRouter();
-  const [mode, setMode] = useState('dark');
+  const [mode, setMode] = useState("dark");
+  const value = useAppSelector((state) => state.theme);
+  const dispatch = useAppDispatch();
 
-  const store = useAppStore() 
-  const value = useAppSelector((state) => state.theme); 
-  const dispatch = useAppDispatch()
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+      dispatch(updateThemeMode(theme));
+    }
+  }, []);
 
+  useEffect(() => {
+    if (value.mode === 'dark') {
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+    }
+    
+  }, [value.mode])
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
@@ -109,7 +90,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   };
 
   return (
-    <main className={`${mode}`}>
+    <main className={value.mode}>
       <SidebarLayout
         navbar={
           <Navbar>
@@ -284,7 +265,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     <DropdownLabel>Privacy policy</DropdownLabel>
                   </DropdownItem>
                   <DropdownItem href="/share-feedback">
-                    <LightBulbIcon />
+                    <LightBulbIcon/>
                     <DropdownLabel>Share feedback</DropdownLabel>
                   </DropdownItem>
                   <DropdownDivider />
@@ -314,7 +295,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                       <Text>
                         <Strong>Theme</Strong>
                       </Text>
-                      <ThemeToggle setMode={setMode} />
+                      <ThemeToggle />
                     </div>
                   </div>
                   <DropdownDivider />
