@@ -57,6 +57,44 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "google") {
+        console.log('user', user)
+        console.log('account', account)
+        console.log('profile', profile)
+        console.log('email', email)
+        console.log('credentials', credentials)
+
+        //         user {   id: '115690064868974581249',                                                                                                                                                               
+        //   name: 'Norma Dani Risdiandita',                                                                                                                                                            
+        //   email: 'norma.risdiandita@gmail.com',                                                       
+        //   image: 'https://lh3.googleusercontent.com/a/ACg8ocI-oFu2Mkz1jHkqXtFiZjQUckuzwTWrewvXZrY6ZPaevlrqBw=s96-c'
+        // }                                                                                                                                                                                            
+        // account {                           
+        //   provider: 'google',                                                                                                                                                                        
+        //   type: 'oauth',                                                                                                                                                                             
+        //   providerAccountId: '115690064868974581249',                                                                                                                                                
+        //   access_token: '<access_token>',                                                                                                                                             
+        //   expires_at: 1720861951,                                                                                                                                                                    
+        //   scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+        //   token_type: 'Bearer',
+        //   id_token: '<bearer type token>'
+        // }
+        // profile {
+        //   iss: 'https://accounts.google.com',
+        //   azp: '806317566931-6pi43a7jfj8nbnh9vcnrpbd8879snv78.apps.googleusercontent.com',
+        //   aud: '806317566931-6pi43a7jfj8nbnh9vcnrpbd8879snv78.apps.googleusercontent.com',
+        //   sub: '115690064868974581249',
+        //   email: 'norma.risdiandita@gmail.com',
+        //   email_verified: true,
+        //   at_hash: 'vO-eyWn_93HuwtlzybKZNw',
+        //   name: 'Norma Dani Risdiandita',
+        //   picture: 'https://lh3.googleusercontent.com/a/ACg8ocI-oFu2Mkz1jHkqXtFiZjQUckuzwTWrewvXZrY6ZPaevlrqBw=s96-c',
+        //   given_name: 'Norma Dani',
+        //   family_name: 'Risdiandita',
+        //   iat: 1720858352,
+        //   exp: 1720861952
+        // }
+        // email undefined
+        // credentials undefined
       } else if (account?.provider === "credentials") {
         if (user?.access_token) {
           return true;
@@ -120,13 +158,3 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-// below is session data from client
-// {
-//   "data": {
-//     "user": {
-//       "name": "norma.risdiandita@gmail.com"
-//     },
-//     "expires": "2024-08-09T21:39:13.372Z"
-//   },
-//   "status": "authenticated"
-// }
