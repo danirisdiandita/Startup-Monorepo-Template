@@ -140,7 +140,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
               <Dropdown>
                 <DropdownButton as={SidebarItem} className="lg:mb-2.5">
                   <Avatar src="/tailwind-logo.svg" />
-                  <SidebarLabel>Tailwind Labs</SidebarLabel>
+                  <SidebarLabel>Your Startup Name</SidebarLabel>
                   <ChevronDownIcon />
                 </DropdownButton>
                 <DropdownMenu

@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };#
-        const user = {
+        let user = {
           name: credentials?.email,
           password: credentials?.password,
         };
@@ -51,7 +51,8 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
-            user.access_token = results 
+            // user.access_token = results 
+            user = { ...user, access_token: results }
             return user;
           } else {
             return results;
@@ -88,20 +89,9 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user, account }) {
-      // jwt user {
-      //   name: 'norma.risdiandita@gmail.com',
-      //   password: 'ug3tug3tug3t',
-      //   token: {
-      //     access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYS5yaXNkaWFuZGl0YUBnbWFpbC5jb20iLCJleHAiO
-      // jE3MjA3OTAzMjF9.9En07tFan3HHtUXWYz5sIXiGTk88xAyf6LE_nbWc_OE',
-      //     refresh_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJub3JtYS5yaXNkaWFuZGl0YUBnbWFpbC5jb20iLCJleHAi
-      // OjE3MjMyOTU5MjF9.JfwKfeWO8dhbrXj1O_e8BAIX5ewTiZ7D8XQxJ0vyrbs',
-      //     token_type: 'bearer'
-      //   }
-      // }
-
-      // do refresh token if access_token is expired
-
+      if (user?.access_token) {
+        token = Object.assign({}, token, {access_token: user?.access_token})
+      }
       return token;
     },
 
@@ -126,7 +116,7 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          username: (token?.account as any)?.username,
+          username: (token?.account as any)?.username
         },
       };
     },
