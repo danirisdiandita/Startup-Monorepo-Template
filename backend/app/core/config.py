@@ -14,3 +14,13 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 settings = Settings()
+
+
+
+class Constants: 
+    def __init__(self) -> None:
+        self.token_type_access_token = 'access_token'
+        self.token_type_verification_token = 'verification_token'
+        self.token_type_refresh_token = 'refresh_token'
+
+constants = Constants() 

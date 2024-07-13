@@ -7,11 +7,12 @@ import datetime
 from typing import Optional, Annotated
 from app.models.email import EmailVerification
 from app.models.user import User 
+from app.models.token import RefreshToken 
 from app.crud.user import UserService
 from app.utils.password_utils import get_current_active_user, password_utils 
 from ....models.token import Token 
 from datetime import timedelta 
-from ....core.config import settings
+from ....core.config import settings, constants 
 from ....utils.password_utils import PasswordUtils  
 import json 
 
@@ -30,7 +31,6 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
         raise HTTPException(status_code=401, detail="Email not registered. Please sign up")
     
 
-
     password_verified = password_utils.verify_password(form_data.password, user_data[0].get('password', ''))
     if password_verified == False: 
         raise HTTPException(status_code=401, detail="Incorrect Password")
@@ -41,14 +41,14 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
 
     access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
     access_token = password_utils.create_access_token(
-        data={"sub": form_data.username}, expires_delta=access_token_expires
+        data={"sub": form_data.username, "email": form_data.username, 'token_type': constants.token_type_access_token}, expires_delta=access_token_expires
     )
 
     refresh_token_expires = timedelta(days=30)
 
 
     refresh_token = password_utils.create_access_token(
-        data={"sub": form_data.username}, expires_delta=refresh_token_expires
+        data={"sub": form_data.username , "email": form_data.username, 'token_type': constants.token_type_refresh_token}, expires_delta=refresh_token_expires
     )
 
     response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=refresh_token_expires)
@@ -76,7 +76,7 @@ def register(user: User):
         # create verification token 
         try: 
             # 12 hours jwt token 
-            verification_token = password_utils.create_access_token({'email': registered_user.get('email'), 'token_type': 'verification'}, expires_delta=timedelta(hours=12))
+            verification_token = password_utils.create_access_token({'sub': registered_user.get('email'),'email': registered_user.get('email'), 'token_type': constants.token_type_verification_token}, expires_delta=timedelta(hours=12))
             registered_user["verification_token"] = verification_token 
         except Exception as e: 
             raise Exception(status_code=500, detail="Unknown Error while generating verification token")
@@ -92,39 +92,41 @@ def register(user: User):
 
 @router.get("/me", response_model=User)
 async def get_me(current_user: Annotated[User, Depends(get_current_active_user)],): 
-    print('current_user', current_user)
     return User(id=1, email='norma.risdiandita@gmail.com', password='gitugiut', first_name='normadani', 
                         last_name='risdiandita', verified=False)
 
 @router.post('/refresh')
-def refresh(refresh_token: str, response=Response):
+def refresh(token: RefreshToken):
     """
     The jwt_refresh_token_required() function insures a valid refresh
     token is present in the request before running any code below that function.
     we can use the get_jwt_subject() function to get the subject of the refresh
     token, and use the create_access_token() function again to make a new access token
     """
-
-    
+    refresh_token = token.refresh_token 
     access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
     refresh_token_expires = timedelta(days=30)
 
-    payload = password_utils.decode_token(refresh_token)
+    payload = password_utils.decode_token(refresh_token, token_type=constants.token_type_refresh_token)
 
+    # check if the email within payload exists 
+
+    access_token = password_utils.create_access_token(
+        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_access_token}, expires_delta=access_token_expires
+    )
+
+    refresh_token_updated = password_utils.create_access_token(
+        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_refresh_token}, expires_delta=refresh_token_expires
+    )
     
-
-    response.delete_cookie(key="refresh_token_cookie")
-    return {'access_token': '', 'refresh_token': ''}
+    
+    return {'access_token': access_token, 'refresh_token': refresh_token_updated}
     
 
 @router.get("/verify/{verification_token}")
 def verify_email(verification_token: str): 
-
-    verification_payload = password_utils.decode_verification_token(verification_token)
-    print('verification_payload.get("email")', verification_payload.get("email"))
+    verification_payload = password_utils.decode_token(verification_token, token_type=constants.token_type_verification_token)
     user_ = user_service.verify_user_by_email(verification_payload.get("email"))
-    print('user_', user_)
-    return {"user": "gitu"}
 
 
 @router.post("/send-email-verification")

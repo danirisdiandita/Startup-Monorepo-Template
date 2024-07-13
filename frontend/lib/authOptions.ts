@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
-            user = { ...user, access_token: results }
+            user = { ...user, access_token: results };
             return user;
           } else {
             return results;
@@ -72,13 +72,31 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user, account }) {
       if (user?.access_token) {
-        token = Object.assign({}, token, {access_token: user?.access_token?.access_token, refresh_token: user?.access_token?.refresh_token})
+        token = Object.assign({}, token, {
+          access_token: user?.access_token?.access_token,
+          refresh_token: user?.access_token?.refresh_token,
+        });
       }
 
-      // if expired do refresh token here 
+      // if expired do refresh token here
       const expiredTime: number = token.exp as number;
-      if (Math.floor(new Date().getTime() / 1000) > expiredTime ) {
-        console.log('do refresh token here')
+      if (Math.floor(new Date().getTime() / 1000) > expiredTime) {
+        if (token?.refresh_token) {
+          const backendService = new BackendService();
+          const refreshTokenConfig = {
+            method: HttpMethod.POST,
+            headers: { "Content-Type": "application/json" },
+            data: {
+              refresh_token: token?.refresh_token,
+            },
+          };
+
+          const results = await backendService.request(
+            "/v1/users/refresh",
+            refreshTokenConfig
+          );
+          token = results;
+        }
       }
       return token;
     },
@@ -89,7 +107,7 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           token,
-          username: (token?.account as any)?.username
+          username: (token?.account as any)?.username,
         },
       };
     },

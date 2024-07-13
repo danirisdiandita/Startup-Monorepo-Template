@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from datetime import datetime, timezone, timedelta
 import jwt 
 from jwt.exceptions import InvalidTokenError
-from app.core.config import settings
+from app.core.config import settings, constants 
 from app.models.token import TokenData
 from app.models.user import User 
 from fastapi.security import OAuth2PasswordBearer
@@ -59,7 +59,7 @@ class PasswordUtils:
 
         return encoded_jwt
     
-    def decode_token(self, token): 
+    def decode_token(self, token: str, token_type: str): 
         invalid_token = HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid Token",
@@ -79,7 +79,7 @@ class PasswordUtils:
                 detail="Invalid token type",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-            if payload.get("token_type") != 'verification':
+            if payload.get("token_type") != token_type:
                 raise invalid_token_type 
             
             user_email = payload.get("email")
@@ -87,46 +87,7 @@ class PasswordUtils:
                 raise user_not_found_error
             return payload 
         except Exception as e: 
+            print(e)
             raise invalid_token
-    
-    def decode_verification_token(self, verification_token):
-        invalid_token = HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid Token",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        
-        user_not_found_error = HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User Not found",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        
-        try: 
-            payload = jwt.decode(verification_token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]) 
-            invalid_token_type = HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token type",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-            if payload.get("token_type") != 'verification':
-                raise invalid_token_type 
-            
-            user_email = payload.get("email")
-            if user_email == None:
-                raise user_not_found_error
-
-            return payload 
-        except Exception as e: 
-            raise invalid_token
-
-        
-
-
-            
-
-    
-    
-    
     
 password_utils = PasswordUtils() 
