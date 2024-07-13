@@ -113,9 +113,6 @@ def refresh(refresh_token: str, response=Response):
 
     
 
-
-
-
     response.delete_cookie(key="refresh_token_cookie")
     return {'access_token': '', 'refresh_token': ''}
     
