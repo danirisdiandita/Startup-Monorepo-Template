@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str 
     JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES: int = 24 * 60 
     JWT_REFRESH_TOKEN_EXPIRE_IN_DAYS: int = 30 
+    JWT_VERIFICATION_TOKEN_EXPIRE_IN_HOURS: int = 12 
     SMTP_HOST: str
     SMTP_PORT: int 
     SMTP_EMAIL: str 
@@ -25,5 +26,6 @@ class Constants:
         self.token_type_refresh_token = 'refresh_token'
         self.access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
         self.refresh_token_expires = timedelta(days=settings.JWT_REFRESH_TOKEN_EXPIRE_IN_DAYS)
+        self.verification_token_expires = timedelta(days=settings.JWT_VERIFICATION_TOKEN_EXPIRE_IN_HOURS)
 
 constants = Constants() 

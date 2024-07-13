@@ -22,6 +22,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        console.log('credentials', credentials)
         let user = {
           name: credentials?.email,
           password: credentials?.password,
@@ -53,16 +54,12 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  pages: { signIn: "/sign-in", error: "/login" },
+  pages: { signIn: "/sign-in", error: "/sign-in" },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.log('account', account)
       if (account?.provider === "google") {
-        console.log('user', user)
-        console.log('account', account)
         console.log('profile', profile)
-        console.log('email', email)
-        console.log('credentials', credentials)
-
         if (profile?.email && profile?.email_verified) {
           // signInWithGoogle 
 
@@ -76,12 +73,12 @@ export const authOptions: NextAuthOptions = {
             },
           }
 
-          const backendService = new BackendService(); 
-          const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
+          // const backendService = new BackendService(); 
+          // const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
 
           // this needs to be access_token and refresh_token 
 
-          
+
 
           
         }
