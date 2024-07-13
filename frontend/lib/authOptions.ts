@@ -66,6 +66,23 @@ export const authOptions: NextAuthOptions = {
         if (profile?.email && profile?.email_verified) {
           // signInWithGoogle 
 
+          const signInWithGoogleConfig = {
+            method: HttpMethod.POST, 
+            headers: { "Content-Type": "application/json" },
+            data: {
+              email: profile?.email, 
+              first_name: profile?.given_name ? profile?.given_name : "Guest", 
+              last_name: profile?.family_name ? profile?.family_name : "Guest", 
+            },
+          }
+
+          const backendService = new BackendService(); 
+          const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
+
+          // this needs to be access_token and refresh_token 
+
+          
+
           
         }
 

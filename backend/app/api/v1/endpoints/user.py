@@ -40,25 +40,35 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
     if user_data[0].get('verified') == False: 
         raise HTTPException(status_code=401, detail="Email is not verified")
 
-    access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
     access_token = password_utils.create_access_token(
-        data={"sub": form_data.username, "email": form_data.username, 'token_type': constants.token_type_access_token}, expires_delta=access_token_expires
+        data={"sub": form_data.username, "email": form_data.username, 'token_type': constants.token_type_access_token}, expires_delta=constants.access_token_expires
     )
-
-    refresh_token_expires = timedelta(days=30)
-
 
     refresh_token = password_utils.create_access_token(
-        data={"sub": form_data.username , "email": form_data.username, 'token_type': constants.token_type_refresh_token}, expires_delta=refresh_token_expires
+        data={"sub": form_data.username , "email": form_data.username, 'token_type': constants.token_type_refresh_token}, expires_delta=constants.refresh_token_expires
     )
 
-    response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=refresh_token_expires)
+    response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=constants.refresh_token_expires)
     return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
 
 @router.post("/google-login")
 def login_with_google(google_sign_in: GoogleSignIn):
-    # 
-    print("google_sign_in.email", google_sign_in.email) 
+    user_data = user_service.get_one_user_by_email(google_sign_in.email)
+
+    if len(user_data) > 0: 
+        # login
+
+        # check if email is verified 
+        if (user_data[0].get("verified") == False): 
+            raise HTTPException(status_code=401, detail="Email is not verified")
+        access_token = password_utils.create_access_token(
+            data={"sub": google_sign_in.email, "email": google_sign_in.email, "token_type": constants.token_type_access_token}
+        )
+    else: 
+        # register 
+        print('registering')
+        
+        
     return {}
 
 @router.post("/register")
@@ -111,21 +121,18 @@ def refresh(token: RefreshToken):
     token, and use the create_access_token() function again to make a new access token
     """
     refresh_token = token.refresh_token 
-    access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
-    refresh_token_expires = timedelta(days=30)
 
     payload = password_utils.decode_token(refresh_token, token_type=constants.token_type_refresh_token)
 
     # check if the email within payload exists 
 
     access_token = password_utils.create_access_token(
-        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_access_token}, expires_delta=access_token_expires
+        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_access_token}, expires_delta=constants.access_token_expires
     )
 
     refresh_token_updated = password_utils.create_access_token(
-        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_refresh_token}, expires_delta=refresh_token_expires
+        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_refresh_token}, expires_delta=constants.refresh_token_expires
     )
-    
     
     return {'access_token': access_token, 'refresh_token': refresh_token_updated}
     
