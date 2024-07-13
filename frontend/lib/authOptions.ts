@@ -63,6 +63,12 @@ export const authOptions: NextAuthOptions = {
         console.log('email', email)
         console.log('credentials', credentials)
 
+        if (profile?.email && profile?.email_verified) {
+          // signInWithGoogle 
+
+          
+        }
+
         //         user {   id: '115690064868974581249',                                                                                                                                                               
         //   name: 'Norma Dani Risdiandita',                                                                                                                                                            
         //   email: 'norma.risdiandita@gmail.com',                                                       

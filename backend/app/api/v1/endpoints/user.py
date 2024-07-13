@@ -5,12 +5,13 @@ from app.core.config import settings
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import datetime 
 from typing import Optional, Annotated
-from app.models.email import EmailVerification
+from app.schemas.email import EmailVerification
 from app.models.user import User 
-from app.models.token import RefreshToken 
+from app.schemas.token import RefreshToken 
 from app.crud.user import UserService
-from app.utils.password_utils import get_current_active_user, password_utils 
-from ....models.token import Token 
+from app.utils.password_utils import get_current_active_user, password_utils
+from app.schemas.google_sign import GoogleSignIn 
+from ....schemas.token import Token 
 from datetime import timedelta 
 from ....core.config import settings, constants 
 from ....utils.password_utils import PasswordUtils  
@@ -53,6 +54,12 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
 
     response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=refresh_token_expires)
     return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
+
+@router.post("/google-login")
+def login_with_google(google_sign_in: GoogleSignIn):
+    # 
+    print("google_sign_in.email", google_sign_in.email) 
+    return {}
 
 @router.post("/register")
 def register(user: User): 

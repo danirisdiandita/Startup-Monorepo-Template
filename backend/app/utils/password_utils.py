@@ -5,7 +5,7 @@ from datetime import datetime, timezone, timedelta
 import jwt 
 from jwt.exceptions import InvalidTokenError
 from app.core.config import settings, constants 
-from app.models.token import TokenData
+from app.schemas.token import TokenData
 from app.models.user import User 
 from fastapi.security import OAuth2PasswordBearer
 
