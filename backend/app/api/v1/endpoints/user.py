@@ -97,20 +97,28 @@ async def get_me(current_user: Annotated[User, Depends(get_current_active_user)]
                         last_name='risdiandita', verified=False)
 
 @router.post('/refresh')
-def refresh():
+def refresh(refresh_token: str, response=Response):
     """
     The jwt_refresh_token_required() function insures a valid refresh
     token is present in the request before running any code below that function.
     we can use the get_jwt_subject() function to get the subject of the refresh
     token, and use the create_access_token() function again to make a new access token
     """
-    return {'access_token': '', 'refresh_token': ''}
-    # Authorize.jwt_refresh_token_required()
 
-    # current_user = Authorize.get_jwt_subject()
-    # new_access_token = Authorize.create_access_token(subject=current_user, expires_time=datetime.timedelta(days=1))
-    # new_refresh_token = Authorize.create_refresh_token(subject=current_user, expires_time=datetime.timedelta(days=7))
-    # return {"access_token": new_access_token, "refresh_token": new_refresh_token}
+    
+    access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
+    refresh_token_expires = timedelta(days=30)
+
+    payload = password_utils.decode_token(refresh_token)
+
+    
+
+
+
+
+    response.delete_cookie(key="refresh_token_cookie")
+    return {'access_token': '', 'refresh_token': ''}
+    
 
 @router.get("/verify/{verification_token}")
 def verify_email(verification_token: str): 

@@ -22,19 +22,10 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };#
         let user = {
           name: credentials?.email,
           password: credentials?.password,
         };
-
-        // credentials from authorize {                                                                                                                                                                   email: 'norma.risdiandita@gmail.com',
-        //   password: 'ug3tug3tug3tfdfds',
-        //   csrfToken: 'dd6b27ccc546fd2075cd7ba68f079cc7916d3ee760a50dea5e7dc05b29a08e07',
-        //   callbackUrl: 'http://localhost:3000/sign-in?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fsign-in&error=CredentialsSignin',
-        //   json: 'true'
-        // }
 
         const backendService = new BackendService();
 
@@ -51,7 +42,6 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
-            // user.access_token = results 
             user = { ...user, access_token: results }
             return user;
           } else {
@@ -67,14 +57,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "google") {
-        // do sign in to the backend to get refresh token
-        console.log('ninaninu')
-        // if already registered then do sign in 
-
-        // if not registered then do sign up to the backend 
-
-
-        // 
       } else if (account?.provider === "credentials") {
         if (user?.access_token) {
           return true;
@@ -90,32 +72,23 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user, account }) {
       if (user?.access_token) {
-        token = Object.assign({}, token, {access_token: user?.access_token})
+        token = Object.assign({}, token, {access_token: user?.access_token?.access_token, refresh_token: user?.access_token?.refresh_token})
+      }
+
+      // if expired do refresh token here 
+      const expiredTime: number = token.exp as number;
+      if (Math.floor(new Date().getTime() / 1000) > expiredTime ) {
+        console.log('do refresh token here')
       }
       return token;
     },
 
     async session({ session, user, token }) {
-      // session - session {
-      //   user: {
-      //     name: 'norma.risdiandita@gmail.com',
-      //     email: undefined,
-      //     image: undefined
-      //   },
-      //   expires: '2024-08-09T21:37:11.741Z'
-      // }
-      // session - user undefined
-      // session - token {
-      //   name: 'norma.risdiandita@gmail.com',
-      //   iat: 1720647431,
-      //   exp: 1723239431,
-      //   jti: '2c111dc2-1b3f-41b7-98cb-93ad5678d413'
-      // }
-
       return {
         ...session,
         user: {
           ...session.user,
+          token,
           username: (token?.account as any)?.username
         },
       };
