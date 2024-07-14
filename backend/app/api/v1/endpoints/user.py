@@ -57,36 +57,54 @@ def login_with_google(google_sign_in: GoogleSignIn):
     user_data = user_service.get_one_user_by_email(User(email=user_email))
 
     # extract the google auth key results and verify
+    is_accepted, verification_message = password_utils.verify_google_access_token(google_sign_in.access_token)
 
-    if len(user_data) > 0:
-        # check if email is verified
-        if (user_data[0].get("verified") == False):
-            raise HTTPException(status_code=401, detail="Email is not verified")
-        access_token = password_utils.create_access_token(
-            data={"sub": google_sign_in.email, "email": google_sign_in.email, "token_type": constants.token_type_access_token}
-            , expires_delta=constants.access_token_expires
-        )
+    if is_accepted:
+        if len(user_data) > 0:
+            # check if email is verified (actually when google signed in, we do not need to verify)
+            if (user_data[0].get("verified") == False):
+                raise HTTPException(status_code=401, detail="Email is not verified")
+            access_token = password_utils.create_access_token(
+                data={"sub": google_sign_in.email, "email": google_sign_in.email, "token_type": constants.token_type_access_token}
+                , expires_delta=constants.access_token_expires
+            )
 
-        refresh_token = password_utils.create_access_token(
-            data={"sub": google_sign_in.email, "email": google_sign_in.email, "token_type": constants.token_type_refresh_token},
-            expires_delta=constants.refresh_token_expires
-        )
+            refresh_token = password_utils.create_access_token(
+                data={"sub": google_sign_in.email, "email": google_sign_in.email, "token_type": constants.token_type_refresh_token},
+                expires_delta=constants.refresh_token_expires
+            )
 
-        return JSONResponse(status_code=200, content= {"access_token": access_token, "refresh_token": refresh_token})
+            return JSONResponse(status_code=200, content= {"access_token": access_token, "refresh_token": refresh_token})
+        else:
+            # register to database if the user doesn't exists
+            try:
+
+                new_user = User(email=google_sign_in.email, first_name=google_sign_in.first_name,
+                                last_name=google_sign_in.last_name, verified=True) # for google sign in process, we don't need to verify the email
+                registered_user_data_model = user_service.insert_user_during_registration(new_user)
+                registered_user = registered_user_data_model.model_dump()
+
+                access_token = password_utils.create_access_token(
+                    data={"sub": google_sign_in.email, "email": google_sign_in.email,
+                        "token_type": constants.token_type_access_token}
+                    , expires_delta=constants.access_token_expires
+                )
+
+                refresh_token = password_utils.create_access_token(
+                    data={"sub": google_sign_in.email, "email": google_sign_in.email, "token_type": constants.token_type_refresh_token},
+                    expires_delta=constants.refresh_token_expires
+                )
+
+                return JSONResponse(status_code=200, content={"access_token": access_token, "refresh_token": refresh_token})
+
+            except Exception as e:
+                raise HTTPException(status_code=500, detail="Unknown Error, Please Try Again or Contact Us")
+
+            return JSONResponse(status_code=200, content=registered_user)
     else:
-        # register
+        raise HTTPException(status_code=401, content=verification_message)
 
-        try:
 
-            new_user = User(email=google_sign_in.email, first_name=google_sign_in.first_name,
-                            last_name=google_sign_in.last_name, verified=True) # for google sign in process, we don't need to verify the email
-            registered_user_data_model = user_service.insert_user_during_registration(new_user)
-            registered_user = registered_user_data_model.model_dump()
-
-        except Exception as e:
-            raise HTTPException(status_code=500, detail="Unknown Error, Please Try Again or Contact Us")
-
-        return JSONResponse(status_code=200, content=registered_user)
 
 @router.post("/register")
 def register(user: User):

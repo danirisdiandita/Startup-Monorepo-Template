@@ -60,8 +60,6 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       //  email, credentials
       if (account?.provider === "google") {
-        console.log("account", account);
-        return true;
         if (profile?.email && profile?.email_verified) {
           // signInWithGoogle
 
@@ -72,12 +70,14 @@ export const authOptions: NextAuthOptions = {
               email: profile?.email,
               first_name: profile?.given_name ? profile?.given_name : "Guest",
               last_name: profile?.family_name ? profile?.family_name : "Guest",
+              access_token: account?.access_token 
             },
           };
 
-          // const backendService = new BackendService();
-          // const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
-
+          const backendService = new BackendService();
+          const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
+          // console.log('results from google auth ', results)
+          user = Object.assign({}, user, {access_token: results})
           // this needs to be access_token and refresh_token
         }
         return true;
@@ -128,6 +128,8 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user, account }) {
+
+      console.log('user user jwt', user)
       if (user?.access_token) {
         token = Object.assign({}, token, {
           access_token: user?.access_token?.access_token,
@@ -159,6 +161,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, user, token }) {
+      console.log('user from session ', user)
       return {
         ...session,
         user: {

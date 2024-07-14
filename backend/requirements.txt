@@ -10,3 +10,4 @@ fastapi
 pydantic
 python-dotenv
 pydantic-settings
+requests
