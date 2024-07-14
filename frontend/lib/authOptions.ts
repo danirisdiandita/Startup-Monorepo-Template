@@ -23,7 +23,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log("credentials", credentials);
         let user = {
           name: credentials?.email,
           password: credentials?.password,
@@ -44,7 +43,10 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
-            user = { ...user, access_token: results };
+            user = { ...user, ...results, email: user?.name, signInProvider: "credentials" };
+            if (user?.password) {
+              delete user?.password;
+            }
             return user;
           } else {
             return results;
@@ -58,63 +60,8 @@ export const authOptions: NextAuthOptions = {
   pages: { signIn: "/sign-in", error: "/sign-in" },
   callbacks: {
     async signIn({ user, account, profile }) {
-      //  email, credentials
       if (account?.provider === "google") {
-        // if (profile?.email && profile?.email_verified) {
-        //   // signInWithGoogle
-
-        //   const signInWithGoogleConfig = {
-        //     method: HttpMethod.POST,
-        //     headers: { "Content-Type": "application/json" },
-        //     data: {
-        //       email: profile?.email,
-        //       first_name: profile?.given_name ? profile?.given_name : "Guest",
-        //       last_name: profile?.family_name ? profile?.family_name : "Guest",
-        //       access_token: account?.access_token 
-        //     },
-        //   };
-
-        //   const backendService = new BackendService();
-        //   const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
-        //   // console.log('results from google auth ', results)
-        //   user = Object.assign({}, user, {access_token: results})
-        //   // this needs to be access_token and refresh_token
-
-        // }
         return true;
-
-        //         user {   id: '115690064868974581249',
-        //   name: 'Norma Dani Risdiandita',
-        //   email: 'norma.risdiandita@gmail.com',
-        //   image: 'https://lh3.googleusercontent.com/a/ACg8ocI-oFu2Mkz1jHkqXtFiZjQUckuzwTWrewvXZrY6ZPaevlrqBw=s96-c'
-        // }
-        // account {
-        //   provider: 'google',
-        //   type: 'oauth',
-        //   providerAccountId: '115690064868974581249',
-        //   access_token: '<access_token>',
-        //   expires_at: 1720861951,
-        //   scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
-        //   token_type: 'Bearer',
-        //   id_token: '<bearer type token>'
-        // }
-        // profile {
-        //   iss: 'https://accounts.google.com',
-        //   azp: '806317566931-6pi43a7jfj8nbnh9vcnrpbd8879snv78.apps.googleusercontent.com',
-        //   aud: '806317566931-6pi43a7jfj8nbnh9vcnrpbd8879snv78.apps.googleusercontent.com',
-        //   sub: '115690064868974581249',
-        //   email: 'norma.risdiandita@gmail.com',
-        //   email_verified: true,
-        //   at_hash: 'vO-eyWn_93HuwtlzybKZNw',
-        //   name: 'Norma Dani Risdiandita',
-        //   picture: 'https://lh3.googleusercontent.com/a/ACg8ocI-oFu2Mkz1jHkqXtFiZjQUckuzwTWrewvXZrY6ZPaevlrqBw=s96-c',
-        //   given_name: 'Norma Dani',
-        //   family_name: 'Risdiandita',
-        //   iat: 1720858352,
-        //   exp: 1720861952
-        // }
-        // email undefined
-        // credentials undefined
       } else if (account?.provider === "credentials") {
         if (user?.access_token) {
           return true;
@@ -128,61 +75,87 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, profile }) {
+      if (account?.provider === "google") {
+        // generate access_token from backend instead of from google sign in 
 
-      if (token) {
-        console.log('jwt token', token)
-      }
-      if (user) {
-        console.log("jwt user", user)
-      }
 
-      if (account) {
-        console.log('jwt accoutn', account)
-      }
-      
-
-      // if (account?.provider === 'google') do something 
-      // if (account?.provider === 'credentials') do something 
-      if (user?.access_token) {
-        token = Object.assign({}, token, {
-          access_token: user?.access_token?.access_token,
-          refresh_token: user?.access_token?.refresh_token,
-        });
-      }
-
-      // if expired do refresh token here
-      const expiredTime: number = token.exp as number;
-      if (Math.floor(new Date().getTime() / 1000) > expiredTime) {
-        if (token?.refresh_token) {
-          const backendService = new BackendService();
-          const refreshTokenConfig = {
-            method: HttpMethod.POST,
-            headers: { "Content-Type": "application/json" },
-            data: {
-              refresh_token: token?.refresh_token,
-            },
-          };
-
-          const results = await backendService.request(
-            "/v1/users/refresh",
-            refreshTokenConfig,
-          );
-          token = results;
+        const backendService = new BackendService() 
+        const googleSignInConfig = {
+          method: HttpMethod.POST, 
+          headers: {"Content-Type": "application/json" }, 
+          data: {
+            email: token?.email, 
+            first_name: profile?.given_name ? profile?.given_name : 'Guest', 
+            last_name: profile?.family_name ? profile?.family_name: 'Guest', 
+            access_token: account?.access_token 
+          }
         }
+
+
+        const results = await backendService.request("/v1/users/google-login", googleSignInConfig)
+        // return {
+        //   access_token: account?.access_token,
+        //   expires_at: account?.expires_at,
+        //   refresh_token: account?.refresh_token,
+        //   ...token, 
+        //   first_name: profile?.given_name ? profile?.given_name : 'Guest', 
+        //   last_name: profile?.family_name ? profile?.family_name: 'Guest', 
+        //   signInProvider: "google",
+        // };
+
+        return {
+          access_token: results?.access_token,
+          expires_at: account?.expires_at,
+          refresh_token: results?.refresh_token,
+          ...token, 
+          first_name: profile?.given_name ? profile?.given_name : 'Guest', 
+          last_name: profile?.family_name ? profile?.family_name: 'Guest', 
+          signInProvider: "google",
+        };
       }
-      return token;
+      if (token?.signInProvider === "google") {
+        return token;
+      }
+
+      if (
+        account?.provider === "credentials" ||
+        token?.signInProvider === "credentials"
+      ) {
+        if (user?.access_token && user?.refresh_token) {
+          token = Object.assign({}, token, {
+            ...user,
+          });
+        }
+
+        // if expired do refresh token here
+        const expiredTime: number = token.exp as number;
+        if (Math.floor(new Date().getTime() / 1000) > expiredTime) {
+          if (token?.refresh_token) {
+            const backendService = new BackendService();
+            const refreshTokenConfig = {
+              method: HttpMethod.POST,
+              headers: { "Content-Type": "application/json" },
+              data: {
+                refresh_token: token?.refresh_token,
+              },
+            };
+
+            const results = await backendService.request(
+              "/v1/users/refresh",
+              refreshTokenConfig
+            );
+            token = results;
+          }
+        }
+        return token;
+      }
+      // }
     },
 
     async session({ session, user, token }) {
-      console.log('user from session ', user)
       return {
-        ...session,
-        user: {
-          ...session.user,
-          token,
-          username: (token?.account as any)?.username,
-        },
+        ...token,
       };
     },
   },
