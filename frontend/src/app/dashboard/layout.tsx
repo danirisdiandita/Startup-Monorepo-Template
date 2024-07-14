@@ -156,7 +156,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
               <Dropdown>
                 <DropdownButton as={SidebarItem} className="lg:mb-2.5">
                   <Avatar src="/tailwind-logo.svg" />
-                  <SidebarLabel>Your Startup Name</SidebarLabel>
+                  <SidebarLabel>Your Company Name</SidebarLabel>
                   <ChevronDownIcon />
                 </DropdownButton>
                 <DropdownMenu
@@ -284,7 +284,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     <LightBulbIcon />
                     <DropdownLabel>Share feedback</DropdownLabel>
                   </DropdownItem>
-                  <DropdownDivider />
+                  <DropdownDivider/>
                   <div
                     className={clsx(
                       // Base styles
