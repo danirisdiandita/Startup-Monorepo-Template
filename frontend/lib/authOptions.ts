@@ -23,6 +23,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         console.log('credentials', credentials)
+        console.log("req", req)
         let user = {
           name: credentials?.email,
           password: credentials?.password,
@@ -56,10 +57,8 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/sign-in", error: "/sign-in" },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('account', account)
+    async signIn({ user, account, profile, }) { //  email, credentials
       if (account?.provider === "google") {
-        console.log('profile', profile)
         if (profile?.email && profile?.email_verified) {
           // signInWithGoogle 
 
@@ -73,6 +72,8 @@ export const authOptions: NextAuthOptions = {
             },
           }
 
+
+
           // const backendService = new BackendService(); 
           // const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
 
@@ -80,8 +81,11 @@ export const authOptions: NextAuthOptions = {
 
 
 
+
+
           
         }
+        return true 
 
         //         user {   id: '115690064868974581249',                                                                                                                                                               
         //   name: 'Norma Dani Risdiandita',                                                                                                                                                            

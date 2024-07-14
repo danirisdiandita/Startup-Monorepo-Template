@@ -69,7 +69,17 @@ const AuthForm = ({ type }: { type: string }) => {
         setUser(newUser);
       } else if (type === "sign-in") {
         
-        const response = await signInWithNextAuth('credentials', {email: data?.email, password: data?.password, redirect: false})   
+        const response = await signInWithNextAuth('credentials', {email: data?.email, password: data?.password, redirect: false})  
+
+        // if success show below
+
+        // {
+        //   "error": null,
+        //   "status": 200,
+        //   "ok": true,
+        //   "url": "http://127.0.0.1:3000/sign-in"
+        // }
+
         // if error show below                
         // {
         //   "error": "Incorrect Password",
@@ -97,7 +107,6 @@ const AuthForm = ({ type }: { type: string }) => {
         errorMessage = err 
       } 
 
-   
       toast.error(errorMessage, {position: 'bottom-center'})
       
 
@@ -105,6 +114,15 @@ const AuthForm = ({ type }: { type: string }) => {
       setIsLoading(false);
     }
   };
+
+
+  const onGoogleSignInSubmit = async () => {
+    setIsLoading(true); 
+    const response = await signInWithNextAuth("google", {redirect: false})
+    console.log('response from google sign in ', response)
+
+   
+  }
 
   return (
     <section className="auth-form">
@@ -196,7 +214,7 @@ const AuthForm = ({ type }: { type: string }) => {
             className="bg-slate-100 text-black rounded-full py-4 w-full"
             type="submit"
             disabled={isLoading}
-            onClick={() => signInWithNextAuth("google")}
+            onClick={() => onGoogleSignInSubmit()}
           >
             <Image
               className="mr-2"
