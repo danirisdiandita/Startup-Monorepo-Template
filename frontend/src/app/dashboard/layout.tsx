@@ -248,19 +248,19 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <span className="flex min-w-0 items-center gap-3">
                     <Avatar
                       square
-                      initials={"G"}
+                      initials={session?.data?.first_name && session?.data?.last_name ? session?.data?.first_name[0] + session?.data?.last_name[0]: "G"}
                       className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
                     />
                     <span className="min-w-0">
                       <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
-                        {session?.data?.user?.name
-                          ? session?.data?.user?.name
+                        {session?.data?.first_name && session?.data?.last_name
+                          ? session?.data?.first_name +
+                            " " +
+                            session?.data?.last_name
                           : "Guest"}
                       </span>
                       <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
-                        {session?.data?.user?.email
-                          ? session?.data?.user?.email
-                          : session?.data?.user?.name}
+                        {session?.data?.email ? session?.data?.email : ''}
                       </span>
                     </span>
                   </span>
