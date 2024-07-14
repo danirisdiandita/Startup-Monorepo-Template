@@ -22,8 +22,8 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log('credentials', credentials)
-        console.log("req", req)
+        console.log("credentials", credentials);
+        console.log("req", req);
         let user = {
           name: credentials?.email,
           password: credentials?.password,
@@ -57,47 +57,42 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/sign-in", error: "/sign-in" },
   callbacks: {
-    async signIn({ user, account, profile, }) { //  email, credentials
+    async signIn({ user, account, profile }) {
+      //  email, credentials
       if (account?.provider === "google") {
+        console.log("account", account);
+        return true;
         if (profile?.email && profile?.email_verified) {
-          // signInWithGoogle 
+          // signInWithGoogle
 
           const signInWithGoogleConfig = {
-            method: HttpMethod.POST, 
+            method: HttpMethod.POST,
             headers: { "Content-Type": "application/json" },
             data: {
-              email: profile?.email, 
-              first_name: profile?.given_name ? profile?.given_name : "Guest", 
-              last_name: profile?.family_name ? profile?.family_name : "Guest", 
+              email: profile?.email,
+              first_name: profile?.given_name ? profile?.given_name : "Guest",
+              last_name: profile?.family_name ? profile?.family_name : "Guest",
             },
-          }
+          };
 
-
-
-          // const backendService = new BackendService(); 
+          // const backendService = new BackendService();
           // const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
 
-          // this needs to be access_token and refresh_token 
-
-
-
-
-
-          
+          // this needs to be access_token and refresh_token
         }
-        return true 
+        return true;
 
-        //         user {   id: '115690064868974581249',                                                                                                                                                               
-        //   name: 'Norma Dani Risdiandita',                                                                                                                                                            
-        //   email: 'norma.risdiandita@gmail.com',                                                       
+        //         user {   id: '115690064868974581249',
+        //   name: 'Norma Dani Risdiandita',
+        //   email: 'norma.risdiandita@gmail.com',
         //   image: 'https://lh3.googleusercontent.com/a/ACg8ocI-oFu2Mkz1jHkqXtFiZjQUckuzwTWrewvXZrY6ZPaevlrqBw=s96-c'
-        // }                                                                                                                                                                                            
-        // account {                           
-        //   provider: 'google',                                                                                                                                                                        
-        //   type: 'oauth',                                                                                                                                                                             
-        //   providerAccountId: '115690064868974581249',                                                                                                                                                
-        //   access_token: '<access_token>',                                                                                                                                             
-        //   expires_at: 1720861951,                                                                                                                                                                    
+        // }
+        // account {
+        //   provider: 'google',
+        //   type: 'oauth',
+        //   providerAccountId: '115690064868974581249',
+        //   access_token: '<access_token>',
+        //   expires_at: 1720861951,
         //   scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
         //   token_type: 'Bearer',
         //   id_token: '<bearer type token>'
@@ -155,7 +150,7 @@ export const authOptions: NextAuthOptions = {
 
           const results = await backendService.request(
             "/v1/users/refresh",
-            refreshTokenConfig
+            refreshTokenConfig,
           );
           token = results;
         }
@@ -181,4 +176,3 @@ export const authOptions: NextAuthOptions = {
     maxAge: 60 * 60 * 24,
   },
 };
-
