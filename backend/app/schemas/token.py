@@ -5,6 +5,8 @@ class Token(BaseModel):
     access_token: str
     refresh_token: Optional[str] = None 
     token_type: str
+    first_name: Optional[str] = None 
+    last_name: Optional[str] = None
 
 class TokenData(BaseModel):
     username: str | None = None

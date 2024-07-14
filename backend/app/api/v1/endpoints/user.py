@@ -49,7 +49,11 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
     )
 
     response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=constants.refresh_token_expires)
-    return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
+    return Token(access_token=access_token, 
+                 refresh_token=refresh_token, 
+                 first_name=user_data[0].get("first_name"), 
+                 last_name=user_data[0].get("last_name"),  
+                 token_type="bearer")
 
 @router.post("/google-login")
 def login_with_google(google_sign_in: GoogleSignIn):

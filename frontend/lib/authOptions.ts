@@ -9,6 +9,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: Env.googleClientId as string,
       clientSecret: Env.googleClientSecret as string,
+      authorization: { params: { access_type: "offline", prompt: "consent" } },
     }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -23,7 +24,6 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         console.log("credentials", credentials);
-        console.log("req", req);
         let user = {
           name: credentials?.email,
           password: credentials?.password,
@@ -60,26 +60,27 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       //  email, credentials
       if (account?.provider === "google") {
-        if (profile?.email && profile?.email_verified) {
-          // signInWithGoogle
+        // if (profile?.email && profile?.email_verified) {
+        //   // signInWithGoogle
 
-          const signInWithGoogleConfig = {
-            method: HttpMethod.POST,
-            headers: { "Content-Type": "application/json" },
-            data: {
-              email: profile?.email,
-              first_name: profile?.given_name ? profile?.given_name : "Guest",
-              last_name: profile?.family_name ? profile?.family_name : "Guest",
-              access_token: account?.access_token 
-            },
-          };
+        //   const signInWithGoogleConfig = {
+        //     method: HttpMethod.POST,
+        //     headers: { "Content-Type": "application/json" },
+        //     data: {
+        //       email: profile?.email,
+        //       first_name: profile?.given_name ? profile?.given_name : "Guest",
+        //       last_name: profile?.family_name ? profile?.family_name : "Guest",
+        //       access_token: account?.access_token 
+        //     },
+        //   };
 
-          const backendService = new BackendService();
-          const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
-          // console.log('results from google auth ', results)
-          user = Object.assign({}, user, {access_token: results})
-          // this needs to be access_token and refresh_token
-        }
+        //   const backendService = new BackendService();
+        //   const results = await backendService.request("/v1/users/google-login", signInWithGoogleConfig)
+        //   // console.log('results from google auth ', results)
+        //   user = Object.assign({}, user, {access_token: results})
+        //   // this needs to be access_token and refresh_token
+
+        // }
         return true;
 
         //         user {   id: '115690064868974581249',
@@ -129,7 +130,20 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user, account }) {
 
-      console.log('user user jwt', user)
+      if (token) {
+        console.log('jwt token', token)
+      }
+      if (user) {
+        console.log("jwt user", user)
+      }
+
+      if (account) {
+        console.log('jwt accoutn', account)
+      }
+      
+
+      // if (account?.provider === 'google') do something 
+      // if (account?.provider === 'credentials') do something 
       if (user?.access_token) {
         token = Object.assign({}, token, {
           access_token: user?.access_token?.access_token,
