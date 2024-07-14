@@ -4,7 +4,7 @@ from typing import Optional
 class Token(BaseModel):
     access_token: str
     refresh_token: Optional[str] = None 
-    token_type: str
+    token_type: Optional[str] = None 
     first_name: Optional[str] = None 
     last_name: Optional[str] = None
 

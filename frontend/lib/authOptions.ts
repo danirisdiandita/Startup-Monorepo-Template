@@ -80,15 +80,15 @@ export const authOptions: NextAuthOptions = {
         // generate access_token from backend instead of from google sign in 
 
 
-        const backendService = new BackendService() 
+        const backendService = new BackendService()
         const googleSignInConfig = {
-          method: HttpMethod.POST, 
-          headers: {"Content-Type": "application/json" }, 
+          method: HttpMethod.POST,
+          headers: { "Content-Type": "application/json" },
           data: {
-            email: token?.email, 
-            first_name: profile?.given_name ? profile?.given_name : 'Guest', 
-            last_name: profile?.family_name ? profile?.family_name: 'Guest', 
-            access_token: account?.access_token 
+            email: token?.email,
+            first_name: profile?.given_name ? profile?.given_name : 'Guest',
+            last_name: profile?.family_name ? profile?.family_name : 'Guest',
+            access_token: account?.access_token
           }
         }
 
@@ -108,13 +108,36 @@ export const authOptions: NextAuthOptions = {
           access_token: results?.access_token,
           expires_at: account?.expires_at,
           refresh_token: results?.refresh_token,
-          ...token, 
-          first_name: profile?.given_name ? profile?.given_name : 'Guest', 
-          last_name: profile?.family_name ? profile?.family_name: 'Guest', 
+          ...token,
+          first_name: profile?.given_name ? profile?.given_name : 'Guest',
+          last_name: profile?.family_name ? profile?.family_name : 'Guest',
           signInProvider: "google",
         };
       }
       if (token?.signInProvider === "google") {
+        // do refresh token here 
+
+        const expiredTime: number = token.exp as number;
+        if (Math.floor(new Date().getTime() / 1000) > expiredTime) {
+          if (token?.refresh_token) {
+            const backendService = new BackendService();
+            const refreshTokenConfig = {
+              method: HttpMethod.POST,
+              headers: { "Content-Type": "application/json" },
+              data: {
+                refresh_token: token?.refresh_token,
+              },
+            };
+
+            const results = await backendService.request(
+              "/v1/users/refresh",
+              refreshTokenConfig
+            );
+
+            token = { ...token, ...results };
+          }
+        }
+
         return token;
       }
 
@@ -145,9 +168,11 @@ export const authOptions: NextAuthOptions = {
               "/v1/users/refresh",
               refreshTokenConfig
             );
-            token = results;
+
+            token = { ...token, ...results };
           }
         }
+
         return token;
       }
       // }

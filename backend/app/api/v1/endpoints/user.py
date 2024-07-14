@@ -165,6 +165,15 @@ def refresh(token: RefreshToken):
 
     # check if the email within payload exists
 
+    # read database to get user information 
+
+    user_data = user_service.get_one_user_by_email(User(email=payload.get('email')))
+
+    if len(user_data) == 0:
+        raise HTTPException(status_code=401, detail="User not found")
+    
+
+
     access_token = password_utils.create_access_token(
         data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_access_token}, expires_delta=constants.access_token_expires
     )
@@ -172,8 +181,11 @@ def refresh(token: RefreshToken):
     refresh_token_updated = password_utils.create_access_token(
         data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_refresh_token}, expires_delta=constants.refresh_token_expires
     )
-
-    return {'access_token': access_token, 'refresh_token': refresh_token_updated}
+    
+    return JSONResponse(status_code=200, content={'access_token': access_token, 
+            'refresh_token': refresh_token_updated, 
+            'first_name': user_data[0].get("first_name"), 
+            'last_name': user_data[0].get("last_name")})
 
 
 @router.get("/verify/{verification_token}")
