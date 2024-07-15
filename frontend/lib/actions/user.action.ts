@@ -92,7 +92,7 @@ export const sendForgotPasswordEmail = async ({ email}: { email: string }) => {
     if (results?.token) {
       forgotPasswordToken = results?.token 
     } else {
-      throw new Error("Something went wrong")
+      throw new Error(results.detail)
     }
 
     config = {
@@ -108,8 +108,10 @@ export const sendForgotPasswordEmail = async ({ email}: { email: string }) => {
       }
     }
 
-    
+    await backendService.request("/v1/users/send-forgot-password-email", config)
+
   } catch (error) {
+    throw error 
     
   }
 }

@@ -209,22 +209,35 @@ def forgot_password_link(forgot_password_token):
 
 @router.post("/send-email-verification")
 def verify(emailVerification: Email):
-    user_service.send_email_verification(body=emailVerification.body, subject=emailVerification.subject,
-                            from_email=emailVerification.sender, to_email=emailVerification.recipient)
+    user_service.send_email(body=emailVerification.body, 
+                            subject=emailVerification.subject,
+                            from_email=emailVerification.sender, 
+                            to_email=emailVerification.recipient)
 
     return {'user': 'gitu'}
 
 @router.post("/send-forgot-password-email")
 def send_forgot_password_email(email: Email):
-    
+    user_service.send_email(body=email.body, 
+                            subject=email.subject, 
+                            from_email=email.sender, 
+                            to_email=email.recipient)
+
     return {'forgot password': 'sent'}
 
 @router.post("/forgot-password-token")
 def get_forgot_password_token(email: EmailOnly): 
-    forgot_password_token = password_utils.create_access_token(
-        data={'sub': email.email, 'email': email.email, 
-              'token_type': constants.token_type_forgot_password}, 
-              expires_delta=constants.forgot_password_token_expires
-    )
+    user_data = user_service.get_one_user_by_email(User(email=email.email))
+    if len(user_data) == 0:
+        raise HTTPException(status_code=401, detail=f"Email {email.email} not found")
+    try: 
+        forgot_password_token = password_utils.create_access_token(
+            data={'sub': email.email, 'email': email.email, 
+                'token_type': constants.token_type_forgot_password}, 
+                expires_delta=constants.forgot_password_token_expires
+        )
 
-    return JSONResponse(status_code=200, content={"token": forgot_password_token})
+        return JSONResponse(status_code=200, content={"token": forgot_password_token})
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail="Something went wrong")
+    

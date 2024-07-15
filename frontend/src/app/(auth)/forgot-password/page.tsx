@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Text } from "@/components/catalyst/text";
 import { useAppSelector } from "@/lib/hooks";
 import { sendForgotPasswordEmail } from "../../../../lib/actions/user.action";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
@@ -31,9 +32,21 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await sendForgotPasswordEmail({ email });
+      setMessage("Check your email for a link to reset your password");
+    } catch (err) {
+      let errorMessage: string = ''; 
 
-    await sendForgotPasswordEmail({ email });
-    setMessage("Check your email for a link to reset your password");
+      if (err instanceof Error) {
+        errorMessage = err.message; 
+      } else if (typeof err === "string") {
+        errorMessage = err 
+      } 
+
+      toast.error(errorMessage, {position: 'bottom-center'})
+    }
+    
   };
   return (
     <section className={`flex-center size-full max-sm:px-6 ${value.mode}`}>
