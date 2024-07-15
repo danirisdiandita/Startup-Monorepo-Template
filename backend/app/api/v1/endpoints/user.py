@@ -5,7 +5,7 @@ from app.core.config import settings
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import datetime
 from typing import Optional, Annotated
-from app.schemas.email import EmailVerification
+from app.schemas.email import Email
 from app.models.user import User
 from app.schemas.token import RefreshToken
 from app.crud.user import UserService
@@ -193,14 +193,28 @@ def verify_email(verification_token: str):
     verification_payload = password_utils.decode_token(verification_token, token_type=constants.token_type_verification_token)
     user_ = user_service.verify_user_by_email(verification_payload.get("email"))
 
+@router.post("/forgot-password")
+def forgot_password(): 
+    return {
+        'gitu': 'gitu'
+    }
+
+
+@router.get("/forgot-password-link/{forgot_password_token}")
+def forgot_password_link(forgot_password_token):
+    return {
+        'forgot_password_link': 'in progress'
+    }
+
 
 @router.post("/send-email-verification")
-def verify(emailVerification: EmailVerification):
+def verify(emailVerification: Email):
     user_service.send_email_verification(body=emailVerification.body, subject=emailVerification.subject,
                             from_email=emailVerification.sender, to_email=emailVerification.recipient)
 
     return {'user': 'gitu'}
 
 @router.post("/send-forgot-password-email")
-def send_forgot_password_email(email: str):
+def send_forgot_password_email(email: Email):
+    
     return {'forgot password': 'sent'}

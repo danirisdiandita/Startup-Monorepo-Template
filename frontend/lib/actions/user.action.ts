@@ -2,19 +2,10 @@
 import { Env } from "@/common/env";
 import { parseStringify } from "../utils";
 import BackendService, { HttpMethod } from "@/common/backend.service";
-import { render, renderAsync } from "@react-email/components";
-import { redirect } from "next/navigation";
+import { renderAsync } from "@react-email/components";
 import VerifyEmail from "../../emails/VerifyEmail";
+import ForgotPasswordEmail from  '../../emails/ForgotPasswordEmail'; 
 
-export const signIn = async ({ email, password }: signInProps) => {
-  try {
-    console.log(email, password);
-
-    return parseStringify({ email, password });
-  } catch (error) {
-    console.log("Error", error);
-  }
-};
 
 interface SignUpParams {
   email?: string;
@@ -52,7 +43,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
             username: firstName + " " + lastName,
             inviteLink: Env.nextAuthURL + "/verification/" + results["verification_token"],
           })
-        ), 
+        ),
       },
     };
 
@@ -81,3 +72,24 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     throw error;
   }
 };
+
+
+export const sendForgotPasswordEmail = async ({ email, forgotPasswordToken }: { email: string, forgotPasswordToken: string }) => {
+  const backendService = new BackendService(); 
+  try {
+    const config = {
+      method: HttpMethod.POST, 
+      data: {
+        subject: "Reset Your Password", 
+        recipient: email, 
+        sender: "norma.risdiandita@gmail.com", 
+        body: await renderAsync(ForgotPasswordEmail({
+          username: email, 
+          forgotPasswordLink: Env.nextAuthURL + "/reset-password/" + forgotPasswordToken, 
+        }))
+      }
+    }
+  } catch (error) {
+    
+  }
+}
