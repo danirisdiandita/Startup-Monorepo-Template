@@ -4,6 +4,7 @@ import { Input } from "@/components/catalyst/input";
 import React, { useEffect, useState } from "react";
 import { Text } from "@/components/catalyst/text";
 import { useAppSelector } from "@/lib/hooks";
+import { sendForgotPasswordEmail } from "../../../../lib/actions/user.action";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
@@ -30,21 +31,8 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const res = await fetch("/api/forgot-password", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ email }),
-    // });
 
-    // const data = await res.json();
-    // if (data.error) {
-    //   setMessage(data.error);
-    // } else {
-    //   setMessage("Check your email for a link to reset your password.");
-    // }
-
+    await sendForgotPasswordEmail({ email });
     setMessage("Check your email for a link to reset your password");
   };
   return (
@@ -57,7 +45,7 @@ const ForgotPassword = () => {
             </h2>
             <Text className="mt-2">
               Enter your email to receive a password reset link
-              </Text>
+            </Text>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm mb-2">

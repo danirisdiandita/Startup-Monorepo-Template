@@ -5,7 +5,7 @@ from app.core.config import settings
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import datetime
 from typing import Optional, Annotated
-from app.schemas.email import Email
+from app.schemas.email import Email, EmailOnly
 from app.models.user import User
 from app.schemas.token import RefreshToken
 from app.crud.user import UserService
@@ -218,3 +218,13 @@ def verify(emailVerification: Email):
 def send_forgot_password_email(email: Email):
     
     return {'forgot password': 'sent'}
+
+@router.post("/forgot-password-token")
+def get_forgot_password_token(email: EmailOnly): 
+    forgot_password_token = password_utils.create_access_token(
+        data={'sub': email.email, 'email': email.email, 
+              'token_type': constants.token_type_forgot_password}, 
+              expires_delta=constants.forgot_password_token_expires
+    )
+
+    return JSONResponse(status_code=200, content={"token": forgot_password_token})

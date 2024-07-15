@@ -6,3 +6,7 @@ class Email(BaseModel):
     recipient: str 
     sender: str 
     body: str 
+
+
+class EmailOnly(BaseModel): 
+    email: str 

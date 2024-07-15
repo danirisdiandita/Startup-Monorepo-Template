@@ -74,10 +74,28 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 };
 
 
-export const sendForgotPasswordEmail = async ({ email, forgotPasswordToken }: { email: string, forgotPasswordToken: string }) => {
-  const backendService = new BackendService(); 
+export const sendForgotPasswordEmail = async ({ email}: { email: string }) => {
   try {
-    const config = {
+    // generate 12 hours expiration token 
+    const backendService = new BackendService(); 
+
+    let config: any = {
+      method: HttpMethod.POST, 
+      data: {
+        email: email 
+      }
+    }
+
+    let results = await backendService.request("/v1/users/forgot-password-token", config); 
+    let forgotPasswordToken = ''; 
+
+    if (results?.token) {
+      forgotPasswordToken = results?.token 
+    } else {
+      throw new Error("Something went wrong")
+    }
+
+    config = {
       method: HttpMethod.POST, 
       data: {
         subject: "Reset Your Password", 
@@ -85,10 +103,12 @@ export const sendForgotPasswordEmail = async ({ email, forgotPasswordToken }: { 
         sender: "norma.risdiandita@gmail.com", 
         body: await renderAsync(ForgotPasswordEmail({
           username: email, 
-          forgotPasswordLink: Env.nextAuthURL + "/reset-password/" + forgotPasswordToken, 
+          forgotPasswordLink: Env.nextAuthURL + "/reset-password/" + forgotPasswordToken , 
         }))
       }
     }
+
+    
   } catch (error) {
     
   }

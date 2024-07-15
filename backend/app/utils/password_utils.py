@@ -107,5 +107,4 @@ class PasswordUtils:
 
 
 
-
 password_utils = PasswordUtils()
