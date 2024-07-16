@@ -54,6 +54,16 @@ class UserService:
             smtp.ehlo
             smtp.login(settings.SMTP_EMAIL, settings.SMTP_PASSWORD)
             smtp.send_message(msg)
+    def update_new_password_for_user(self, new_hashed_password: str, email: str): 
+        with Session(engine) as session: 
+            statement = select(User).where(User.email == email)
+            results = session.exec(statement)
+            user_ = results.one() 
+            user_.password = new_hashed_password 
+            session.add(user_)
+            session.commit() 
+            session.refresh(user_)
+        return user_
 
 
 

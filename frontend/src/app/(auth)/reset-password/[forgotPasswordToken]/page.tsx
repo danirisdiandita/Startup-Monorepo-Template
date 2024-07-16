@@ -1,23 +1,50 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { Text } from "@/components/catalyst/text";
 import { Input } from "@/components/catalyst/input";
 import { Button } from "@/components/catalyst/button";
-const ResetPassword = () => {
+import { Loader2 } from "lucide-react";
+import { changeNewPassword } from "../../../../../lib/actions/user.action";
+import { toast } from "sonner";
+const ResetPassword = ({
+  params = { forgotPasswordToken: "" },
+}: {
+  params: { forgotPasswordToken: string };
+}) => {
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
-    if (password.length < 8) {
-        setMessage("Password needs to be minimum of 8 character length")
-        return 
+    try {
+      if (password.length < 8) {
+        setMessage("Password needs to be minimum of 8 character length");
+        return;
+      }
+      if (password !== confirmationPassword) {
+        setMessage("Password doesn't match");
+      } else {
+        const response = await changeNewPassword({
+          forgotPasswordToken: params.forgotPasswordToken,
+          newPassword: password,
+        });
+      }
+    } catch (err) {
+      let errorMessage: string = "";
+
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
+
+      toast.error(errorMessage, { position: "bottom-center" });
     }
-    if (password !== confirmationPassword) {
-        setMessage("Password doesn't match")
-    } else {
-        setMessage("Password Match")
-    }
+    
+
+    setIsLoading(false);
   };
   return (
     <section className={`flex-center size-full max-sm:px-6`}>
@@ -56,8 +83,19 @@ const ResetPassword = () => {
             </div>
             {message && <Text>{message}</Text>}
             <div>
-              <Button type="submit" className="w-full cursor-pointer">
-                Reset Password
+              <Button
+                type="submit"
+                className="w-full cursor-pointer"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin" /> &nbsp;
+                    Loading
+                  </>
+                ) : (
+                  "Reset Password"
+                )}
               </Button>
             </div>
           </form>

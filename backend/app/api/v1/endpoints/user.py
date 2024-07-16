@@ -7,7 +7,7 @@ import datetime
 from typing import Optional, Annotated
 from app.schemas.email import Email, EmailOnly
 from app.models.user import User
-from app.schemas.password import Password
+from app.schemas.password import ResetPassword
 from app.schemas.token import RefreshToken
 from app.crud.user import UserService
 from app.utils.password_utils import get_current_active_user, password_utils
@@ -177,11 +177,17 @@ def refresh(token: RefreshToken):
 
 
     access_token = password_utils.create_access_token(
-        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_access_token}, expires_delta=constants.access_token_expires
+        data={'sub': payload.get('email'), 
+              'email': payload.get('email'), 
+              'token_type': constants.token_type_access_token},
+               expires_delta=constants.access_token_expires
     )
 
     refresh_token_updated = password_utils.create_access_token(
-        data={'sub': payload.get('email'), 'email': payload.get('email'), 'token_type': constants.token_type_refresh_token}, expires_delta=constants.refresh_token_expires
+        data={'sub': payload.get('email'), 
+              'email': payload.get('email'), 
+              'token_type': constants.token_type_refresh_token}, 
+              expires_delta=constants.refresh_token_expires
     )
     
     return JSONResponse(status_code=200, content={'access_token': access_token, 
@@ -192,7 +198,8 @@ def refresh(token: RefreshToken):
 
 @router.get("/verify/{verification_token}")
 def verify_email(verification_token: str):
-    verification_payload = password_utils.decode_token(verification_token, token_type=constants.token_type_verification_token)
+    verification_payload = password_utils.decode_token(verification_token,
+                                                        token_type=constants.token_type_verification_token)
     user_ = user_service.verify_user_by_email(verification_payload.get("email"))
 
 
@@ -230,7 +237,21 @@ def get_forgot_password_token(email: EmailOnly):
     except Exception as e: 
         raise HTTPException(status_code=500, detail="Something went wrong")
     
-# @router.post("/reset-password")
-# def reset_password(new_password: Password): 
-#     new_password.password
+@router.post("/reset-password")
+def reset_password(current_user: Annotated[User, Depends(get_current_active_user)], new_password: ResetPassword, ): 
+    try: 
+        # encrypt the password 
+        new_hashed_password = password_utils.get_password_hash(new_password.password)
+
+        # update the new password 
+        user_service.update_new_password_for_user(new_hashed_password, current_user.email)
+
+        return JSONResponse(status_code=200, content={"detail": f"password for user with email {current_user.email} has been updated"})
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail="Error Updating Password")
+
+        
+
+
+    
     

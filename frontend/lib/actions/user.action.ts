@@ -4,8 +4,8 @@ import { parseStringify } from "../utils";
 import BackendService, { HttpMethod } from "@/common/backend.service";
 import { renderAsync } from "@react-email/components";
 import VerifyEmail from "../../emails/VerifyEmail";
-import ForgotPasswordEmail from  '../../emails/ForgotPasswordEmail'; 
-
+import ForgotPasswordEmail from "../../emails/ForgotPasswordEmail";
+import { string } from "zod";
 
 interface SignUpParams {
   email?: string;
@@ -41,13 +41,16 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
         body: await renderAsync(
           VerifyEmail({
             username: firstName + " " + lastName,
-            inviteLink: Env.nextAuthURL + "/verification/" + results["verification_token"],
+            inviteLink:
+              Env.nextAuthURL +
+              "/verification/" +
+              results["verification_token"],
           })
         ),
       },
     };
 
-    // sending email verification here 
+    // sending email verification here
     await backendService.request(
       "/v1/users/send-email-verification",
       verificationConfig
@@ -73,45 +76,77 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
   }
 };
 
-
-export const sendForgotPasswordEmail = async ({ email}: { email: string }) => {
+export const sendForgotPasswordEmail = async ({ email }: { email: string }) => {
   try {
-    // generate 12 hours expiration token 
-    const backendService = new BackendService(); 
+    // generate 12 hours expiration token
+    const backendService = new BackendService();
 
     let config: any = {
-      method: HttpMethod.POST, 
+      method: HttpMethod.POST,
       data: {
-        email: email 
-      }
-    }
+        email: email,
+      },
+    };
 
-    let results = await backendService.request("/v1/users/forgot-password-token", config); 
-    let forgotPasswordToken = ''; 
+    let results = await backendService.request(
+      "/v1/users/forgot-password-token",
+      config
+    );
+    let forgotPasswordToken = "";
 
     if (results?.token) {
-      forgotPasswordToken = results?.token 
+      forgotPasswordToken = results?.token;
     } else {
-      throw new Error(results.detail)
+      throw new Error(results.detail);
     }
 
     config = {
-      method: HttpMethod.POST, 
+      method: HttpMethod.POST,
       data: {
-        subject: "Reset Your Password", 
-        recipient: email, 
-        sender: "norma.risdiandita@gmail.com", 
-        body: await renderAsync(ForgotPasswordEmail({
-          username: email, 
-          forgotPasswordLink: Env.nextAuthURL + "/reset-password/" + forgotPasswordToken , 
-        }))
-      }
-    }
+        subject: "Reset Your Password",
+        recipient: email,
+        sender: "norma.risdiandita@gmail.com",
+        body: await renderAsync(
+          ForgotPasswordEmail({
+            username: email,
+            forgotPasswordLink:
+              Env.nextAuthURL + "/reset-password/" + forgotPasswordToken,
+          })
+        ),
+      },
+    };
 
-    await backendService.request("/v1/users/send-forgot-password-email", config)
-
+    await backendService.request(
+      "/v1/users/send-forgot-password-email",
+      config
+    );
   } catch (error) {
-    throw error 
-    
+    throw error;
   }
-}
+};
+
+export const changeNewPassword = async ({
+  forgotPasswordToken,
+  newPassword,
+}: {
+  forgotPasswordToken: string;
+  newPassword: string;
+}) => {
+  try {
+    const requestConfig = {
+      method: HttpMethod.POST,
+      data: {
+        password: newPassword,
+      },
+    };
+
+    const backendService = new BackendService({accessToken: forgotPasswordToken});
+    const response = await backendService.request(
+      "/v1/users/reset-password",
+      requestConfig
+    );
+    return response 
+  } catch (error) {
+    throw error;
+  }
+};

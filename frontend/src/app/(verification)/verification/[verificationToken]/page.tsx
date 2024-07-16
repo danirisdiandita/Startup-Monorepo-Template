@@ -21,8 +21,9 @@ const VerificationPage = ({
         {/* <p className="mt-2 text-gray-600">Thank you! Your email has been successfully verified.</p> */}
         <Text>Thank you! Your email has been successfully verified.</Text>
         <div className="mt-4">
-          <Button className="cursor-pointer w-full" href="/sign-in">Sign In</Button>
-        
+          <Button className="cursor-pointer w-full" href="/sign-in">
+            Sign In
+          </Button>
         </div>
       </div>
     </div>

@@ -6,11 +6,12 @@ import { Text } from "@/components/catalyst/text";
 
 import { sendForgotPasswordEmail } from "../../../../lib/actions/user.action";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
-  
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // useEffect(() => {
   //   if (value.mode === "dark") {
@@ -32,21 +33,22 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       await sendForgotPasswordEmail({ email });
       setMessage("Check your email for a link to reset your password");
     } catch (err) {
-      let errorMessage: string = ''; 
+      let errorMessage: string = "";
 
       if (err instanceof Error) {
-        errorMessage = err.message; 
+        errorMessage = err.message;
       } else if (typeof err === "string") {
-        errorMessage = err 
-      } 
+        errorMessage = err;
+      }
 
-      toast.error(errorMessage, {position: 'bottom-center'})
+      toast.error(errorMessage, { position: "bottom-center" });
     }
-    
+    setIsLoading(false)
   };
   return (
     <section className={`flex-center size-full max-sm:px-6`}>
@@ -77,8 +79,19 @@ const ForgotPassword = () => {
             </div>
             {message && <Text>{message}</Text>}
             <div>
-              <Button type="submit" className="w-full cursor-pointer">
-                Send Reset Link
+              <Button
+                type="submit"
+                className="w-full cursor-pointer"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin" /> &nbsp;
+                    Loading
+                  </>
+                ) : (
+                  "Send Reset Link"
+                )}
               </Button>
             </div>
           </form>

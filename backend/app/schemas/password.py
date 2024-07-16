@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class Password(BaseModel): 
+class ResetPassword(BaseModel): 
     password: str 

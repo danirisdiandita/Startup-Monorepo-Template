@@ -49,6 +49,7 @@ export default class BackendService {
       );
     }
 
+    
     // Request options
     const options: RequestInit = {
       method,
@@ -102,7 +103,7 @@ export default class BackendService {
       // Parse the JSON response
       return await response.json();
     } catch (error) {
-      console.log('error', error)
+      
       throw error;
     }
   }

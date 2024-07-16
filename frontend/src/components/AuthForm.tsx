@@ -118,9 +118,6 @@ const AuthForm = ({ type }: { type: string }) => {
   const onGoogleSignInSubmit = async () => {
     setIsLoading(true); 
     const response = await signInWithNextAuth("google", {redirect: false})
-    console.log('response from google sign in ', response)
-
-   
   }
 
   return (
