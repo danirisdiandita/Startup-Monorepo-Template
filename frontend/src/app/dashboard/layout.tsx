@@ -62,17 +62,6 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const router = useRouter();
   const [mode, setMode] = useState("dark");
   const value = useAppSelector((state) => state.theme);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    // if (typeof window !== "undefined") {
-    //   const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-    //     ? "dark"
-    //     : "light";
-    //   dispatch(updateThemeMode(theme));
-    // }
-    dispatch(updateThemeMode("system"));
-  }, []);
 
   useEffect(() => {
     if (value.mode === "dark") {

@@ -5,14 +5,13 @@ export interface ThemeModeState {
   mode: "dark" | "light" | "system";
 }
 
-// const initialState: ThemeModeState = {
-//   mode: window.matchMedia("(prefers-color-scheme: dark)").matches
-//     ? "dark"
-//     : "light",
-// };
+const getThemeFromLocalStorage = (): "dark" | "light" | "system" => {
+  const theme = localStorage.getItem('theme');
+  return theme === "dark" || theme === "light" || theme === "system" ? theme : 'system';
+}
 
 const initialState: ThemeModeState = {
-    mode: 'dark'
+    mode: getThemeFromLocalStorage()
 }
 
 export const repositoriesSlice = createSlice({
@@ -20,6 +19,7 @@ export const repositoriesSlice = createSlice({
   initialState,
   reducers: {
     updateThemeMode(state, action: PayloadAction<"dark" | "light" | "system">) {
+      localStorage.setItem('theme', action.payload)
       state.mode = action.payload;
     }
   },
