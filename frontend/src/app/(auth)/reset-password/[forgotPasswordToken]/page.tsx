@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import { Text } from "@/components/catalyst/text";
 import { Input } from "@/components/catalyst/input";
 import { Button } from "@/components/catalyst/button";
-import { useAppSelector } from "@/lib/hooks";
 const ResetPassword = () => {
-  const value = useAppSelector((state) => state.theme);
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
@@ -16,14 +14,13 @@ const ResetPassword = () => {
         return 
     }
     if (password !== confirmationPassword) {
-        console.log('fsdklfjsdklf')
         setMessage("Password doesn't match")
     } else {
         setMessage("Password Match")
     }
   };
   return (
-    <section className={`flex-center size-full max-sm:px-6 ${value.mode}`}>
+    <section className={`flex-center size-full max-sm:px-6`}>
       <div className="min-h-screen w-full flex items-center justify-center dark:bg-[#18181B] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-2">
           <div>

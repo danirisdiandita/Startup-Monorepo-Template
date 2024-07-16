@@ -9,6 +9,10 @@ from app.schemas.token import TokenData
 from app.models.user import User
 from fastapi.security import OAuth2PasswordBearer
 import requests
+from app.crud.user import UserService
+
+
+user_service = UserService() 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login")
 
@@ -19,16 +23,24 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    user = None 
     try:
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        user = user_service.get_one_user_by_email(User(email=username))
+        if len(user) == 0:
+            raise credentials_exception 
+        else: 
+            user = User(email=user[0].get("email"), 
+                        first_name=user[0].get("first_name", 'guest'), 
+                        last_name=user[0].get("last_name", 'guest'), 
+                        verified=user[0].get("verified", False))
     except InvalidTokenError:
         raise credentials_exception
 
-    user = User(id=1, email='norma."risdiandita@gmail.com', password='gitu', first_name='nggaigut', last_name='jfklsdjfsd', verified=False)
+    
     if user is None:
         raise credentials_exception
     return user

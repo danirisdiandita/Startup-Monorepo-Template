@@ -7,6 +7,7 @@ import datetime
 from typing import Optional, Annotated
 from app.schemas.email import Email, EmailOnly
 from app.models.user import User
+from app.schemas.password import Password
 from app.schemas.token import RefreshToken
 from app.crud.user import UserService
 from app.utils.password_utils import get_current_active_user, password_utils
@@ -148,8 +149,9 @@ def register(user: User):
 
 @router.get("/me", response_model=User)
 async def get_me(current_user: Annotated[User, Depends(get_current_active_user)],):
-    return User(id=1, email='norma.risdiandita@gmail.com', password='gitugiut', first_name='normadani',
-                        last_name='risdiandita', verified=False)
+    return current_user
+    # return User(id=1, email='norma.risdiandita@gmail.com', password='gitugiut', first_name='normadani',
+    #                     last_name='risdiandita', verified=False)
 
 @router.post('/refresh')
 def refresh(token: RefreshToken):
@@ -193,19 +195,6 @@ def verify_email(verification_token: str):
     verification_payload = password_utils.decode_token(verification_token, token_type=constants.token_type_verification_token)
     user_ = user_service.verify_user_by_email(verification_payload.get("email"))
 
-@router.post("/forgot-password")
-def forgot_password(): 
-    return {
-        'gitu': 'gitu'
-    }
-
-
-@router.get("/forgot-password-link/{forgot_password_token}")
-def forgot_password_link(forgot_password_token):
-    return {
-        'forgot_password_link': 'in progress'
-    }
-
 
 @router.post("/send-email-verification")
 def verify(emailVerification: Email):
@@ -240,4 +229,8 @@ def get_forgot_password_token(email: EmailOnly):
         return JSONResponse(status_code=200, content={"token": forgot_password_token})
     except Exception as e: 
         raise HTTPException(status_code=500, detail="Something went wrong")
+    
+# @router.post("/reset-password")
+# def reset_password(new_password: Password): 
+#     new_password.password
     

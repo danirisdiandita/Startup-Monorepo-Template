@@ -3,32 +3,32 @@ import { Button } from "@/components/catalyst/button";
 import { Input } from "@/components/catalyst/input";
 import React, { useEffect, useState } from "react";
 import { Text } from "@/components/catalyst/text";
-import { useAppSelector } from "@/lib/hooks";
+
 import { sendForgotPasswordEmail } from "../../../../lib/actions/user.action";
 import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
-  const value = useAppSelector((state) => state.theme);
+  
 
-  useEffect(() => {
-    if (value.mode === "dark") {
-      document.body.classList.add("dark");
-    } else if (value.mode === "system") {
-      if (typeof window !== "undefined") {
-        const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
+  // useEffect(() => {
+  //   if (value.mode === "dark") {
+  //     document.body.classList.add("dark");
+  //   } else if (value.mode === "system") {
+  //     if (typeof window !== "undefined") {
+  //       const theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+  //         ? "dark"
+  //         : "light";
 
-        if (theme === "dark") {
-          document.body.classList.add("dark");
-        }
-      }
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, [value.mode]);
+  //       if (theme === "dark") {
+  //         document.body.classList.add("dark");
+  //       }
+  //     }
+  //   } else {
+  //     document.body.classList.remove("dark");
+  //   }
+  // }, [value.mode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
     
   };
   return (
-    <section className={`flex-center size-full max-sm:px-6 ${value.mode}`}>
+    <section className={`flex-center size-full max-sm:px-6`}>
       <div className="min-h-screen w-full flex items-center justify-center dark:bg-[#18181B] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-2">
           <div>
