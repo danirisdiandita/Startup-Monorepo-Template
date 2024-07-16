@@ -150,3 +150,6 @@ export const changeNewPassword = async ({
     throw error;
   }
 };
+
+
+// const resendVerificationEmail = ({email: string})
