@@ -6,6 +6,7 @@ import { Button } from "@/components/catalyst/button";
 import { Loader2 } from "lucide-react";
 import { changeNewPassword } from "../../../../../lib/actions/user.action";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const ResetPassword = ({
   params = { forgotPasswordToken: "" },
 }: {
@@ -13,23 +14,24 @@ const ResetPassword = ({
 }) => {
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
-  const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
   const handleSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
     try {
       if (password.length < 8) {
-        setMessage("Password needs to be minimum of 8 character length");
+        toast.error("Password needs to be minimum of 8 character length", {position: "bottom-center"})
         return;
       }
       if (password !== confirmationPassword) {
-        setMessage("Password doesn't match");
+        toast.error("Password doesn't match", {position: "bottom-center"})
       } else {
         const response = await changeNewPassword({
           forgotPasswordToken: params.forgotPasswordToken,
           newPassword: password,
         });
+        router.push("/reset-password-successful");
       }
     } catch (err) {
       let errorMessage: string = "";
@@ -42,7 +44,6 @@ const ResetPassword = ({
 
       toast.error(errorMessage, { position: "bottom-center" });
     }
-    
 
     setIsLoading(false);
   };
@@ -81,7 +82,6 @@ const ResetPassword = ({
                 onChange={(e) => setConfirmationPassword(e.target.value)}
               />
             </div>
-            {message && <Text>{message}</Text>}
             <div>
               <Button
                 type="submit"

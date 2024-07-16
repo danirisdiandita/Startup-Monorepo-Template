@@ -10,7 +10,6 @@ import { Loader2 } from "lucide-react";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
-  const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // useEffect(() => {
@@ -33,10 +32,12 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       await sendForgotPasswordEmail({ email });
-      setMessage("Check your email for a link to reset your password");
+      toast.success("Check your email for a link to reset your password", {
+        position: "bottom-center",
+      });
     } catch (err) {
       let errorMessage: string = "";
 
@@ -48,7 +49,7 @@ const ForgotPassword = () => {
 
       toast.error(errorMessage, { position: "bottom-center" });
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
   return (
     <section className={`flex-center size-full max-sm:px-6`}>
@@ -77,7 +78,6 @@ const ForgotPassword = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            {message && <Text>{message}</Text>}
             <div>
               <Button
                 type="submit"
