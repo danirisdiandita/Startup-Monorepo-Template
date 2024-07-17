@@ -140,16 +140,64 @@ export const changeNewPassword = async ({
       },
     };
 
-    const backendService = new BackendService({accessToken: forgotPasswordToken});
+    const backendService = new BackendService({
+      accessToken: forgotPasswordToken,
+    });
     const response = await backendService.request(
       "/v1/users/reset-password",
       requestConfig
     );
-    return response 
+    return response;
   } catch (error) {
     throw error;
   }
 };
 
+export const resendVerificationEmail = async ({
+  email,
+  firstName,
+  lastName,
+}: {
+  email: string;
+  firstName: string;
+  lastName: string;
+}) => {
+  const backendService = new BackendService();
+  try {
+    let config: any = {
+      method: HttpMethod.POST,
+      data: {
+        email: email,
+      },
+    };
 
-// const resendVerificationEmail = ({email: string})
+    let response: any = await backendService.request(
+      "/v1/users/autogenerate-new-verification-token",
+      config
+    );
+
+    if (response?.verification_token) {
+      config = {
+        method: HttpMethod.POST,
+        data: {
+          subject: "Verify Your Account",
+          recipient: email,
+          sender: "norma.risdiandita@gmail.com",
+          body: await renderAsync(
+            VerifyEmail({
+              username: firstName + " " + lastName,
+              inviteLink:
+                Env.nextAuthURL +
+                "/verification/" +
+                response["verification_token"],
+            })
+          ),
+        },
+      };
+
+      await backendService.request("/v1/users/send-email-verification", config);
+    } else {
+      throw new Error("Verification Token somehow not generated");
+    }
+  } catch (error) {}
+};

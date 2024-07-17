@@ -5,13 +5,14 @@ export interface ThemeModeState {
   mode: "dark" | "light" | "system";
 }
 
-const getThemeFromLocalStorage = (): "dark" | "light" | "system" => {
-  const theme = localStorage.getItem('theme');
-  return theme === "dark" || theme === "light" || theme === "system" ? theme : 'system';
-}
+// const getThemeFromLocalStorage = (): "dark" | "light" | "system" => {
+  // const theme = localStorage.getItem('theme');
+  // return theme === "dark" || theme === "light" || theme === "system" ? theme : 'system';
+//   return 
+// }
 
 const initialState: ThemeModeState = {
-    mode: getThemeFromLocalStorage()
+    mode: "system"
 }
 
 export const repositoriesSlice = createSlice({

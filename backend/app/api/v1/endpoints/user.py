@@ -212,6 +212,19 @@ def verify(emailVerification: Email):
 
     return {'user': 'gitu'}
 
+@router.post("/autogenerate-new-verification-token")
+def autogenerate_new_verification_token(email: EmailOnly): 
+    verification_token = password_utils.create_access_token({
+        'sub': email.email, 
+        'email': email.email, 
+        'token_type': constants.token_type_verification_token
+    }, expires_delta=timedelta(hours=12))
+    email.email
+
+    # needs to disable previous verification token 
+
+    return JSONResponse(status_code=200, content={'verification_token': verification_token})
+
 @router.post("/send-forgot-password-email")
 def send_forgot_password_email(email: Email):
     user_service.send_email(body=email.body, 
