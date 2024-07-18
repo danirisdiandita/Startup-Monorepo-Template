@@ -55,7 +55,7 @@ import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/atoms/themeToggle";
 import clsx from "clsx";
 import { updateThemeMode } from "@/lib/features/theme/themeSlice";
-import { useAppDispatch, useAppSelector, useAppStore } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -102,14 +102,18 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         return window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light";
+      } else {
+        return 'dark'; 
       }
     } else {
       return mode;
     }
   };
 
+  //{isLightOrDark(value.mode)}
+
   return (
-    <main className={isLightOrDark(value.mode)}>
+    <main className={isLightOrDark(value.mode)} >
       <SidebarLayout
         navbar={
           <Navbar>
