@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SMTP_PORT: int
     SMTP_EMAIL: str
     SMTP_PASSWORD: str
+    REDIS_URL: str 
 
     class Config:
         env_file = ".env"
