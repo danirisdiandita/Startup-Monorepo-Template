@@ -12,7 +12,6 @@ export async function GET(request: NextApiRequest) {
     );
     return NextResponse.json({ results });
   } catch (error) {
-    console.log('error rererere', error?.message)
-    throw new Error(error.message)
+    return NextResponse.json({ error: error?.message }, { status: 401 });
   }
 }

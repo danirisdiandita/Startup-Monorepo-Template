@@ -14,23 +14,33 @@ const VerificationPage = ({
     params?.verificationToken
   );
 
-  useEffect(() => {
-    console.log("error", error?.data?.message, data);
-  }, [data, error]);
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-gray-800">Email Verified</h2>
-        {/* <p className="mt-2 text-gray-600">Thank you! Your email has been successfully verified.</p> */}
-        <Text>Thank you! Your email has been successfully verified.</Text>
-        <Text>{data ? JSON.stringify(data) : "gitu"}</Text>
-        <div className="mt-4">
-          <Button className="cursor-pointer w-full" href="/sign-in">
-            Sign In
-          </Button>
+      {isLoading ? (
+        <></>
+      ) : (
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold text-gray-800">
+            {error ? "Verification Failed" : "Email Verified"}
+          </h2>
+          {/* <p className="mt-2 text-gray-600">Thank you! Your email has been successfully verified.</p> */}
+          {error ? (
+            <Text>{error?.data?.error}</Text>
+          ) : (
+            <Text>Thank you! Your email has been successfully verified.</Text>
+          )}
+
+          {error ? (
+            <></>
+          ) : (
+            <div className="mt-4">
+              <Button className="cursor-pointer w-full" href="/sign-in">
+                Sign In
+              </Button>
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
