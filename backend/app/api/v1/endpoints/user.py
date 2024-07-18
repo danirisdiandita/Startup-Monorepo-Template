@@ -17,12 +17,14 @@ from datetime import timedelta
 from ....core.config import settings, constants
 from ....utils.password_utils import PasswordUtils
 import json
+from app.crud.cache import ServerCacheService 
 
 
 router = APIRouter()
 password_utils = PasswordUtils()
 
 user_service = UserService()
+server_cache = ServerCacheService()
 
 @router.post('/login')
 def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: Response) -> Token:
@@ -49,7 +51,10 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],response: R
         data={"sub": form_data.username , "email": form_data.username, 'token_type': constants.token_type_refresh_token}, expires_delta=constants.refresh_token_expires
     )
 
-    response.set_cookie(key="refresh_token_cookie",value=refresh_token, expires=constants.refresh_token_expires)
+    # cache refresh token for avoiding using it more than once 
+
+    server_cache.save_token(token_type=constants.token_type_refresh_token, token=refresh_token)
+
     return Token(access_token=access_token, 
                  refresh_token=refresh_token, 
                  first_name=user_data[0].get("first_name"), 
@@ -79,6 +84,8 @@ def login_with_google(google_sign_in: GoogleSignIn):
                 expires_delta=constants.refresh_token_expires
             )
 
+            server_cache.save_token(token_type=constants.token_type_refresh_token, token=refresh_token)
+
             return JSONResponse(status_code=200, content= {"access_token": access_token, "refresh_token": refresh_token})
         else:
             # register to database if the user doesn't exists
@@ -100,12 +107,13 @@ def login_with_google(google_sign_in: GoogleSignIn):
                     expires_delta=constants.refresh_token_expires
                 )
 
+                server_cache.save_token(token_type=constants.token_type_refresh_token, token=refresh_token)
+
                 return JSONResponse(status_code=200, content={"access_token": access_token, "refresh_token": refresh_token})
 
             except Exception as e:
                 raise HTTPException(status_code=500, detail="Unknown Error, Please Try Again or Contact Us")
 
-            return JSONResponse(status_code=200, content=registered_user)
     else:
         raise HTTPException(status_code=401, content=verification_message)
 
@@ -135,6 +143,8 @@ def register(user: User):
             # 12 hours jwt token
             verification_token = password_utils.create_access_token({'sub': registered_user.get('email'),'email': registered_user.get('email'), 'token_type': constants.token_type_verification_token}, expires_delta=timedelta(hours=12))
             registered_user["verification_token"] = verification_token
+
+            server_cache.save_user_key_token(token_type=constants.token_type_verification_token, token=verification_token, email=registered_user.get('email'))
         except Exception as e:
             raise Exception(status_code=500, detail="Unknown Error while generating verification token")
 
@@ -163,6 +173,11 @@ def refresh(token: RefreshToken):
     """
     refresh_token = token.refresh_token
 
+    is_token_exists = server_cache.is_token_exists(token_type=constants.token_type_refresh_token, token=refresh_token)
+
+    if is_token_exists == False: 
+        raise HTTPException(status_code=401, detail="Unathorized, refresh token has been rotated")
+
     payload = password_utils.decode_token(refresh_token, token_type=constants.token_type_refresh_token)
 
     # check if the email within payload exists
@@ -174,7 +189,10 @@ def refresh(token: RefreshToken):
     if len(user_data) == 0:
         raise HTTPException(status_code=401, detail="User not found")
     
+    # delete previous refresh token from cache 
 
+    server_cache.delete_token(token_type=constants.token_type_refresh_token, token=refresh_token)
+    
 
     access_token = password_utils.create_access_token(
         data={'sub': payload.get('email'), 
@@ -189,6 +207,8 @@ def refresh(token: RefreshToken):
               'token_type': constants.token_type_refresh_token}, 
               expires_delta=constants.refresh_token_expires
     )
+
+    server_cache.save_token(token_type=constants.token_type_refresh_token, token=refresh_token_updated)
     
     return JSONResponse(status_code=200, content={'access_token': access_token, 
             'refresh_token': refresh_token_updated, 
@@ -198,9 +218,23 @@ def refresh(token: RefreshToken):
 
 @router.get("/verify/{verification_token}")
 def verify_email(verification_token: str):
+    # check if the verification is the latest verification token 
+
     verification_payload = password_utils.decode_token(verification_token,
                                                         token_type=constants.token_type_verification_token)
+    
+    server_cache_verification_token = server_cache.get_existing_user_token(token_type=constants.token_type_verification_token, email=verification_payload.get('email'))
+
+    print(server_cache_verification_token, verification_token)
+    if verification_token != server_cache_verification_token: 
+        raise HTTPException(status_code=401, detail="Your verification link is not the latest verification link, please use the recent verification link")
+    
     user_ = user_service.verify_user_by_email(verification_payload.get("email"))
+
+    if user_: 
+        server_cache.delete_user_key_token(token_type=constants.token_type_verification_token, email=verification_payload.get('email'))
+
+    return JSONResponse(status_code=200, content={'verified': True})
 
 
 @router.post("/send-email-verification")
@@ -221,7 +255,9 @@ def autogenerate_new_verification_token(email: EmailOnly):
     }, expires_delta=timedelta(hours=12))
     email.email
 
-    # needs to disable previous verification token 
+    # needs to disable previous verification token / automatically replaced 
+
+    server_cache.save_user_key_token(token_type=constants.token_type_verification_token, token=verification_token, email=email.email)
 
     return JSONResponse(status_code=200, content={'verification_token': verification_token})
 

@@ -4,6 +4,8 @@ import { Input } from "@/components/catalyst/input";
 import { Text } from "@/components/catalyst/text";
 import React, { useEffect, useState } from "react";
 import { resendVerificationEmail } from "../../../../../lib/actions/user.action";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const parseEmailFromUserData = (userdata: string) => {
   let email = "";
@@ -61,6 +63,7 @@ const PleaseConfirm = ({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (params?.userdata) {
@@ -71,7 +74,11 @@ const PleaseConfirm = ({
   }, [params]);
 
   const handleResendVerificationToken = async () => {
+    setIsLoading(true)
     resendVerificationEmail({ email, firstName, lastName });
+    setIsLoading(false)
+
+    toast.success("Email Verification Token sent", {position: 'bottom-center'})
   };
 
   return (
@@ -90,7 +97,14 @@ const PleaseConfirm = ({
             onClick={handleResendVerificationToken}
             className="cursor-pointer w-full"
           >
-            Resend Verification Token
+            {isLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" /> &nbsp; Loading
+                ...
+              </>
+            ) : (
+              "Resend Verification Token"
+            )}
           </Button>
         </div>
       </div>
