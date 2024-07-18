@@ -62,6 +62,16 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const router = useRouter();
   const [mode, setMode] = useState("dark");
   const value = useAppSelector((state) => state.theme);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (localStorage.getItem("theme")) {
+      const themeStorage = localStorage.getItem("theme") as
+        | "light"
+        | "dark"
+        | "system";
+      dispatch(updateThemeMode(themeStorage));
+    }
+  }, []);
 
   useEffect(() => {
     if (value.mode === "dark") {
@@ -86,16 +96,20 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     router.push("/sign-in");
   };
 
-  return (
-    <main
-      className={
-        value.mode === "system"
-          ? window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light"
-          : value.mode
+  const isLightOrDark = (mode: "system" | "dark" | "light") => {
+    if (mode === "system") {
+      if (typeof window !== "undefined") {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
       }
-    >
+    } else {
+      return mode;
+    }
+  };
+
+  return (
+    <main className={isLightOrDark(value.mode)}>
       <SidebarLayout
         navbar={
           <Navbar>
@@ -237,7 +251,12 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <span className="flex min-w-0 items-center gap-3">
                     <Avatar
                       square
-                      initials={session?.data?.first_name && session?.data?.last_name ? session?.data?.first_name[0] + session?.data?.last_name[0]: "G"}
+                      initials={
+                        session?.data?.first_name && session?.data?.last_name
+                          ? session?.data?.first_name[0] +
+                            session?.data?.last_name[0]
+                          : "G"
+                      }
                       className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
                     />
                     <span className="min-w-0">
@@ -249,7 +268,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                           : "Guest"}
                       </span>
                       <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
-                        {session?.data?.email ? session?.data?.email : ''}
+                        {session?.data?.email ? session?.data?.email : ""}
                       </span>
                     </span>
                   </span>
@@ -273,7 +292,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     <LightBulbIcon />
                     <DropdownLabel>Share feedback</DropdownLabel>
                   </DropdownItem>
-                  <DropdownDivider/>
+                  <DropdownDivider />
                   <div
                     className={clsx(
                       // Base styles
