@@ -27,7 +27,7 @@ const baseUrl = process.env.VERCEL_URL
   : "";
 
 export const forgotPasswordEmail = ({ username, forgotPasswordLink }: forgotPasswordEmailProps) => {
-  const previewText = `Join ${username} on Vercel`;
+  const previewText = `Reset Your Password - ${username}`;
 
   return (
     <Html>

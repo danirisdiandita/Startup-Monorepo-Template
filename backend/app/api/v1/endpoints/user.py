@@ -152,6 +152,8 @@ def register(user: User):
         raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
 
     del registered_user['password']
+    del registered_user['created_at']
+    del registered_user['updated_at']
 
     return JSONResponse(status_code=200, content=registered_user)
 

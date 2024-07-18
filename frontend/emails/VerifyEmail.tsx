@@ -30,7 +30,7 @@ export const verifyEmail = ({
   username,
   inviteLink,
 }: verifyEmailProps) => {
-  const previewText = `Join ${username} on Vercel`;
+  const previewText = `Verify your email - ${username}`;
 
   return (
     <Html>

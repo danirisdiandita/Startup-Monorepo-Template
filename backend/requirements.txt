@@ -12,3 +12,4 @@ python-dotenv
 pydantic-settings
 requests
 redis[hiredis]
+alembic
