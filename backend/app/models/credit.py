@@ -4,8 +4,6 @@ from sqlalchemy.sql import schema, sqltypes
 from datetime import datetime 
 from decimal import Decimal 
 
-
-
 class Credit(SQLModel, table=True): 
     __tablename__ = "credits"
     id: int | None = Field(default=None, primary_key=True)
