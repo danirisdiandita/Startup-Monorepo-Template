@@ -25,6 +25,15 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from app.models.user import User 
+from app.models.payment import Payment 
+from app.models.credit import Credit 
+from app.models.team import Team
+from app.models.plan import Plan
+from app.models.feature import Feature
+from app.models.subscription import Subscription
+from app.models.user_team import UserTeam
+from app.models.plan_feature import PlanFeature
+
 target_metadata = SQLModel.metadata 
 
 # other values from the config, defined by the needs of env.py,
