@@ -56,6 +56,8 @@ import ThemeToggle from "@/components/atoms/themeToggle";
 import clsx from "clsx";
 import { updateThemeMode } from "@/lib/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
+import { Divider } from "@/components/catalyst/divider";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -103,7 +105,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           ? "dark"
           : "light";
       } else {
-        return 'dark'; 
+        return "dark";
       }
     } else {
       return mode;
@@ -113,7 +115,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   //{isLightOrDark(value.mode)}
 
   return (
-    <main className={isLightOrDark(value.mode)} >
+    <main className={isLightOrDark(value.mode)}>
       <SidebarLayout
         navbar={
           <Navbar>
@@ -238,6 +240,11 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <SidebarItem href="/events/4">We All Look The Same</SidebarItem>
               </SidebarSection>
               <SidebarSpacer />
+              <Divider className="my-3"/>
+              <SidebarSection>
+                <PlanOnSidebar />
+              </SidebarSection>
+              <Divider className="my-3"/>
               <SidebarSection>
                 <SidebarItem href="/support">
                   <QuestionMarkCircleIcon />
