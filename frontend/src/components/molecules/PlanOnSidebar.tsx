@@ -17,7 +17,7 @@ const PlanOnSidebar = () => {
         </Text>
       </div>
       <Text className="px-2">Description of the plan</Text>
-      <SidebarItem href="settings/billing">Manage Plan</SidebarItem>
+      <SidebarItem href="dashboard/billing">Manage Plan</SidebarItem>
     </div>
   );
 };
