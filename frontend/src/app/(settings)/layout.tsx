@@ -132,7 +132,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
               </NavbarItem>
               <Dropdown>
                 <DropdownButton as={NavbarItem}>
-                  <Avatar src="/profile-photo.jpg" square />
+                  <Avatar initials="TW" square />
                 </DropdownButton>
                 <DropdownMenu className="min-w-64" anchor="bottom end">
                   <DropdownItem href="/my-profile">
@@ -167,7 +167,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
             <SidebarHeader>
               <Dropdown>
                 <DropdownButton as={SidebarItem} className="lg:mb-2.5">
-                  <Avatar src="/tailwind-logo.svg" />
+                  <Avatar square initials="TW" />
                   <SidebarLabel>Your Company Name</SidebarLabel>
                   <ChevronDownIcon />
                 </DropdownButton>
@@ -181,14 +181,14 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   </DropdownItem>
                   <DropdownDivider />
                   <DropdownItem href="/teams/1">
-                    <Avatar slot="icon" src="/tailwind-logo.svg" />
+                    <Avatar square initials="TW" />
                     <DropdownLabel>Tailwind Labs</DropdownLabel>
                   </DropdownItem>
                   <DropdownItem href="/teams/2">
                     <Avatar
-                      slot="icon"
+                      square
                       initials="WC"
-                      className="bg-purple-500 text-white"
+                      className="bg-purple-500 text-white dark:text-white"
                     />
                     <DropdownLabel>Workcation</DropdownLabel>
                   </DropdownItem>
