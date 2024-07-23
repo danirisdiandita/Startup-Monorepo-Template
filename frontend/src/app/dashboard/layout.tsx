@@ -136,7 +136,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     <UserIcon />
                     <DropdownLabel>My profile</DropdownLabel>
                   </DropdownItem>
-                  <DropdownItem href="/settings">
+                  <DropdownItem href="/settings/profile">
                     <Cog8ToothIcon />
                     <DropdownLabel>Settings</DropdownLabel>
                   </DropdownItem>
@@ -221,7 +221,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <TicketIcon />
                   <SidebarLabel>Orders</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="/settings">
+                <SidebarItem href="/settings/profile">
                   <Cog6ToothIcon />
                   <SidebarLabel>Settings</SidebarLabel>
                 </SidebarItem>
@@ -286,11 +286,11 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <ChevronUpIcon />
                 </DropdownButton>
                 <DropdownMenu className="min-w-64" anchor="top start">
-                  <DropdownItem href="/my-profile">
+                  <DropdownItem href="/settings/profile">
                     <UserIcon />
                     <DropdownLabel>My profile</DropdownLabel>
                   </DropdownItem>
-                  <DropdownItem href="/settings">
+                  <DropdownItem href="/settings/profile">
                     <Cog8ToothIcon />
                     <DropdownLabel>Settings</DropdownLabel>
                   </DropdownItem>

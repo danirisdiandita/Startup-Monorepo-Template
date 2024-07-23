@@ -216,11 +216,11 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <HomeIcon />
                   <SidebarLabel>Dashboard</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="/profile">
+                <SidebarItem href="/settings/profile">
                   <UserCircleIcon />
                   <SidebarLabel>My Profile</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="/billing">
+                <SidebarItem href="/settings/billing">
                   <CreditCardIcon />
                   <SidebarLabel>Billing</SidebarLabel>
                 </SidebarItem>
