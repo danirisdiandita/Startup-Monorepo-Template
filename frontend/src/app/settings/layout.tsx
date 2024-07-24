@@ -61,6 +61,8 @@ import { updateThemeMode } from "@/lib/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
 import { Divider } from "@/components/catalyst/divider";
+import NextLink from "next/link";
+import Image from "next/image";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -165,50 +167,18 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         sidebar={
           <Sidebar>
             <SidebarHeader>
-              <Dropdown>
-                <DropdownButton as={SidebarItem} className="lg:mb-2.5">
-                  <Avatar square initials="TW" />
-                  <SidebarLabel>Your Company Name</SidebarLabel>
-                  <ChevronDownIcon />
-                </DropdownButton>
-                <DropdownMenu
-                  className="min-w-80 lg:min-w-64"
-                  anchor="bottom start"
-                >
-                  <DropdownItem href="/teams/1/settings">
-                    <Cog8ToothIcon />
-                    <DropdownLabel>Settings</DropdownLabel>
-                  </DropdownItem>
-                  <DropdownDivider />
-                  <DropdownItem href="/teams/1">
-                    <Avatar square initials="TW" />
-                    <DropdownLabel>Tailwind Labs</DropdownLabel>
-                  </DropdownItem>
-                  <DropdownItem href="/teams/2">
-                    <Avatar
-                      square
-                      initials="WC"
-                      className="bg-purple-500 text-white dark:text-white"
-                    />
-                    <DropdownLabel>Workcation</DropdownLabel>
-                  </DropdownItem>
-                  <DropdownDivider />
-                  <DropdownItem href="/teams/create">
-                    <PlusIcon />
-                    <DropdownLabel>New team&hellip;</DropdownLabel>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-              <SidebarSection className="max-lg:hidden">
-                <SidebarItem href="/search">
-                  <MagnifyingGlassIcon />
-                  <SidebarLabel>Search</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href="/inbox">
-                  <InboxIcon />
-                  <SidebarLabel>Inbox</SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
+              <NextLink href={"/dashboard"}>
+                <Image
+                  width={120}
+                  height={120}
+                  src={
+                    isLightOrDark(value.mode) === "light"
+                      ? "/images/logos/logo.svg"
+                      : "/images/logos/logo-dark.svg"
+                  }
+                  alt="product_logo"
+                />
+              </NextLink>
             </SidebarHeader>
             <SidebarBody>
               <SidebarSection>

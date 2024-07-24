@@ -58,6 +58,8 @@ import { updateThemeMode } from "@/lib/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
 import { Divider } from "@/components/catalyst/divider";
+import Image from "next/image";
+import NextLink from "next/link";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -162,7 +164,19 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         sidebar={
           <Sidebar>
             <SidebarHeader>
-            <Avatar className="size-10 dark:text-white" initials="AB"/>
+              {/* <Avatar className="size-10 dark:text-white" initials="AB"/> */}
+              <NextLink href={"/dashboard"}>
+                <Image
+                  width={120}
+                  height={120}
+                  src={
+                    isLightOrDark(value.mode) === "light"
+                      ? "/images/logos/logo.svg"
+                      : "/images/logos/logo-dark.svg"
+                  }
+                  alt="product_logo"
+                />
+              </NextLink>
             </SidebarHeader>
             <SidebarBody>
               <SidebarSection>

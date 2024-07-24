@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="91.74337mm"
+   height="35.070816mm"
+   viewBox="0 0 91.74337 35.070816"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><linearGradient
+       id="swatch6"><stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop7" /></linearGradient></defs><g
+     id="layer1"
+     transform="translate(-99.813891,-79.99999)"><path
+       id="rect7-6-2"
+       style="fill:#7edffd;fill-opacity:1;stroke:none;stroke-width:0.246354"
+       d="M 99.813894,88.767701 115,79.999997 l 0.13251,17.656491 -15.318616,8.646622 z" /><path
+       style="fill:none;stroke:none;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1"
+       id="path10"
+       transform="translate(24.261615,10.759)" /><path
+       id="rect7-6"
+       style="fill:#3da6f1;fill-opacity:1;stroke:none;stroke-width:0.246354"
+       d="m 107.34069,93.091013 15.25237,-8.707164 0.0663,17.595951 -15.25236,8.70716 z" /><path
+       id="path14"
+       style="fill:#3da6f1;fill-opacity:1;stroke-width:0.246"
+       transform="translate(-23.236775,5.8143117)"
+       d="m 138.23677,109.2565 -7.59305,-4.38385 7.59305,-4.38385 z" /><path
+       id="path14-3"
+       style="fill:#7edffd;fill-opacity:1;stroke-width:0.246"
+       d="m 107.40695,110.68696 -7.593056,-4.38385 7.559956,-4.41412 z" /><path
+       id="rect7"
+       style="fill:#006be4;fill-opacity:1;stroke:none;stroke-width:0.246;stroke-dasharray:none"
+       d="m 115,97.535408 15.18611,-8.767707 V 106.30311 L 115,115.07081 Z" /><text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.1111px;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';text-align:center;text-anchor:middle;fill:#ffffff;stroke:#ffffff;stroke-width:0.246;stroke-dasharray:none;stroke-opacity:1"
+       x="162.7263"
+       y="101.11485"
+       id="text15"><tspan
+         id="tspan15"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.1111px;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, ';opacity:1;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.246;stroke-opacity:1"
+         x="162.7263"
+         y="101.11485">DataQuery</tspan></text></g></svg>
