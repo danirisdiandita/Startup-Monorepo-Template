@@ -162,50 +162,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         sidebar={
           <Sidebar>
             <SidebarHeader>
-              <Dropdown>
-                <DropdownButton as={SidebarItem} className="lg:mb-2.5">
-                  <Avatar src="/tailwind-logo.svg" />
-                  <SidebarLabel>Your Company Name</SidebarLabel>
-                  <ChevronDownIcon />
-                </DropdownButton>
-                <DropdownMenu
-                  className="min-w-80 lg:min-w-64"
-                  anchor="bottom start"
-                >
-                  <DropdownItem href="/teams/1/settings">
-                    <Cog8ToothIcon />
-                    <DropdownLabel>Settings</DropdownLabel>
-                  </DropdownItem>
-                  <DropdownDivider />
-                  <DropdownItem href="/teams/1">
-                    <Avatar slot="icon" src="/tailwind-logo.svg" />
-                    <DropdownLabel>Tailwind Labs</DropdownLabel>
-                  </DropdownItem>
-                  <DropdownItem href="/teams/2">
-                    <Avatar
-                      slot="icon"
-                      initials="WC"
-                      className="bg-purple-500 text-white"
-                    />
-                    <DropdownLabel>Workcation</DropdownLabel>
-                  </DropdownItem>
-                  <DropdownDivider />
-                  <DropdownItem href="/teams/create">
-                    <PlusIcon />
-                    <DropdownLabel>New team&hellip;</DropdownLabel>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-              <SidebarSection className="max-lg:hidden">
-                <SidebarItem href="/search">
-                  <MagnifyingGlassIcon />
-                  <SidebarLabel>Search</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href="/inbox">
-                  <InboxIcon />
-                  <SidebarLabel>Inbox</SidebarLabel>
-                </SidebarItem>
-              </SidebarSection>
+            <Avatar className="size-10 dark:text-white" initials="AB"/>
             </SidebarHeader>
             <SidebarBody>
               <SidebarSection>
@@ -230,21 +187,12 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <SidebarLabel>Broadcasts</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
-              <SidebarSection className="max-lg:hidden">
-                <SidebarHeading>Upcoming Events</SidebarHeading>
-                <SidebarItem href="/events/1">
-                  Bear Hug: Live in Concert
-                </SidebarItem>
-                <SidebarItem href="/events/2">Viking People</SidebarItem>
-                <SidebarItem href="/events/3">Six Fingers — DJ Set</SidebarItem>
-                <SidebarItem href="/events/4">We All Look The Same</SidebarItem>
-              </SidebarSection>
               <SidebarSpacer />
-              <Divider className="my-3"/>
+              <Divider className="my-3" />
               <SidebarSection>
                 <PlanOnSidebar />
               </SidebarSection>
-              <Divider className="my-3"/>
+              <Divider className="my-3" />
               <SidebarSection>
                 <SidebarItem href="/support">
                   <QuestionMarkCircleIcon />
