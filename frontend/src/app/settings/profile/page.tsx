@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Heading } from "@/components/catalyst/heading";
 import { Text } from "@/components/catalyst/text";
 import React from "react";
@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/catalyst/input";
 import { Select } from "@/components/catalyst/select";
 import { Textarea } from "@/components/catalyst/textarea";
+import clsx from "clsx";
 
 const ProfilePage = () => {
   return (
@@ -34,15 +35,12 @@ const ProfilePage = () => {
             </Field>
             <Field>
               <Label>Password</Label>
-              <Input
-                name="password"
-                type="email"
-                placeholder="****"
-            disabled={true}
-                onClick={() => {
-                  console.log("change password");
-                }}
-              />
+              <button
+                onClick={() => console.log("klik klik password ")}
+                className="mt-3 pt-2 pb-1 px-3 border border-zinc-950/10 dark:border-white/10 rounded-lg items-center dark:text-zinc-700 text-base/6 w-full sm:text-sm/6 text-zinc-500 text-left dark:bg-white/[2.5%]"
+              >
+                ********
+              </button>
             </Field>
             <Field>
               <Label>Country</Label>
