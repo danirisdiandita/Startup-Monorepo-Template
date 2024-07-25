@@ -8,6 +8,7 @@ import { Button } from "@/components/catalyst/button";
 import { changeFirstNameAndLastName } from "../../../../lib/actions/user.action";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const session = useSession();
@@ -15,6 +16,7 @@ const ProfilePage = () => {
   const [lastName, setLastName] = useState("");
   const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleSaveChanges = async () => {
     setIsLoading(true);
@@ -80,7 +82,9 @@ const ProfilePage = () => {
       <div className="mt-3">
         <Text>Password</Text>
         <button
-          onClick={() => console.log("klik klik password ")}
+          onClick={() => {
+            router.push("/settings/change-password");
+          }}
           className="mt-3 pt-2 pb-1 px-3 border border-zinc-950/10 dark:border-white/10 rounded-lg items-center dark:text-zinc-300 text-base/6 w-full sm:text-sm/6 text-zinc-700 text-left dark:bg-white/[2.5%]"
         >
           ********
