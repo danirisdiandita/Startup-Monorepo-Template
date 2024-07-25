@@ -6,6 +6,8 @@ import { renderAsync } from "@react-email/components";
 import VerifyEmail from "../../emails/VerifyEmail";
 import ForgotPasswordEmail from "../../emails/ForgotPasswordEmail";
 import { string } from "zod";
+import { authOptions } from "../authOptions";
+import { getServerSession } from "next-auth/next";
 
 interface SignUpParams {
   email?: string;
@@ -199,5 +201,34 @@ export const resendVerificationEmail = async ({
     } else {
       throw new Error("Verification Token somehow not generated");
     }
+  } catch (error) {}
+};
+
+export const changeFirstNameAndLastName = async ({
+  firstName,
+  lastName,
+}: {
+  firstName: string;
+  lastName: string;
+}) => {
+  const session = await getServerSession(authOptions);
+  try {
+    let config: any = {
+      method: HttpMethod.PUT,
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+      },
+    };
+
+    const backendService = new BackendService({
+      accessToken: session?.access_token,
+    });
+    const response = await backendService.request(
+      "/v1/users/change-firstname-lastname",
+      config
+    );
+
+    return response;
   } catch (error) {}
 };

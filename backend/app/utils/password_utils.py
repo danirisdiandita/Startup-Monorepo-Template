@@ -25,7 +25,6 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 
     user = None 
     try:
-        print("passed token", token)
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
         username: str = payload.get("sub")
         if username is None:

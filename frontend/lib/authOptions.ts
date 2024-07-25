@@ -43,7 +43,12 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
-            user = { ...user, ...results, email: user?.name, signInProvider: "credentials" };
+            user = {
+              ...user,
+              ...results,
+              email: user?.name,
+              signInProvider: "credentials",
+            };
             if (user?.password) {
               delete user?.password;
             }
@@ -75,32 +80,36 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account, profile, trigger, session }) {
+      if (trigger === "update") {
+        return session?.data;
+      }
       if (account?.provider === "google") {
-        // generate access_token from backend instead of from google sign in 
+        // generate access_token from backend instead of from google sign in
 
-
-        const backendService = new BackendService()
+        const backendService = new BackendService();
         const googleSignInConfig = {
           method: HttpMethod.POST,
           headers: { "Content-Type": "application/json" },
           data: {
             email: token?.email,
-            first_name: profile?.given_name ? profile?.given_name : 'Guest',
-            last_name: profile?.family_name ? profile?.family_name : 'Guest',
-            access_token: account?.access_token
-          }
-        }
+            first_name: profile?.given_name ? profile?.given_name : "Guest",
+            last_name: profile?.family_name ? profile?.family_name : "Guest",
+            access_token: account?.access_token,
+          },
+        };
 
-
-        const results = await backendService.request("/v1/users/google-login", googleSignInConfig)
+        const results = await backendService.request(
+          "/v1/users/google-login",
+          googleSignInConfig
+        );
         // return {
         //   access_token: account?.access_token,
         //   expires_at: account?.expires_at,
         //   refresh_token: account?.refresh_token,
-        //   ...token, 
-        //   first_name: profile?.given_name ? profile?.given_name : 'Guest', 
-        //   last_name: profile?.family_name ? profile?.family_name: 'Guest', 
+        //   ...token,
+        //   first_name: profile?.given_name ? profile?.given_name : 'Guest',
+        //   last_name: profile?.family_name ? profile?.family_name: 'Guest',
         //   signInProvider: "google",
         // };
 
@@ -109,13 +118,13 @@ export const authOptions: NextAuthOptions = {
           expires_at: account?.expires_at,
           refresh_token: results?.refresh_token,
           ...token,
-          first_name: profile?.given_name ? profile?.given_name : 'Guest',
-          last_name: profile?.family_name ? profile?.family_name : 'Guest',
+          first_name: profile?.given_name ? profile?.given_name : "Guest",
+          last_name: profile?.family_name ? profile?.family_name : "Guest",
           signInProvider: "google",
         };
       }
       if (token?.signInProvider === "google") {
-        // do refresh token here 
+        // do refresh token here
 
         const expiredTime: number = token.exp as number;
         if (Math.floor(new Date().getTime() / 1000) > expiredTime) {
@@ -175,7 +184,6 @@ export const authOptions: NextAuthOptions = {
 
         return token;
       }
-      // }
     },
 
     async session({ session, user, token }) {

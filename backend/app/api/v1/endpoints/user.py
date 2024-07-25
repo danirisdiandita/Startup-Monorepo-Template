@@ -16,6 +16,7 @@ from ....schemas.token import Token
 from datetime import timedelta
 from ....core.config import settings, constants
 from ....utils.password_utils import PasswordUtils
+from app.schemas.firstname_lastname import FirstNameLastName 
 import json
 from app.crud.cache import ServerCacheService 
 
@@ -300,9 +301,14 @@ def reset_password(current_user: Annotated[User, Depends(get_current_active_user
         return JSONResponse(status_code=200, content={"detail": f"password for user with email {current_user.email} has been updated"})
     except Exception as e: 
         raise HTTPException(status_code=500, detail="Error Updating Password")
-
-        
-
-
+    
+@router.put("/change-firstname-lastname")
+def change_firstname_lastname(current_user: Annotated[User, Depends(get_current_active_user)], firstname_lastname: FirstNameLastName ): 
+    userupdateddata = user_service.update_firstname_lastname(
+        new_firstname=firstname_lastname.first_name, 
+        new_lastname=firstname_lastname.last_name, 
+        email=current_user.email 
+    )
+    return userupdateddata  
     
     

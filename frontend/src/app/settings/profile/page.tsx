@@ -5,12 +5,55 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@/components/catalyst/input";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/catalyst/button";
+import { changeFirstNameAndLastName } from "../../../../lib/actions/user.action";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const ProfilePage = () => {
   const session = useSession();
-  const [firstName, setFirstName] = useState(session?.data?.first_name);
-  const [lastName, setLastName] = useState(session?.data?.last_name);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSaveChanges = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await changeFirstNameAndLastName({
+        firstName,
+        lastName,
+      });
+      session.update({
+        ...session,
+        data: {
+          ...session.data,
+          first_name: response?.first_name,
+          last_name: response?.last_name,
+        },
+      });
+
+      toast.success("Your Profile has been updated", {
+        position: "bottom-center",
+      });
+    } catch (error) {
+      let errorMessage: string = "";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+
+      toast.error(errorMessage, { position: "bottom-center" });
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setFirstName(session?.data?.first_name);
+    setLastName(session?.data?.last_name);
+  }, [session?.data]);
 
   useEffect(() => {
     if (
@@ -21,7 +64,7 @@ const ProfilePage = () => {
     } else {
       setSaveChangesDisabled(false);
     }
-  }, [firstName, lastName]);
+  }, [firstName, lastName, session?.data]);
 
   return (
     <>
@@ -65,8 +108,18 @@ const ProfilePage = () => {
           className="mt-3"
         />
       </div>
-      <Button className="mt-4" disabled={saveChangesDisabled}>
-        Save Changes
+      <Button
+        className="mt-4"
+        disabled={saveChangesDisabled || isLoading}
+        onClick={handleSaveChanges}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 size={20} className="animate-spin" /> &nbsp; Loading
+          </>
+        ) : (
+          "Save Changes"
+        )}
       </Button>
     </>
   );

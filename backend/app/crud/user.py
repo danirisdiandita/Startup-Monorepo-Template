@@ -5,7 +5,7 @@ import smtplib
 from email.message import EmailMessage
 from app.core.config import settings 
 import ssl 
-
+from datetime import datetime 
 
 class UserService:
     def __init__(self) -> None:
@@ -64,6 +64,18 @@ class UserService:
             session.commit() 
             session.refresh(user_)
         return user_
+    def update_firstname_lastname(self, new_firstname, new_lastname, email):
+        with Session(engine) as session: 
+            statement = select(User).where(User.email == email)
+            results = session.exec(statement)
+            user_ = results.one() 
+            user_.first_name = new_firstname
+            user_.last_name = new_lastname
+            user_.updated_at = datetime.now() 
+            session.add(user_)
+            session.commit() 
+            session.refresh(user_)
+        return User(first_name=user_.first_name, last_name=user_.last_name) 
 
 
 
