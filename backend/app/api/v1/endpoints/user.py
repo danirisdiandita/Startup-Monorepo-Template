@@ -5,6 +5,7 @@ from app.core.config import settings
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import datetime
 from typing import Optional, Annotated
+from app.schemas.change_password import ChangePassword
 from app.schemas.email import Email, EmailOnly
 from app.models.user import User
 from app.schemas.password import ResetPassword
@@ -312,3 +313,6 @@ def change_firstname_lastname(current_user: Annotated[User, Depends(get_current_
     return userupdateddata  
     
     
+@router.put("/change-password")
+def change_password(current_user: Annotated[User, Depends(get_current_active_user)], changePassword: ChangePassword): 
+    return {'gitu': 'gitu'}

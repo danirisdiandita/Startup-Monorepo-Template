@@ -5,7 +5,12 @@ import smtplib
 from email.message import EmailMessage
 from app.core.config import settings 
 import ssl 
-from datetime import datetime 
+from datetime import datetime
+# from ..utils.password_utils import PasswordUtils
+
+# password_utils = PasswordUtils() 
+
+
 
 class UserService:
     def __init__(self) -> None:
@@ -76,6 +81,7 @@ class UserService:
             session.commit() 
             session.refresh(user_)
         return User(first_name=user_.first_name, last_name=user_.last_name) 
+    
 
 
 
