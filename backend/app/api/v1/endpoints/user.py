@@ -314,12 +314,21 @@ def change_firstname_lastname(current_user: Annotated[User, Depends(get_current_
     
     
 @router.put("/change-password")
-def change_password(current_user: Annotated[User, Depends(get_current_active_user)], changePassword: ChangePassword): 
-    user_data = user_service.get_one_user_by_email(current_user.email)
-
-    if user_data is None:
-        raise HTTPException(401, detail="User not found")
-    if len(user_data) == 0: 
-        raise HTTPException(401, detail="User not found")
+def change_password(current_user: Annotated[User, Depends(get_current_active_user)], change_password: ChangePassword): 
+    user_data = user_service.get_one_user_by_email(User(email=current_user.email))
+    if len(user_data) < 1: 
+        raise HTTPException(status_code=401, detail="User Not Found")
     
-    return {'gitu': 'gitu'}
+    password_verified = password_utils.verify_password(change_password.current_password, user_data[0].get('password', ''))
+
+    if password_verified == False: 
+        raise HTTPException(status_code=401, detail="Incorrect Current Password")
+    
+    if user_data[0].get('verified') == False:
+        raise HTTPException(status_code=401, detail="Email is not verified")
+    
+    new_hashed_password = password_utils.get_password_hash(change_password.new_password)
+
+    user_service.update_new_password_for_user(new_hashed_password, current_user.email)
+
+    return JSONResponse(status_code=200, content={"detail": f"password for user with email {current_user.email} has been updated"})

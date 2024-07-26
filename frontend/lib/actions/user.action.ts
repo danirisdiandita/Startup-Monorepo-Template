@@ -232,3 +232,35 @@ export const changeFirstNameAndLastName = async ({
     return response;
   } catch (error) {}
 };
+
+export const changePasswordFromCurrentPassword = async ({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string;
+  newPassword: string;
+}) => {
+  const session = await getServerSession(authOptions);
+  try {
+    let config: any = {
+      method: HttpMethod.PUT,
+      data: {
+        current_password: currentPassword,
+        new_password: newPassword,
+      },
+    };
+
+    const backendService = new BackendService({
+      accessToken: session?.access_token,
+    });
+
+    const response = await backendService.request(
+      "/v1/users/change-password",
+      config
+    );
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

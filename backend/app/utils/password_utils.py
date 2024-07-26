@@ -28,17 +28,29 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise credentials_exception
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         user = user_service.get_one_user_by_email(User(email=username))
         if len(user) == 0:
-            raise credentials_exception 
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User with designated email not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         else: 
             user = User(email=user[0].get("email"), 
                         first_name=user[0].get("first_name", 'guest'), 
                         last_name=user[0].get("last_name", 'guest'), 
                         verified=user[0].get("verified", False))
     except InvalidTokenError:
-        raise credentials_exception
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate access token, probably expired, please login",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     
     if user is None:
