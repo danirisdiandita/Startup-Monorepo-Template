@@ -315,4 +315,11 @@ def change_firstname_lastname(current_user: Annotated[User, Depends(get_current_
     
 @router.put("/change-password")
 def change_password(current_user: Annotated[User, Depends(get_current_active_user)], changePassword: ChangePassword): 
+    user_data = user_service.get_one_user_by_email(current_user.email)
+
+    if user_data is None:
+        raise HTTPException(401, detail="User not found")
+    if len(user_data) == 0: 
+        raise HTTPException(401, detail="User not found")
+    
     return {'gitu': 'gitu'}
