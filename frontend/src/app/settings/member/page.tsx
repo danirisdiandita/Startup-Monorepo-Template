@@ -5,7 +5,7 @@ import React from "react";
 import { Text } from "@/components/catalyst/text";
 import { Input, InputGroup } from "@/components/catalyst/input";
 import { Button } from "@/components/catalyst/button";
-import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/16/solid";
 import {
   Table,
   TableBody,
@@ -15,12 +15,23 @@ import {
   TableRow,
 } from "@/components/catalyst/table";
 import { Avatar } from "@/components/catalyst/avatar";
+import { Badge } from "@/components/catalyst/badge";
 
 const users = [
   {
     name: "Norma Dani Risdiandita",
     email: "norma.risdiandita@gmail.com",
     access: "admin",
+    role: "admin",
+    handle: "key_0",
+    isme: true,
+  },
+  {
+    name: "Farah",
+    email: "farah@gmail.com",
+    role: "member",
+    access: "edit",
+    handle: "key_1",
   },
 ];
 const Workspace = () => {
@@ -51,7 +62,10 @@ const Workspace = () => {
                 />
               </InputGroup>
             </div>
-            <Button>Add Member</Button>
+            <Button>
+              <PlusIcon className="text-white dark:text-white" />
+              Add Member
+            </Button>
           </div>
           <div>
             <Table>
@@ -60,6 +74,7 @@ const Workspace = () => {
                   <TableHeader>Name</TableHeader>
                   <TableHeader>Email</TableHeader>
                   <TableHeader>Role</TableHeader>
+                  <TableHeader>Access</TableHeader>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -71,9 +86,19 @@ const Workspace = () => {
                         square
                         className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
                       />
-                      <div>{user.name}</div>
+                      <div>
+                        {user.name}
+                        {user.isme ? (
+                          <Badge color="lime" className="ml-2">
+                            you
+                          </Badge>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
+                    <TableCell className="text-zinc-500">{user.role}</TableCell>
                     <TableCell className="text-zinc-500">
                       {user.access}
                     </TableCell>
