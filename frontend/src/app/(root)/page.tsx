@@ -14,7 +14,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main>
+      <main className="dark:bg-zinc-900">
         <Hero />
         <PrimaryFeatures />
         <SecondaryFeatures />

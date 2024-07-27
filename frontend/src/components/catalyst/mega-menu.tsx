@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import FeatureDropdown from "./feature-dropdown";
 import { Text } from "./text";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 const solutions = [
   {
@@ -54,12 +54,6 @@ const solutions = [
 
 export default function MegaMenu({ mode }: { mode: string }) {
   const popoverButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-
-    console.log('useEfffect', popoverButtonRef.current?.getAttribute("data-headlessui-state"))
-
-  }, [popoverButtonRef.current?.getAttribute("data-headlessui-state")])
 
   return (
     <Popover className={`relative ${mode}`}>
