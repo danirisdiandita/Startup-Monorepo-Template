@@ -1,5 +1,4 @@
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import {
   ArrowPathIcon,
   ChartPieIcon,
@@ -9,6 +8,8 @@ import {
   SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import FeatureDropdown from "./feature-dropdown";
+import { Text } from "./text";
+import { useState } from "react";
 
 const solutions = [
   {
@@ -49,25 +50,25 @@ const solutions = [
   },
 ];
 
-export default function MegaMenu() {
+// https://github.com/tailwindlabs/headlessui/discussions/425 nlap comment 
+
+export default function MegaMenu({ mode }: { mode: string }) {
+  const [isShowing, setIsShowing] = useState(false);
   return (
-    <Popover className="relative">
-      <PopoverButton className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-        {/* <span>Solutions</span>
-        <ChevronDownIcon aria-hidden="true" className="h-5 w-5" /> */}
+    <Popover className={`relative ${mode}`}>
+      <PopoverButton className="inline-flex items-center gap-x-1 leading-6">
         <FeatureDropdown text="Features" />
       </PopoverButton>
-
       <PopoverPanel
         transition
         className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
       >
-        <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 lg:max-w-3xl">
+        <div className="dark:border-white border-[0.5] w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 lg:max-w-3xl">
           <div className="grid grid-cols-1 gap-x-6 gap-y-1 p-4 lg:grid-cols-2">
             {solutions.map((item) => (
               <div
                 key={item.name}
-                className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50"
+                className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-zinc-800/75"
               >
                 <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                   <item.icon
@@ -76,27 +77,17 @@ export default function MegaMenu() {
                   />
                 </div>
                 <div>
-                  <a href={item.href} className="font-semibold text-gray-900">
+                  <a
+                    href={item.href}
+                    className="font-semibold text-gray-900 dark:text-white"
+                  >
                     {item.name}
                     <span className="absolute inset-0" />
                   </a>
-                  <p className="mt-1 text-gray-600">{item.description}</p>
+                  <Text className="mt-1">{item.description}</Text>
                 </div>
               </div>
             ))}
-          </div>
-          <div className="bg-gray-50 px-8 py-6">
-            <div className="flex items-center gap-x-3">
-              <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                Enterprise
-              </h3>
-              <p className="rounded-full bg-indigo-600/10 px-2.5 py-1.5 text-xs font-semibold text-indigo-600">
-                New
-              </p>
-            </div>
-            <p className="mt-2 text-sm leading-6 text-gray-600">
-              Empower your entire team with even more advanced tools.
-            </p>
           </div>
         </div>
       </PopoverPanel>

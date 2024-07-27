@@ -136,7 +136,7 @@ export function Header() {
             />
             <div className="hidden md:flex md:gap-x-6">
               <FeatureDropdown text="Features"/>
-              <MegaMenu/>
+              <MegaMenu mode={isLightOrDark(value.mode)}/>
               <NavLink href="#testimonials">Testimonials</NavLink>
               <NavLink href="#pricing">Pricing</NavLink>
             </div>
