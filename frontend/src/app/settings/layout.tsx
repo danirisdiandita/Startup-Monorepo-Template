@@ -23,6 +23,7 @@ import {
   Square2StackIcon,
   TicketIcon,
   UserCircleIcon,
+  UsersIcon,
 } from "@heroicons/react/20/solid";
 import { SidebarLayout } from "../../components/catalyst/sidebar-layout";
 import {
@@ -63,6 +64,7 @@ import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
 import { Divider } from "@/components/catalyst/divider";
 import NextLink from "next/link";
 import Image from "next/image";
+
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -193,6 +195,10 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <SidebarItem href="/settings/billing">
                   <CreditCardIcon />
                   <SidebarLabel>Billing</SidebarLabel>
+                </SidebarItem>
+                <SidebarItem href="/settings/member">
+                  <UsersIcon/>
+                  <SidebarLabel>Members</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
               <Divider className="my-3" />

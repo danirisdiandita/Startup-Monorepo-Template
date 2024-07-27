@@ -26,14 +26,16 @@ const ProfilePage = () => {
         firstName,
         lastName,
       });
-      session.update({
-        ...session,
-        data: {
-          ...session.data,
-          first_name: response?.first_name,
-          last_name: response?.last_name,
-        },
-      });
+      if (response) {
+        session.update({
+          ...session,
+          data: {
+            ...session.data,
+            first_name: response?.first_name,
+            last_name: response?.last_name,
+          },
+        });
+      }
 
       toast.success("Your Profile has been updated", {
         position: "bottom-center",
