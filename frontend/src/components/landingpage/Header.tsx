@@ -141,7 +141,9 @@ export function Header() {
             </div>
           </div>
           <div className="flex items-center justify-between space-x-2">
-            <ThemeToggle />
+            <div className="hidden md:block">
+            <ThemeToggle/>
+            </div>
             <Button href={"/sign-in"} outline>
               Sign In
             </Button>
