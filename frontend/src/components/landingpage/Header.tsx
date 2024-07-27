@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
 import { useEffect } from "react";
 import { Text } from "../catalyst/text";
+import FeatureDropdown from "../catalyst/feature-dropdown";
 
 function MobileNavLink({
   href,
@@ -118,13 +119,13 @@ export function Header() {
   };
 
   return (
-    <header className={`py-4 dark:bg-zinc-900 w-full fixed z-50 ${value.mode}`}>
+    <header className={`py-2 dark:bg-zinc-900 w-full fixed z-50 ${value.mode}`}>
       <Container>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center md:gap-x-12">
             <Image
-              width={100}
-              height={100}
+              width={80}
+              height={80}
               src={
                 isLightOrDark(value.mode) === "light"
                   ? "/images/logos/logo.svg"
@@ -133,7 +134,7 @@ export function Header() {
               alt="product_logo"
             />
             <div className="hidden md:flex md:gap-x-6">
-              <Text>Features</Text>
+              <FeatureDropdown text="Features"/>
               <NavLink href="#testimonials">Testimonials</NavLink>
               <NavLink href="#pricing">Pricing</NavLink>
             </div>
