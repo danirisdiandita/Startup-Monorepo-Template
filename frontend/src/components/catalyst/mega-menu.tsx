@@ -50,7 +50,7 @@ const solutions = [
   },
 ];
 
-// https://github.com/tailwindlabs/headlessui/discussions/425 nlap comment 
+// https://github.com/tailwindlabs/headlessui/discussions/425 nlap comment
 
 export default function MegaMenu({ mode }: { mode: string }) {
   const [isShowing, setIsShowing] = useState(false);
