@@ -2,7 +2,7 @@
 import { Divider } from "@/components/catalyst/divider";
 import { Heading } from "@/components/catalyst/heading";
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text } from "@/components/catalyst/text";
 import { Input, InputGroup } from "@/components/catalyst/input";
 import { Button } from "@/components/catalyst/button";
@@ -24,7 +24,18 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/catalyst/dialog";
-import { Field, Label } from "@/components/catalyst/fieldset";
+import {
+  Description,
+  Field,
+  Fieldset,
+  Label,
+  Legend,
+} from "@/components/catalyst/fieldset";
+import {
+  Checkbox,
+  CheckboxField,
+  CheckboxGroup,
+} from "@/components/catalyst/checkbox";
 
 const users = [
   {
@@ -43,8 +54,30 @@ const users = [
     handle: "key_1",
   },
 ];
+
+const validateEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 const Workspace = () => {
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
+  const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [isNewMemberButtonDisabled, setIsNewMemberButtonDisabled] =
+    useState(true);
+  const [isNewMemberEmailSelected, setIsNewMemberEmailSelected] =
+    useState(false);
+  useEffect(() => {
+    const isNewMemberValidEmail = validateEmail(newMemberEmail);
+    if (isNewMemberValidEmail && isNewMemberEmailSelected) {
+      setIsNewMemberButtonDisabled(false);
+    } else {
+      setIsNewMemberButtonDisabled(true);
+    }
+  }, [newMemberEmail, isNewMemberEmailSelected]);
+
+
+  
   return (
     <>
       <Head>
@@ -98,16 +131,30 @@ const Workspace = () => {
                       name="search"
                       placeholder="Type to add a new member"
                       aria-label="Search"
+                      value={newMemberEmail}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setNewMemberEmail(e.target.value);
+                      }}
                     />
                   </InputGroup>
+                  <div className="mt-3 hover:dark:bg-zinc-950 px-3 py-2 rounded-lg">
+                    <p className="dark:text-white text-zinc-950 text-base/6 sm:text-sm/6">
+                      Add a new member
+                    </p>
+                    <Text>{newMemberEmail}</Text>
+                  </div>
                 </Field>
               </DialogBody>
               <DialogActions>
                 <Button plain onClick={() => setIsOpenAddMember(false)}>
                   Cancel
                 </Button>
-                <Button onClick={() => setIsOpenAddMember(false)}>
-                  Refund
+                <Button
+                  onClick={() => setIsOpenAddMember(false)}
+                  disabled={isNewMemberButtonDisabled}
+                >
+                  Add New Member
                 </Button>
               </DialogActions>
             </Dialog>
