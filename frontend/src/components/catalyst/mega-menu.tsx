@@ -55,18 +55,32 @@ const solutions = [
 export default function MegaMenu({ mode }: { mode: string }) {
   const popoverButtonRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+
+    console.log('useEfffect', popoverButtonRef.current?.getAttribute("data-headlessui-state"))
+
+  }, [popoverButtonRef.current?.getAttribute("data-headlessui-state")])
+
   return (
     <Popover className={`relative ${mode}`}>
       <div
         onMouseLeave={() => {
+          console.log(
+            "onMouseLeave",
+            popoverButtonRef.current?.getAttribute("data-headlessui-state")
+          );
           if (
-            popoverButtonRef.current?.getAttribute("data-headlessui-state") !==
-            ""
+            popoverButtonRef.current?.getAttribute("data-headlessui-state") ===
+            "open active hover"
           ) {
             popoverButtonRef.current?.click();
           }
         }}
         onMouseEnter={() => {
+          console.log(
+            "onMouseEnter",
+            popoverButtonRef.current?.getAttribute("data-headlessui-state")
+          );
           if (
             popoverButtonRef.current?.getAttribute("data-headlessui-state") ===
             ""
