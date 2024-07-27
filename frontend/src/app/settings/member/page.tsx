@@ -1,7 +1,8 @@
+"use client";
 import { Divider } from "@/components/catalyst/divider";
 import { Heading } from "@/components/catalyst/heading";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import { Text } from "@/components/catalyst/text";
 import { Input, InputGroup } from "@/components/catalyst/input";
 import { Button } from "@/components/catalyst/button";
@@ -16,6 +17,14 @@ import {
 } from "@/components/catalyst/table";
 import { Avatar } from "@/components/catalyst/avatar";
 import { Badge } from "@/components/catalyst/badge";
+import {
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/catalyst/dialog";
+import { Field, Label } from "@/components/catalyst/fieldset";
 
 const users = [
   {
@@ -35,6 +44,7 @@ const users = [
   },
 ];
 const Workspace = () => {
+  const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   return (
     <>
       <Head>
@@ -62,10 +72,45 @@ const Workspace = () => {
                 />
               </InputGroup>
             </div>
-            <Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setIsOpenAddMember(true);
+              }}
+            >
               <PlusIcon className="text-white dark:text-white" />
               Add Member
             </Button>
+            <Dialog
+              size="xl"
+              open={isOpenAddMember}
+              onClose={setIsOpenAddMember}
+            >
+              <DialogTitle>Add a member to your team</DialogTitle>
+              <DialogDescription>
+                Enter a valid email address to invite a new member
+              </DialogDescription>
+              <DialogBody>
+                <Field>
+                  <InputGroup>
+                    <MagnifyingGlassIcon />
+                    <Input
+                      name="search"
+                      placeholder="Type to add a new member"
+                      aria-label="Search"
+                    />
+                  </InputGroup>
+                </Field>
+              </DialogBody>
+              <DialogActions>
+                <Button plain onClick={() => setIsOpenAddMember(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={() => setIsOpenAddMember(false)}>
+                  Refund
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
           <div>
             <Table>
