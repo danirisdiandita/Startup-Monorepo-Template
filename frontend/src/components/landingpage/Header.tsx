@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { Text } from "../catalyst/text";
 import FeatureDropdown from "../catalyst/feature-dropdown";
 import MegaMenu from "../catalyst/mega-menu";
+import ThemeToggle from "../atoms/themeToggle";
 
 function MobileNavLink({
   href,
@@ -135,13 +136,12 @@ export function Header() {
               alt="product_logo"
             />
             <div className="hidden md:flex md:gap-x-6">
-              <FeatureDropdown text="Features"/>
-              <MegaMenu mode={isLightOrDark(value.mode)}/>
-              <NavLink href="#testimonials">Testimonials</NavLink>
-              <NavLink href="#pricing">Pricing</NavLink>
+              <MegaMenu mode={isLightOrDark(value.mode)} />
+              
             </div>
           </div>
           <div className="flex items-center justify-between space-x-2">
+            <ThemeToggle />
             <Button href={"/sign-in"} outline>
               Sign In
             </Button>

@@ -9,7 +9,8 @@ import {
 } from "@heroicons/react/24/outline";
 import FeatureDropdown from "./feature-dropdown";
 import { Text } from "./text";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { usePopper } from "react-popper";
 
 const solutions = [
   {
@@ -55,30 +56,18 @@ const solutions = [
 export default function MegaMenu({ mode }: { mode: string }) {
   const popoverButtonRef = useRef<HTMLButtonElement>(null);
 
+  const popOverPanelRef = useRef(null);
+
   return (
     <Popover className={`relative ${mode}`}>
       <div
         onMouseLeave={() => {
-          console.log(
-            "onMouseLeave",
-            popoverButtonRef.current?.getAttribute("data-headlessui-state")
-          );
-          if (
-            popoverButtonRef.current?.getAttribute("data-headlessui-state") !==
-            ""
-          ) {
+          if (popOverPanelRef.current?.getAttribute("data-headlessui-state")) {
             popoverButtonRef.current?.click();
           }
         }}
         onMouseEnter={() => {
-          console.log(
-            "onMouseEnter",
-            popoverButtonRef.current?.getAttribute("data-headlessui-state")
-          );
-          if (
-            popoverButtonRef.current?.getAttribute("data-headlessui-state") ===
-            ""
-          ) {
+          if (!popOverPanelRef.current?.getAttribute("data-headlessui-state")) {
             popoverButtonRef.current?.click();
           }
         }}
@@ -90,7 +79,9 @@ export default function MegaMenu({ mode }: { mode: string }) {
           <FeatureDropdown text="Features" />
         </PopoverButton>
         <PopoverPanel
+          ref={popOverPanelRef}
           transition
+          style={{ left: '140%' }}
           className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
         >
           <div className="dark:border-white border-[0.5] w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 lg:max-w-3xl">

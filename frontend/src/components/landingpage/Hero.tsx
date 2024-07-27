@@ -1,7 +1,6 @@
-import Image from "next/image";
-import { Container } from "./Container";
-import { Button } from "./Button";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import { Button } from "../catalyst/button";
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -49,13 +48,8 @@ export function Hero() {
       </div>
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-40 lg:flex lg:px-8 lg:pt-40">
         <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
-          <img
-            alt="Your Company"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-            className="h-11"
-          />
           <div className="mt-24 sm:mt-32 lg:mt-16">
-            <a href="#" className="inline-flex space-x-6">
+            <div className="inline-flex space-x-6">
               <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">
                 Latest updates
               </span>
@@ -66,26 +60,22 @@ export function Hero() {
                   className="h-5 w-5 text-gray-500"
                 />
               </span>
-            </a>
+            </div>
           </div>
-          <h1 className="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            Deploy to the cloud with confidence
+          <h1 className="mt-10 text-4xl font-bold tracking-tight dark:text-white text-black sm:text-6xl">
+            ETL Platform for{" "}
+            <span className="bg-gradient-to-r from-zinc-900 via-blue-800 to-indigo-700  dark:bg-gradient-to-r dark:from-blue-600 dark:via-green-500 dark:to-indigo-400 inline-block text-transparent bg-clip-text">
+              Data Scientist{" "}
+            </span>
           </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-            fugiat aliqua.
+          <p className="mt-6 text-lg leading-8 dark:text-gray-300 text-black">
+            Use Your Jupyter Notebook and SQL Query to automate data pipeline
           </p>
           <div className="mt-10 flex items-center gap-x-6">
-            <a
-              href="#"
-              className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-            >
-              Get started
-            </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
-              Live demo <span aria-hidden="true">→</span>
-            </a>
+            <Button
+            href={'/sign-up'}
+            
+            >Get Started</Button>
           </div>
         </div>
         <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
