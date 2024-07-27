@@ -52,19 +52,31 @@ const solutions = [
 
 // https://github.com/tailwindlabs/headlessui/discussions/425 nlap comment
 
-
 export default function MegaMenu({ mode }: { mode: string }) {
   const popoverButtonRef = useRef<HTMLButtonElement>(null);
+
   return (
     <Popover className={`relative ${mode}`}>
       <div
         onMouseLeave={() => {
-          popoverButtonRef.current?.click();
+          if (
+            popoverButtonRef.current?.getAttribute("data-headlessui-state") !==
+            ""
+          ) {
+            popoverButtonRef.current?.click();
+          }
         }}
-        onMouseEnter={() => popoverButtonRef.current?.click()}
+        onMouseEnter={() => {
+          if (
+            popoverButtonRef.current?.getAttribute("data-headlessui-state") ===
+            ""
+          ) {
+            popoverButtonRef.current?.click();
+          }
+        }}
       >
         <PopoverButton
-          className="inline-flex items-center gap-x-1 leading-6"
+          className="inline-flex items-center gap-x-1 leading-6 focus:outline-none"
           ref={popoverButtonRef}
         >
           <FeatureDropdown text="Features" />
