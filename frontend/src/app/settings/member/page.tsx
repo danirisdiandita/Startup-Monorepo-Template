@@ -67,21 +67,14 @@ const Workspace = () => {
     useState(true);
   const [isNewMemberDropdownAppear, setIsNewMemberDropdownAppear] =
     useState(false);
-  const [isNewMemberEmailSelected, setIsNewMemberEmailSelected] =
-    useState(false);
-  useEffect(() => {
-    const isNewMemberValidEmail = validateEmail(newMemberEmail);
-    if (isNewMemberValidEmail && isNewMemberEmailSelected) {
-      setIsNewMemberButtonDisabled(false);
-    } else {
-      setIsNewMemberButtonDisabled(true);
-    }
-  }, [newMemberEmail, isNewMemberEmailSelected]);
 
   useEffect(() => {
-    if (validateEmail(newMemberEmail)) {
+    const isNewMemberValidEmail = validateEmail(newMemberEmail);
+    if (isNewMemberValidEmail) {
+      setIsNewMemberButtonDisabled(false);
       setIsNewMemberDropdownAppear(true);
     } else {
+      setIsNewMemberButtonDisabled(true);
       setIsNewMemberDropdownAppear(false);
     }
   }, [newMemberEmail]);
@@ -148,12 +141,7 @@ const Workspace = () => {
                   </InputGroup>
                   {isNewMemberDropdownAppear ? (
                     <div
-                      className={`mt-3 hover:dark:bg-zinc-950 px-3 py-2 rounded-lg cursor-pointer ${
-                        isNewMemberEmailSelected ? "bg-zinc-950" : ""
-                      }`}
-                      onClick={() => {
-                        setIsNewMemberEmailSelected(true);
-                      }}
+                      className={`mt-3 bg-zinc-950 px-3 py-2 rounded-lg cursor-default`}
                     >
                       <p className="dark:text-white text-zinc-950 text-base/6 sm:text-sm/6">
                         Add a new member
