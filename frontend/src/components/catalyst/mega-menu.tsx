@@ -64,8 +64,8 @@ export default function MegaMenu({ mode }: { mode: string }) {
             popoverButtonRef.current?.getAttribute("data-headlessui-state")
           );
           if (
-            popoverButtonRef.current?.getAttribute("data-headlessui-state") ===
-            "open active hover"
+            popoverButtonRef.current?.getAttribute("data-headlessui-state") !==
+            ""
           ) {
             popoverButtonRef.current?.click();
           }
