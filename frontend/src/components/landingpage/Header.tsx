@@ -15,6 +15,7 @@ import { useAppSelector } from "@/lib/hooks";
 import { useEffect } from "react";
 import { Text } from "../catalyst/text";
 import FeatureDropdown from "../catalyst/feature-dropdown";
+import MegaMenu from "../catalyst/mega-menu";
 
 function MobileNavLink({
   href,
@@ -135,6 +136,7 @@ export function Header() {
             />
             <div className="hidden md:flex md:gap-x-6">
               <FeatureDropdown text="Features"/>
+              <MegaMenu/>
               <NavLink href="#testimonials">Testimonials</NavLink>
               <NavLink href="#pricing">Pricing</NavLink>
             </div>
