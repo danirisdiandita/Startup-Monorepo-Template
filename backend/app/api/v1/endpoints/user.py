@@ -5,6 +5,9 @@ from app.core.config import settings
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import datetime
 from typing import Optional, Annotated
+from app.crud.team import TeamService
+from app.models.team import Team
+from app.models.user_team import Access, Role, UserTeam
 from app.schemas.change_password import ChangePassword
 from app.schemas.email import Email, EmailOnly
 from app.models.user import User
@@ -26,6 +29,7 @@ router = APIRouter()
 password_utils = PasswordUtils()
 
 user_service = UserService()
+team_service = TeamService() 
 server_cache = ServerCacheService()
 
 @router.post('/login')
@@ -140,6 +144,19 @@ def register(user: User):
         registered_user_data_model = user_service.insert_user_during_registration(user)
         registered_user = registered_user_data_model.model_dump()
 
+
+        
+        
+        #     class UserTeam(SQLModel, table=True): 
+        # __tablename__ = "user_team_s"
+        # id: int | None = Field(default=None, primary_key=True)
+        # user_id: int | None = Field(default=None, foreign_key="users.id")
+        # team_id: int | None = Field(default=None, foreign_key="teams.id")
+        # role: Access
+        # access: Role 
+
+
+
         # create verification token
         try:
             # 12 hours jwt token
@@ -149,8 +166,18 @@ def register(user: User):
             server_cache.save_user_key_token(token_type=constants.token_type_verification_token, token=verification_token, email=registered_user.get('email'))
         except Exception as e:
             raise Exception(status_code=500, detail="Unknown Error while generating verification token")
+        
+        user_id = registered_user_data_model.id 
+        default_team_name = registered_user_data_model.email 
+
+        new_team = team_service.create_new_team(Team(user_id=user_id, 
+                                                     name=default_team_name, 
+                                                     description=f'Default Team of {default_team_name}'))
+        new_team_user_relation = UserTeam(user_id=user_id, team_id=new_team.id, role=Role.admin, access=Access.admin)
+        team_service.create_new_team_user_relation(new_team_user_relation)
 
     except Exception as e:
+        print('erroroirejwor', e)
         raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
 
     del registered_user['password']
@@ -229,7 +256,6 @@ def verify_email(verification_token: str):
     
     server_cache_verification_token = server_cache.get_existing_user_token(token_type=constants.token_type_verification_token, email=verification_payload.get('email'))
 
-    print(server_cache_verification_token, verification_token)
     if verification_token != server_cache_verification_token: 
         raise HTTPException(status_code=401, detail="Your verification link is not the latest verification link, please use the recent verification link")
     

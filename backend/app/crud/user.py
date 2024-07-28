@@ -16,7 +16,6 @@ class UserService:
     def __init__(self) -> None:
         pass
 
-
     def get_one_user_by_email(self, user: User):
         with Session(engine) as session: 
             statement = select(User).where(User.email == user.email)

@@ -2,6 +2,7 @@ from sqlmodel import Field, SQLModel, Enum
 import enum 
 
 class Access(str, enum.Enum):
+    admin = "admin"
     view = "view"
     edit = "edit"
     create = "create"
@@ -18,5 +19,5 @@ class UserTeam(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     user_id: int | None = Field(default=None, foreign_key="users.id")
     team_id: int | None = Field(default=None, foreign_key="teams.id")
-    role: Access
-    access: Role 
+    role: Role 
+    access: Access  
