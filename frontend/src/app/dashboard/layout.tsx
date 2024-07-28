@@ -11,15 +11,19 @@ import {
   UserIcon,
 } from "@heroicons/react/16/solid";
 import {
+  CheckCircleIcon,
+  CheckIcon,
   Cog6ToothIcon,
   HomeIcon,
   InboxIcon,
   MagnifyingGlassIcon,
   MegaphoneIcon,
+  PlusCircleIcon,
   QuestionMarkCircleIcon,
   SparklesIcon,
   Square2StackIcon,
   TicketIcon,
+  UsersIcon,
 } from "@heroicons/react/20/solid";
 import { SidebarLayout } from "../../components/catalyst/sidebar-layout";
 import {
@@ -27,7 +31,6 @@ import {
   SidebarBody,
   SidebarFooter,
   SidebarHeader,
-  SidebarHeading,
   SidebarItem,
   SidebarLabel,
   SidebarSection,
@@ -43,9 +46,11 @@ import {
   Dropdown,
   DropdownButton,
   DropdownDivider,
+  DropdownHeading,
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
+  DropdownSection,
 } from "../../components/catalyst/dropdown";
 import { Avatar } from "../../components/catalyst/avatar";
 import { signOut, useSession } from "next-auth/react";
@@ -180,6 +185,36 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
             </SidebarHeader>
             <SidebarBody>
               <SidebarSection>
+                <Dropdown>
+                  <DropdownButton outline className="w-full p-0 m-0">
+                    <p className="w-48 truncate dark:text-white text-zinc-900">
+                      norma.risdiandita@gmail.com
+                    </p>
+                    <ChevronDownIcon />
+                  </DropdownButton>
+                  <DropdownMenu>
+                    <DropdownSection aria-label="Account">
+                      <DropdownHeading className="items-center">
+                        Team
+                      </DropdownHeading>
+                      <div className="p-3 dark:text-white text-zinc-900 sm:text-sm/6 flex space-x-2 items-center">
+                        <p>norma.risdiandita@gmail.com </p>
+                        <CheckIcon width={20} height={20} />
+                      </div>
+                      <DropdownDivider />
+                      <DropdownHeading>My Active Teams</DropdownHeading>
+                      <DropdownItem>dani@gmail.com</DropdownItem>
+                      <DropdownItem>sirlcern3@gmail.com</DropdownItem>
+                    </DropdownSection>
+                    <DropdownDivider />
+                    <DropdownSection>
+                      <DropdownItem href={"/settings/member"}>
+                        Manage Member <UsersIcon />
+                      </DropdownItem>
+                    </DropdownSection>
+                  </DropdownMenu>
+                </Dropdown>
+
                 <SidebarItem href="/">
                   <HomeIcon />
                   <SidebarLabel>Home</SidebarLabel>
