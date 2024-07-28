@@ -177,7 +177,6 @@ def register(user: User):
         team_service.create_new_team_user_relation(new_team_user_relation)
 
     except Exception as e:
-        print('erroroirejwor', e)
         raise HTTPException(status_code=500, detail='Unknown Error, Please Try Again or Contact Us')
 
     del registered_user['password']

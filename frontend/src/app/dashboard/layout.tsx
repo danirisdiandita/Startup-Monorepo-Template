@@ -65,6 +65,7 @@ import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
 import { Divider } from "@/components/catalyst/divider";
 import Image from "next/image";
 import NextLink from "next/link";
+import { Badge } from "@/components/catalyst/badge";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -199,12 +200,23 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                       </DropdownHeading>
                       <div className="p-3 dark:text-white text-zinc-900 sm:text-sm/6 flex space-x-2 items-center">
                         <p>norma.risdiandita@gmail.com </p>
+                        <Badge>admin</Badge>
                         <CheckIcon width={20} height={20} />
                       </div>
                       <DropdownDivider />
                       <DropdownHeading>My Active Teams</DropdownHeading>
-                      <DropdownItem>dani@gmail.com</DropdownItem>
-                      <DropdownItem>sirlcern3@gmail.com</DropdownItem>
+                      <DropdownItem>
+                        <div className="flex justify-start space-x-2">
+                          <Text>dani@gmail.com</Text>
+                          <Badge>member</Badge>
+                        </div>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <div className="flex justify-start space-x-2">
+                          <Text>sirlcern3@gmail.com</Text>
+                          <Badge>member</Badge>
+                        </div>
+                      </DropdownItem>
                     </DropdownSection>
                     <DropdownDivider />
                     <DropdownSection>
