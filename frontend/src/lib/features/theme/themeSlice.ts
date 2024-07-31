@@ -20,7 +20,7 @@ export const repositoriesSlice = createSlice({
   initialState,
   reducers: {
     updateThemeMode(state, action: PayloadAction<"dark" | "light" | "system">) {
-      localStorage.setItem('theme', action.payload)
+      // localStorage.setItem('theme', action.payload)
       state.mode = action.payload;
     }
   },

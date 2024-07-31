@@ -73,15 +73,15 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const [mode, setMode] = useState("dark");
   const value = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (localStorage.getItem("theme")) {
-      const themeStorage = localStorage.getItem("theme") as
-        | "light"
-        | "dark"
-        | "system";
-      dispatch(updateThemeMode(themeStorage));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("theme")) {
+  //     const themeStorage = localStorage.getItem("theme") as
+  //       | "light"
+  //       | "dark"
+  //       | "system";
+  //     dispatch(updateThemeMode(themeStorage));
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (value.mode === "dark") {
