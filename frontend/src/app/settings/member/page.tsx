@@ -84,12 +84,12 @@ const Workspace = () => {
       <Head>
         <meta name="viewport" content="viewport-fit=cover" />
       </Head>
-      <Heading>Invite Your Team Member</Heading>
+      <Heading>Invite Your Team Member to your Workspace</Heading>
       <Divider className="mt-6" />
       <div className="overflow-hidden bg-white shadow sm:rounded-lg dark:bg-zinc-900">
         <div className="px-4 py-5 sm:p-6 flex-col space-y-4">
           <div className="flex-col space-y-2">
-            <Text>Team name</Text>
+            <Text>Change your Workspace name</Text>
             <Input value={"norma.risdiandita@gmail.com"} />
           </div>
           <Button>Save Changes</Button>

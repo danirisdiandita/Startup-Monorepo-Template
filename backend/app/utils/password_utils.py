@@ -41,7 +41,8 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
                 headers={"WWW-Authenticate": "Bearer"},
             )
         else: 
-            user = User(email=user[0].get("email"), 
+            user = User(id=user[0].get('id'),
+                        email=user[0].get("email"), 
                         first_name=user[0].get("first_name", 'guest'), 
                         last_name=user[0].get("last_name", 'guest'), 
                         verified=user[0].get("verified", False))

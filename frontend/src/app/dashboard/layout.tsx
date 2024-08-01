@@ -196,7 +196,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <DropdownMenu>
                     <DropdownSection aria-label="Account">
                       <DropdownHeading className="items-center">
-                        Team
+                        Workspace
                       </DropdownHeading>
                       <div className="p-3 dark:text-white text-zinc-900 sm:text-sm/6 flex space-x-2 items-center">
                         <p>norma.risdiandita@gmail.com </p>
@@ -204,7 +204,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                         <CheckIcon width={20} height={20} />
                       </div>
                       <DropdownDivider />
-                      <DropdownHeading>My Active Teams</DropdownHeading>
+                      <DropdownHeading>My Active Workspace</DropdownHeading>
                       <DropdownItem>
                         <div className="flex justify-start space-x-2">
                           <Text>dani@gmail.com</Text>
