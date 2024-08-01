@@ -31,15 +31,37 @@ class TeamService:
                 UserTeam.role == "admin",
                 UserTeam.access == "admin",
             )
-            main_query = select(
-                UserTeam.id,
-                UserTeam.user_id,
-                UserTeam.team_id,
-                UserTeam.role,
-                UserTeam.access,
-            ).where(UserTeam.team_id == subquery_team_id)
-            
+            main_query = (
+                select(
+                    UserTeam.id,
+                    UserTeam.user_id,
+                    User.email,
+                    User.first_name,
+                    User.last_name,
+                    UserTeam.team_id,
+                    UserTeam.role,
+                    UserTeam.access,
+                )
+                .join(User, User.id == UserTeam.user_id)
+                .where(UserTeam.team_id == subquery_team_id)
+            )
+
             # output = []
             docs = session.exec(main_query).all()
-            print(docs[0]._mapping)
-            return docs[0]._mapping 
+            output = []
+            if len(docs) > 0:
+                for doc_ in docs:
+                    output.append(
+                        {
+                            "id": doc_.id,
+                            "user_id": doc_.user_id,
+                            "email": doc_.email, 
+                            "first_name": doc_.first_name, 
+                            "last_name": doc_.last_name, 
+                            "team_id": doc_.team_id,
+                            "role": doc_.role,
+                            "access": doc_.access,
+                            
+                        }
+                    )
+            return output
