@@ -17,7 +17,7 @@ class Role(str, enum.Enum):
 class UserTeam(SQLModel, table=True): 
     __tablename__ = "user_team_s"
     id: int | None = Field(default=None, primary_key=True)
-    user_id: int | None = Field(default=None, foreign_key="users.id")
+    user_id: int | None = Field(default=None, foreign_key="users.id", index=True)
     team_id: int | None = Field(default=None, foreign_key="teams.id")
     role: Role 
     access: Access  

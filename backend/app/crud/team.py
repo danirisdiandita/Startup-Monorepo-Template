@@ -39,10 +39,11 @@ class TeamService:
                     User.first_name,
                     User.last_name,
                     UserTeam.team_id,
+                    Team.name, 
                     UserTeam.role,
                     UserTeam.access,
                 )
-                .join(User, User.id == UserTeam.user_id)
+                .join(User, User.id == UserTeam.user_id).join(Team, UserTeam.team_id == Team.id)
                 .where(UserTeam.team_id == subquery_team_id)
             )
 
@@ -59,6 +60,7 @@ class TeamService:
                             "first_name": doc_.first_name, 
                             "last_name": doc_.last_name, 
                             "team_id": doc_.team_id,
+                            "team_name": doc_.name, 
                             "role": doc_.role,
                             "access": doc_.access,
                             
