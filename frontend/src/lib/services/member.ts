@@ -26,14 +26,14 @@ interface Member {
 export const memberApi = createApi({
     reducerPath: 'memberApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/v1/teams/default-team-members",
+        baseUrl: "http://localhost:8000/api/v1/",
         prepareHeaders: async (headers, { getState }) => {
             return addTokenToRequest(headers, { getState })
         }
     }),
     endpoints: (builder) => ({
         getDefaultMembers: builder.query<Member[], void>({
-            query: () => ``,
+            query: () => `teams/default-team-members`,
         }),
     }),
 })
