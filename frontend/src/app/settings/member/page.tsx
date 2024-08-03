@@ -36,26 +36,11 @@ import {
   CheckboxField,
   CheckboxGroup,
 } from "@/components/catalyst/checkbox";
-import { useGetDefaultMembersQuery } from "@/lib/services/member";
+import {
+  useGetDefaultMembersQuery,
+  useUpdateDefaultWorkspaceNameMutation,
+} from "@/lib/services/member";
 import { useSession } from "next-auth/react";
-
-const users = [
-  {
-    name: "Norma Dani Risdiandita",
-    email: "norma.risdiandita@gmail.com",
-    access: "admin",
-    role: "admin",
-    handle: "key_0",
-    isme: true,
-  },
-  {
-    name: "Farah",
-    email: "farah@gmail.com",
-    role: "member",
-    access: "edit",
-    handle: "key_1",
-  },
-];
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,6 +49,8 @@ const validateEmail = (email: string) => {
 
 const Workspace = () => {
   const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
+  const [updateDefaultWorkspaceName, defaultWorkspaceResult] =
+    useUpdateDefaultWorkspaceNameMutation();
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [defaultWorkspaceName, setDefaultWorkspaceName] = useState("");
@@ -127,7 +114,7 @@ const Workspace = () => {
               defaultWorkspaceName === ""
             }
             onClick={() => {
-              console.log('do something')
+              console.log("do something");
             }}
           >
             Save Changes
