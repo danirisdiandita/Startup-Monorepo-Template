@@ -25,7 +25,7 @@ const VerificationPage = ({
           </h2>
           {/* <p className="mt-2 text-gray-600">Thank you! Your email has been successfully verified.</p> */}
           {error ? (
-            <Text>{error?.data?.error}</Text>
+            <Text>{JSON.stringify(error)}</Text>
           ) : (
             <Text>Thank you! Your email has been successfully verified.</Text>
           )}

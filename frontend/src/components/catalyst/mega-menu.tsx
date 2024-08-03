@@ -56,7 +56,7 @@ const solutions = [
 export default function MegaMenu({ mode }: { mode: string }) {
   const popoverButtonRef = useRef<HTMLButtonElement>(null);
 
-  const popOverPanelRef = useRef(null);
+  const popOverPanelRef = useRef<HTMLButtonElement>(null);
 
   return (
     <Popover className={`relative ${mode}`}>

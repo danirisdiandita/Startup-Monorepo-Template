@@ -12,8 +12,8 @@ import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const session = useSession();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState<string|undefined>("");
+  const [lastName, setLastName] = useState<string|undefined>("");
   const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -55,8 +55,11 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    setFirstName(session?.data?.first_name);
-    setLastName(session?.data?.last_name);
+    if (session?.data) {
+      setFirstName(session?.data?.first_name);
+      setLastName(session?.data?.last_name);
+    }
+   
   }, [session?.data]);
 
   useEffect(() => {

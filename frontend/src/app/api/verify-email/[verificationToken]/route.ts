@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { NextResponse } from "next/server";
 
-export async function GET(request: NextApiRequest) {
+export async function GET(request: Request) {
   const verificationToken = request.url?.split("/api/verify-email/")?.at(-1);
   const backendService = new BackendService();
   try {
@@ -12,6 +12,6 @@ export async function GET(request: NextApiRequest) {
     );
     return NextResponse.json({ results });
   } catch (error) {
-    return NextResponse.json({ error: error?.message }, { status: 401 });
+    return NextResponse.json({ error: JSON.stringify(error) }, { status: 401 });
   }
 }

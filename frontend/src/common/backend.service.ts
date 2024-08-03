@@ -123,7 +123,7 @@ export default class BackendService {
     urlencoded.append("client_id", "");
     urlencoded.append("client_secret", "");
 
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: config?.method ? config?.method : HttpMethod.GET,
       headers: myHeaders,
       body: urlencoded,

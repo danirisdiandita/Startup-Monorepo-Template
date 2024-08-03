@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "./catalyst/button";
 const Navbar = () => {
   const session = useSession();
-  console.log('session', session)
+  console.log("session", session);
   const router = useRouter();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -30,10 +30,17 @@ const Navbar = () => {
               session?.data?.user?.name ? session?.data?.user?.name : "Guest"
             }
             email={
-              session?.data?.user?.email ? session?.data?.user?.email : session?.data?.user?.name
+              (
+                session?.data?.user?.email
+                  ? session?.data?.user?.email
+                  : session?.data?.user?.name
+              )
+                ? ((session?.data?.user?.email
+                    ? session?.data?.user?.email
+                    : session?.data?.user?.name) as string)
+                : "Guest"
             }
           />
-          
         </nav>
       </header>
     </>

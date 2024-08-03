@@ -208,8 +208,8 @@ export const changeFirstNameAndLastName = async ({
   firstName,
   lastName,
 }: {
-  firstName: string;
-  lastName: string;
+  firstName: string | undefined;
+  lastName: string | undefined;
 }) => {
   const session = await getServerSession(authOptions);
   try {

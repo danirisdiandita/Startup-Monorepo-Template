@@ -87,9 +87,9 @@ const PleaseConfirm = ({
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
           <h2 className="text-2xl font-semibold mb-4">Verify your email</h2>
           <Text>
-            We've sent you an email with a link that you will need to click to
+            We&apos;ve sent you an email with a link that you will need to click to
             verify your email. You might need to check your spam folder if you
-            don't see it. Please verify by clicking the link on your most recent
+            don&apos;t see it. Please verify by clicking the link on your most recent
             verification email. This link will expire in 12 hours.
           </Text>
           <Input type="email" value={email} disabled={true} className="py-2" />

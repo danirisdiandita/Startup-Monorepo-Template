@@ -36,6 +36,7 @@ import {
   CheckboxField,
   CheckboxGroup,
 } from "@/components/catalyst/checkbox";
+import { useGetDefaultMembersQuery } from "@/lib/services/member";
 
 const users = [
   {
@@ -61,6 +62,12 @@ const validateEmail = (email: string) => {
 };
 
 const Workspace = () => {
+  const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
+  useEffect(() => {
+    if (memberData) {
+      console.log(memberData);
+    }
+  }, [memberData]);
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [isNewMemberButtonDisabled, setIsNewMemberButtonDisabled] =
@@ -185,36 +192,43 @@ const Workspace = () => {
                   <TableHeader>Access</TableHeader>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.handle}>
-                    <TableCell className="font-medium flex justify-start space-x-2 items-center">
-                      <Avatar
-                        initials="NR"
-                        square
-                        className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
-                      />
-                      <div>
-                        {user.name}
-                        {user.isme ? (
-                          <Badge color="lime" className="ml-2">
-                            you
-                          </Badge>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell className="text-zinc-500">{user.role}</TableCell>
-                    <TableCell className="text-zinc-500">
-                      {user.access}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+              {memberData ? (
+                <TableBody>
+                  {memberData.map((user: any) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="font-medium flex justify-start space-x-2 items-center">
+                        <Avatar
+                          initials="NR"
+                          square
+                          className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
+                        />
+                        <div>
+                          {user.first_name + " " + user.last_name}
+                          {true ? (
+                            <Badge color="lime" className="ml-2">
+                              you
+                            </Badge>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell className="text-zinc-500">
+                        {user.role}
+                      </TableCell>
+                      <TableCell className="text-zinc-500">
+                        {user.access}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              ) : (
+                ""
+              )}
             </Table>
           </div>
+          {/* <p>{data ? JSON.stringify(data): ''}</p> */}
         </div>
       </div>
     </>

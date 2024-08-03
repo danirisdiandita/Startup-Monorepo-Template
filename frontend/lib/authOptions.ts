@@ -3,6 +3,84 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Env } from "@/common/env";
 import BackendService, { HttpMethod } from "@/common/backend.service";
+import type { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultJWT } from "next-auth/jwt";
+
+
+
+// export interface DefaultJWT extends Record<string, unknown> {
+//   name?: string | null
+//   email?: string | null
+//   picture?: string | null
+//   sub?: string
+// }
+
+declare module 'next-auth' {
+  interface User extends DefaultUser {
+    name?: string;
+    access_token?: string;
+    refresh_token?: string;
+    token_type?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    signInProvider?: string;
+  }
+
+  interface Session extends DefaultSession {
+    name?: string;
+    email?: string;
+    access_token?: string;
+    refresh_token?: string;
+    token_type?: string;
+    first_name?: string;
+    last_name?: string;
+    signInProvider?: string;
+    iat?: number;
+    exp?: number;
+    jti?: string;
+  }
+
+  interface Profile {
+    sub?: string
+    name?: string
+    email?: string
+    image?: string
+    given_name?: string
+    family_name?: string
+  }
+
+  interface JWT extends DefaultJWT {
+    name?: string
+    email?: string
+    access_token?: string
+    refresh_token?: string
+    token_type?: string
+    first_name?: string
+    last_name?: string
+    signInProvider?: string
+    iat?: number
+    exp?: number
+    jti?: string
+  }
+
+}
+
+
+// declare module "next-auth" {
+//   interface Session {
+//     user?: {
+//       id: string;
+//       access_token: string; 
+//     } & DefaultSession["user"];
+//   }
+//   interface User {
+//     {
+//       user?: {}
+//     }
+//   }
+// }
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -68,12 +146,15 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "google") {
         return true;
       } else if (account?.provider === "credentials") {
+
         if (user?.access_token) {
           return true;
         } else {
-          if (user?.detail) {
-            throw new Error(user?.detail);
-          }
+          return false
+          // if (user?.detail) {
+          //   return false 
+          // throw new Error(user?.detail);
+          // }
         }
       } else {
         return false;
@@ -103,15 +184,6 @@ export const authOptions: NextAuthOptions = {
           "/v1/users/google-login",
           googleSignInConfig
         );
-        // return {
-        //   access_token: account?.access_token,
-        //   expires_at: account?.expires_at,
-        //   refresh_token: account?.refresh_token,
-        //   ...token,
-        //   first_name: profile?.given_name ? profile?.given_name : 'Guest',
-        //   last_name: profile?.family_name ? profile?.family_name: 'Guest',
-        //   signInProvider: "google",
-        // };
 
         return {
           access_token: results?.access_token,
@@ -187,9 +259,18 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, user, token }) {
-      return {
-        ...token,
-      };
+      session.name = token.name as string  
+      session.email = token.email as string 
+      session.access_token = token.access_token as string 
+      session.refresh_token = token.refresh_token as string 
+      session.token_type = token.token_type as string 
+      session.first_name = token.first_name as string 
+      session.last_name = token.last_name as string 
+      session.signInProvider = token.signInProvider as string 
+      session.iat = token.iat as number;
+      session.exp = token.exp as number; 
+      session.jti = token.jti as string; 
+      return session 
     },
   },
   jwt: {

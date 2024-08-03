@@ -16,7 +16,7 @@ const ResetPassword = ({
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     setIsLoading(true);
     e.preventDefault();
     try {

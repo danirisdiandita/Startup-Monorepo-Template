@@ -14,12 +14,14 @@ import {
   REHYDRATE,
   persistReducer,
 } from "redux-persist";
+import { memberApi } from "./services/member";
 
 const rootReducer = combineReducers({
   callStatus: callStatusSlice,
   theme: themeSlice,
   [pokemonApi.reducerPath]: pokemonApi.reducer,
   [verificationApi.reducerPath]: verificationApi.reducer,
+  [memberApi.reducerPath]: memberApi.reducer
 });
 
 export const persistConfig = {
@@ -39,7 +41,7 @@ export const makeStore = () => {
         },
       })
         .concat(pokemonApi.middleware)
-        .concat(verificationApi.middleware),
+        .concat(verificationApi.middleware).concat(memberApi.middleware),
   });
 };
 
