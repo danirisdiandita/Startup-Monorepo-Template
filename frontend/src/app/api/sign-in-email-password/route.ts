@@ -9,8 +9,6 @@ export async function GET(request: Request) {
 
   const backendService = new BackendService() 
   const results = await backendService.request('/v1/users/verify/' + verificationToken)
-
-  console.log('verification results ', results)
   return NextResponse.json({ results })
 }
 

@@ -26,7 +26,7 @@ interface Member {
 export const memberApi = createApi({
     reducerPath: 'memberApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/v1/",
+        baseUrl: "/api/",
         prepareHeaders: async (headers, { getState }) => {
             return addTokenToRequest(headers, { getState })
         }
@@ -40,17 +40,3 @@ export const memberApi = createApi({
 
 
 export const { useGetDefaultMembersQuery } = memberApi;
-
-// [
-//     {
-//       "id": 1,
-//       "user_id": 86,
-//       "email": "norma.risdiandita@gmail.com",
-//       "first_name": "Norma Dani",
-//       "last_name": "Risdiandita",
-//       "team_id": 5,
-//       "team_name": "norma.risdiandita@gmail.com",
-//       "role": "admin",
-//       "access": "admin"
-//     }
-//   ]
