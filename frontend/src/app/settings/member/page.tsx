@@ -37,6 +37,7 @@ import {
   CheckboxGroup,
 } from "@/components/catalyst/checkbox";
 import { useGetDefaultMembersQuery } from "@/lib/services/member";
+import { useSession } from "next-auth/react";
 
 const users = [
   {
@@ -65,6 +66,17 @@ const Workspace = () => {
   const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [workspaceName, setWorkspaceName] = useState("");
+  const session = useSession(); 
+
+  useEffect(() => {
+    if (memberData) {
+      if (memberData.length > 0) {
+        setWorkspaceName(memberData[0].team_name);
+      }
+    }
+  }, [memberData]);
+
   const [isNewMemberButtonDisabled, setIsNewMemberButtonDisabled] =
     useState(true);
   const [isNewMemberDropdownAppear, setIsNewMemberDropdownAppear] =
@@ -92,7 +104,14 @@ const Workspace = () => {
         <div className="px-4 py-5 sm:p-6 flex-col space-y-4">
           <div className="flex-col space-y-2">
             <Text>Change your Workspace name</Text>
-            <Input value={"norma.risdiandita@gmail.com"} />
+            <Input
+              value={isLoading ? 'Please wait...': workspaceName }
+              onChange={(e: any) => {
+                e.preventDefault();
+                setWorkspaceName(e.target.value);
+              }}
+              disabled={isLoading}
+            />
           </div>
           <Button>Save Changes</Button>
           <Divider />
@@ -199,7 +218,7 @@ const Workspace = () => {
                         />
                         <div>
                           {user.first_name + " " + user.last_name}
-                          {true ? (
+                          {session?.data?.email === user.email ? (
                             <Badge color="lime" className="ml-2">
                               you
                             </Badge>
