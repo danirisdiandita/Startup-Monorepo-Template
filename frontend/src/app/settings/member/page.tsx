@@ -63,11 +63,6 @@ const validateEmail = (email: string) => {
 
 const Workspace = () => {
   const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
-  useEffect(() => {
-    if (memberData) {
-      console.log(memberData);
-    }
-  }, [memberData]);
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [isNewMemberButtonDisabled, setIsNewMemberButtonDisabled] =
@@ -196,9 +191,9 @@ const Workspace = () => {
                 <TableBody>
                   {memberData.map((user: any) => (
                     <TableRow key={user.id}>
-                      <TableCell className="font-medium flex justify-start space-x-2 items-center">
+                      <TableCell className="font-medium flex justify-start space-x-2 items-center w-72">
                         <Avatar
-                          initials="NR"
+                          initials={user?.first_name[0] + user?.last_name[0]}
                           square
                           className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
                         />
@@ -213,18 +208,40 @@ const Workspace = () => {
                           )}
                         </div>
                       </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell className="text-zinc-500">
+                      <TableCell className="w-72">{user.email}</TableCell>
+                      <TableCell className="text-zinc-500 w-32">
                         {user.role}
                       </TableCell>
-                      <TableCell className="text-zinc-500">
+                      <TableCell className="text-zinc-500 w-32">
                         {user.access}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               ) : (
-                ""
+                <TableBody>
+                  {[{}, {}, {}, {}, {}].map((user: any) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="font-medium flex justify-start space-x-2 items-center w-72">
+                        <Avatar
+                          initials=""
+                          square
+                          className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
+                        />
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                      </TableCell>
+                      <TableCell className="w-72">
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                      </TableCell>
+                      <TableCell className="text-zinc-500 w-32">
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                      </TableCell>
+                      <TableCell className="text-zinc-500 w-32">
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
               )}
             </Table>
           </div>
