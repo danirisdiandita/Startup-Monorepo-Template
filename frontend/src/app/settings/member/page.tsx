@@ -66,16 +66,23 @@ const Workspace = () => {
   const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [defaultWorkspaceName, setDefaultWorkspaceName] = useState("");
   const [workspaceName, setWorkspaceName] = useState("");
-  const session = useSession(); 
+  const session = useSession();
 
   useEffect(() => {
     if (memberData) {
       if (memberData.length > 0) {
-        setWorkspaceName(memberData[0].team_name);
+        setDefaultWorkspaceName(memberData[0].team_name);
       }
     }
   }, [memberData]);
+
+  useEffect(() => {
+    if (defaultWorkspaceName !== "") {
+      setWorkspaceName(defaultWorkspaceName);
+    }
+  }, [defaultWorkspaceName]);
 
   const [isNewMemberButtonDisabled, setIsNewMemberButtonDisabled] =
     useState(true);
@@ -105,7 +112,7 @@ const Workspace = () => {
           <div className="flex-col space-y-2">
             <Text>Change your Workspace name</Text>
             <Input
-              value={isLoading ? 'Please wait...': workspaceName }
+              value={isLoading ? "Please wait..." : workspaceName}
               onChange={(e: any) => {
                 e.preventDefault();
                 setWorkspaceName(e.target.value);
@@ -113,7 +120,18 @@ const Workspace = () => {
               disabled={isLoading}
             />
           </div>
-          <Button>Save Changes</Button>
+          <Button
+            disabled={
+              workspaceName === defaultWorkspaceName ||
+              workspaceName === "" ||
+              defaultWorkspaceName === ""
+            }
+            onClick={() => {
+              console.log('do something')
+            }}
+          >
+            Save Changes
+          </Button>
           <Divider />
           <h1 className="dark:text-white text-black-2">Members</h1>
           <div className="justify-between flex sm:flex-row flex-col space-y-4 sm:space-y-0">

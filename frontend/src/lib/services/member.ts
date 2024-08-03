@@ -35,6 +35,10 @@ export const memberApi = createApi({
         getDefaultMembers: builder.query<Member[], void>({
             query: () => `teams/default-team-members`,
         }),
+
+        // updateDefaultWorkspaceName: builder.mutation<Member[], void>({
+
+        // })
     }),
 })
 

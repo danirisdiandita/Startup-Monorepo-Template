@@ -1,9 +1,11 @@
+from re import sub
 from app.db.base import engine
 
-from sqlmodel import Session, select
+from sqlmodel import Session, select, update
 from app.models.user import User
 from app.models.team import Team
 from app.models.user_team import UserTeam
+from app.schemas.team_name_replacer import TeamNameReplacer
 
 
 class TeamService:
@@ -67,3 +69,31 @@ class TeamService:
                         }
                     )
             return output
+    def change_default_team_name(self, user: User, replacer: TeamNameReplacer): 
+        updated_info = {}
+        
+        with Session(engine) as session:
+            subquery_team_id = select(UserTeam.team_id).where(
+                UserTeam.user_id == user.id,
+                UserTeam.role == "admin",
+                UserTeam.access == "admin",
+            ).subquery() 
+
+            # Update query
+            update_stmt = (
+                update(Team)
+                .where(Team.id == subquery_team_id)
+                .values(name=replacer.new_name)
+            )
+            # Execute the update
+            session.exec(update_stmt)
+            session.commit()
+            
+
+            team_statement = select(Team).where(Team.id == subquery_team_id)
+
+            result = session.exec(team_statement)
+            return result.one() 
+
+
+            
