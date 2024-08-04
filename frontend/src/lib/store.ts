@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   theme: themeSlice,
   [pokemonApi.reducerPath]: pokemonApi.reducer,
   [verificationApi.reducerPath]: verificationApi.reducer,
-  [memberApi.reducerPath]: memberApi.reducer
+  [memberApi.reducerPath]: memberApi.reducer,
 });
 
 export const persistConfig = {

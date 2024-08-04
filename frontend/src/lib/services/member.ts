@@ -1,3 +1,4 @@
+'use client'
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authOptions } from "../../../lib/authOptions";
 import { getSession } from "next-auth/react";
@@ -37,44 +38,16 @@ export const memberApi = createApi({
         getDefaultMembers: builder.query<Member[], void>({
             query: () => `teams/default-team-members`,
         }),
-
-        updateDefaultWorkspaceName: builder.mutation<Member, Partial<Member> & Pick<Member, 'team_name'>>({
-            query: (team_name) => ({
-                url: `teams/change-team-name`,
-                method: HttpMethod.PUT,
+        updateDefaultWorkspaceName: builder.mutation({
+            query: ({team_name}) => ({
+                url: '/teams/change-team-name', 
+                method: "PUT", 
                 body: {
-                    new_name: team_name
+                    new_name: team_name 
                 }
-            }),
-            transformResponse: (response: { data: Member }, meta, arg) => response.data,
-            transformErrorResponse: (
-                response: { status: string | number },
-                meta,
-                arg,
-            ) => response.status,
-            invalidatesTags: ['Member'],
-            // onQueryStarted is useful for optimistic updates
-            // The 2nd parameter is the destructured `MutationLifecycleApi`
-            async onQueryStarted(
-                arg,
-                { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-            ) { },
-            // The 2nd parameter is the destructured `MutationCacheLifecycleApi`
-            async onCacheEntryAdded(
-                arg,
-                {
-                    dispatch,
-                    getState,
-                    extra,
-                    requestId,
-                    cacheEntryRemoved,
-                    cacheDataLoaded,
-                    getCacheEntry,
-                }
-            ) { },
+            })
         })
     }),
 })
-
-
+// useUpdateDefaultWorkspaceNameMutation
 export const { useGetDefaultMembersQuery, useUpdateDefaultWorkspaceNameMutation } = memberApi;

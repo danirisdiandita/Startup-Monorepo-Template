@@ -39,6 +39,7 @@ import {
 import {
   useGetDefaultMembersQuery,
   useUpdateDefaultWorkspaceNameMutation,
+  // useUpdateDefaultWorkspaceNameMutation,
 } from "@/lib/services/member";
 import { useSession } from "next-auth/react";
 
@@ -49,7 +50,7 @@ const validateEmail = (email: string) => {
 
 const Workspace = () => {
   const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
-  const [updateDefaultWorkspaceName, defaultWorkspaceResult] =
+  const [updateDefaultWorkspaceName, defaultWorkspaceNameResult] =
     useUpdateDefaultWorkspaceNameMutation();
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
@@ -61,6 +62,7 @@ const Workspace = () => {
     if (memberData) {
       if (memberData.length > 0) {
         setDefaultWorkspaceName(memberData[0].team_name);
+        updateDefaultWorkspaceName({team_name: memberData[0].team_name})
       }
     }
   }, [memberData]);
