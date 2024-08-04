@@ -87,7 +87,6 @@ const AuthForm = ({ type }: { type: string }) => {
         //   "url": null
         // }
         if (response?.error) {
-          // console.log('error reason', response?.error)
           toast.error(response?.error, {position: 'bottom-center'})
         } else {
           router.push("/dashboard");

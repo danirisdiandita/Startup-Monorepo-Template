@@ -6,8 +6,6 @@ import BackendService, { HttpMethod } from "@/common/backend.service";
 import type { DefaultSession, DefaultUser } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 
-
-
 // export interface DefaultJWT extends Record<string, unknown> {
 //   name?: string | null
 //   email?: string | null
@@ -15,7 +13,7 @@ import { DefaultJWT } from "next-auth/jwt";
 //   sub?: string
 // }
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface User extends DefaultUser {
     name?: string;
     access_token?: string;
@@ -25,6 +23,7 @@ declare module 'next-auth' {
     last_name?: string;
     email?: string;
     signInProvider?: string;
+    detail?: string; 
   }
 
   interface Session extends DefaultSession {
@@ -42,36 +41,34 @@ declare module 'next-auth' {
   }
 
   interface Profile {
-    sub?: string
-    name?: string
-    email?: string
-    image?: string
-    given_name?: string
-    family_name?: string
+    sub?: string;
+    name?: string;
+    email?: string;
+    image?: string;
+    given_name?: string;
+    family_name?: string;
   }
 
   interface JWT extends DefaultJWT {
-    name?: string
-    email?: string
-    access_token?: string
-    refresh_token?: string
-    token_type?: string
-    first_name?: string
-    last_name?: string
-    signInProvider?: string
-    iat?: number
-    exp?: number
-    jti?: string
+    name?: string;
+    email?: string;
+    access_token?: string;
+    refresh_token?: string;
+    token_type?: string;
+    first_name?: string;
+    last_name?: string;
+    signInProvider?: string;
+    iat?: number;
+    exp?: number;
+    jti?: string;
   }
-
 }
-
 
 // declare module "next-auth" {
 //   interface Session {
 //     user?: {
 //       id: string;
-//       access_token: string; 
+//       access_token: string;
 //     } & DefaultSession["user"];
 //   }
 //   interface User {
@@ -80,7 +77,6 @@ declare module 'next-auth' {
 //     }
 //   }
 // }
-
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -146,15 +142,13 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "google") {
         return true;
       } else if (account?.provider === "credentials") {
-
         if (user?.access_token) {
           return true;
         } else {
-          return false
-          // if (user?.detail) {
-          //   return false 
-          // throw new Error(user?.detail);
-          // }
+          if (user?.detail) {
+            // return false;
+            throw new Error(user?.detail);
+          }
         }
       } else {
         return false;
@@ -259,18 +253,18 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, user, token }) {
-      session.name = token.name as string  
-      session.email = token.email as string 
-      session.access_token = token.access_token as string 
-      session.refresh_token = token.refresh_token as string 
-      session.token_type = token.token_type as string 
-      session.first_name = token.first_name as string 
-      session.last_name = token.last_name as string 
-      session.signInProvider = token.signInProvider as string 
+      session.name = token.name as string;
+      session.email = token.email as string;
+      session.access_token = token.access_token as string;
+      session.refresh_token = token.refresh_token as string;
+      session.token_type = token.token_type as string;
+      session.first_name = token.first_name as string;
+      session.last_name = token.last_name as string;
+      session.signInProvider = token.signInProvider as string;
       session.iat = token.iat as number;
-      session.exp = token.exp as number; 
-      session.jti = token.jti as string; 
-      return session 
+      session.exp = token.exp as number;
+      session.jti = token.jti as string;
+      return session;
     },
   },
   jwt: {
