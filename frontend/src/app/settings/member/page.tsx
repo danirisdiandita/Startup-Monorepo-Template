@@ -42,6 +42,8 @@ import {
   // useUpdateDefaultWorkspaceNameMutation,
 } from "@/lib/services/member";
 import { useSession } from "next-auth/react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,6 +52,7 @@ const validateEmail = (email: string) => {
 
 const Workspace = () => {
   const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
+  const [isSavingButtonLoading, setIsSavingButtonLoading] = useState(false);
   const [updateDefaultWorkspaceName, defaultWorkspaceNameResult] =
     useUpdateDefaultWorkspaceNameMutation();
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
@@ -112,13 +115,27 @@ const Workspace = () => {
             disabled={
               workspaceName === defaultWorkspaceName ||
               workspaceName === "" ||
-              defaultWorkspaceName === ""
+              defaultWorkspaceName === "" ||
+              isSavingButtonLoading
             }
-            onClick={() => {
-              updateDefaultWorkspaceName({ team_name: workspaceName });
+            onClick={async () => {
+              setIsSavingButtonLoading(true);
+              const response = await updateDefaultWorkspaceName({
+                team_name: workspaceName,
+              });
+              setIsSavingButtonLoading(false);
+              toast.success("Successfully Change the Workspace Name", {
+                position: "bottom-center",
+              });
             }}
           >
-            Save Changes
+            {isSavingButtonLoading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" /> &nbsp; Loading
+              </>
+            ) : (
+              "Save Changes"
+            )}
           </Button>
           <Divider />
           <h1 className="dark:text-white text-black-2">Members</h1>
