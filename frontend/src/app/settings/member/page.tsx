@@ -62,7 +62,6 @@ const Workspace = () => {
     if (memberData) {
       if (memberData.length > 0) {
         setDefaultWorkspaceName(memberData[0].team_name);
-        updateDefaultWorkspaceName({team_name: memberData[0].team_name})
       }
     }
   }, [memberData]);
@@ -116,7 +115,7 @@ const Workspace = () => {
               defaultWorkspaceName === ""
             }
             onClick={() => {
-              console.log("do something");
+              updateDefaultWorkspaceName({ team_name: workspaceName });
             }}
           >
             Save Changes
