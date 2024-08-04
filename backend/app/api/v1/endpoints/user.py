@@ -173,7 +173,7 @@ def register(user: User):
         new_team = team_service.create_new_team(Team(user_id=user_id, 
                                                      name=default_team_name, 
                                                      description=f'Default Team of {default_team_name}'))
-        new_team_user_relation = UserTeam(user_id=user_id, team_id=new_team.id, role=Role.admin, access=Access.admin)
+        new_team_user_relation = UserTeam(user_id=user_id, team_id=new_team.id, role=Role.admin, access=Access.admin, verified=True)
         team_service.create_new_team_user_relation(new_team_user_relation)
 
     except Exception as e:
