@@ -7,6 +7,8 @@ class Token(BaseModel):
     token_type: Optional[str] = None 
     first_name: Optional[str] = None 
     last_name: Optional[str] = None
+    access_token_expire: Optional[int] 
+    refresh_token_expire: Optional[int] 
 
 class TokenData(BaseModel):
     username: str | None = None
