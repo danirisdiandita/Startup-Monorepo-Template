@@ -262,27 +262,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, user, token }) {
-      const expiredTime: number = token?.access_token_expire as number;
-      if (Math.floor(new Date().getTime() / 1000) > expiredTime) {
-        if (token?.refresh_token) {
-          const backendService = new BackendService();
-          const refreshTokenConfig = {
-            method: HttpMethod.POST,
-            headers: { "Content-Type": "application/json" },
-            data: {
-              refresh_token: token?.refresh_token,
-            },
-          };
-
-          const results = await backendService.request(
-            "/v1/users/refresh",
-            refreshTokenConfig
-          );
-
-          token = { ...token, ...results };
-        }
-      }
-
       session.name = token.name as string;
       session.email = token.email as string;
       session.access_token = token.access_token as string;
