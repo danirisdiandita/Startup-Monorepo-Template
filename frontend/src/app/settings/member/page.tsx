@@ -124,6 +124,7 @@ const Workspace = () => {
                 team_name: workspaceName,
               });
               setIsSavingButtonLoading(false);
+              setDefaultWorkspaceName(response.data.results.name);
               toast.success("Successfully Change the Workspace Name", {
                 position: "bottom-center",
               });
