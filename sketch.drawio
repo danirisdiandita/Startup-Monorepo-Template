@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-08-06T22:18:29.298Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="YuTrrawPFmtpoIktB_6i" version="22.0.3" type="device" pages="5">
+<mxfile host="Electron" modified="2024-08-06T22:32:24.062Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="48u-ebrz_dOv-wSQ31Tw" version="22.0.3" type="device" pages="5">
   <diagram id="NAsQoUvJl2eYmLoCztsX" name="database design">
     <mxGraphModel dx="2284" dy="1943" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -536,7 +536,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="AILbxcIZXwb83vapVVFQ" name="invitation#">
-    <mxGraphModel dx="2045" dy="1803" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3240" dy="2505" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -626,10 +626,7 @@
         <mxCell id="HyCkkzOeUa5KknxHaQ2A-1" value="url =&amp;nbsp; /sign-up?signUpRedirect=%2Faccept-invite%3F&amp;lt;LOTS OF CODES&amp;gt;&lt;br&gt;&lt;br&gt;%2F is slash / character&lt;br&gt;%3F is question mark" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;" parent="1" vertex="1">
           <mxGeometry x="1000" y="-230" width="440" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="HyCkkzOeUa5KknxHaQ2A-3" value="" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;" parent="1" vertex="1">
-          <mxGeometry x="980" y="390" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="L3jnQCl13dcrcdbff_gF-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="L3jnQCl13dcrcdbff_gF-2">
+        <mxCell id="L3jnQCl13dcrcdbff_gF-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="L3jnQCl13dcrcdbff_gF-2" target="L3jnQCl13dcrcdbff_gF-18">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1950" y="-219.66666666666652" as="targetPoint" />
           </mxGeometry>
@@ -637,20 +634,40 @@
         <mxCell id="L3jnQCl13dcrcdbff_gF-2" value="credential : username password" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1710" y="-250" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="L3jnQCl13dcrcdbff_gF-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="L3jnQCl13dcrcdbff_gF-3" target="L3jnQCl13dcrcdbff_gF-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1990" y="-29.666666666666515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="L3jnQCl13dcrcdbff_gF-3" value="google auth" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1710" y="-60" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="L3jnQCl13dcrcdbff_gF-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="L3jnQCl13dcrcdbff_gF-7" target="L3jnQCl13dcrcdbff_gF-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="L3jnQCl13dcrcdbff_gF-7" value="credential auth" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1710" y="160" width="120" height="60" as="geometry" />
+          <mxGeometry x="1750" y="170" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="L3jnQCl13dcrcdbff_gF-8" value="google auth" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1710" y="300" width="120" height="60" as="geometry" />
+          <mxGeometry x="1750" y="500" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="L3jnQCl13dcrcdbff_gF-13" value="payload can be passed from next js path to the backend while registering" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;" vertex="1" parent="1">
+        <mxCell id="L3jnQCl13dcrcdbff_gF-13" value="payload can be passed from next js path to the backend while registering, &lt;b&gt;passed through register parameter (since it is not using next auth when registering)&lt;/b&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;" vertex="1" parent="1">
           <mxGeometry x="1550" y="-350" width="470" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="L3jnQCl13dcrcdbff_gF-14" value="I am thinking about this right now" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;position2=0.4;" vertex="1" parent="1">
-          <mxGeometry x="1650" y="-150" width="470" height="80" as="geometry" />
+        <mxCell id="L3jnQCl13dcrcdbff_gF-16" value="payload can be passed from next js path to the backend while registering, &lt;b&gt;can be passed through next auth signIn third argument&lt;/b&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;position2=0.35;" vertex="1" parent="1">
+          <mxGeometry x="1655" y="-160" width="470" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="L3jnQCl13dcrcdbff_gF-18" value="insert to database regarding team and membership" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2240" y="-170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L3jnQCl13dcrcdbff_gF-19" value="payload can be passed from next js path to the backend while registering, &lt;b&gt;can be passed through next auth signIn third argument&lt;/b&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;position2=0.35;" vertex="1" parent="1">
+          <mxGeometry x="1680" y="80" width="470" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="L3jnQCl13dcrcdbff_gF-20" value="payload can be passed from next js path to the backend while registering, &lt;b&gt;can be passed through next auth signIn third argument&lt;/b&gt;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;position2=0.35;" vertex="1" parent="1">
+          <mxGeometry x="1710" y="400" width="470" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="L3jnQCl13dcrcdbff_gF-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.905;entryY=0.978;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="L3jnQCl13dcrcdbff_gF-8" target="L3jnQCl13dcrcdbff_gF-18">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
