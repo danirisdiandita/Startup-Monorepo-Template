@@ -165,7 +165,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user, account, profile, trigger, session }) {
-      console.log('running jwt')
       if (trigger === "update") {
         return session?.data;
       }
@@ -263,8 +262,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, user, token }) {
-      console.log('running session')
-      console.log('token', session)
       session.name = token.name as string;
       session.email = token.email as string;
       session.access_token = token.access_token as string;
