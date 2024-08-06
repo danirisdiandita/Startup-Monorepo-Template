@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, create_engine
 
 
 SQLALCHEMY_DATABASE_URL = settings.SQLALCHEMY_DATABASE_URI
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True, pool_pre_ping=True)
 
 
 def create_db_and_tables():
