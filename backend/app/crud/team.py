@@ -5,7 +5,7 @@ from sqlmodel import Session, select, update
 from app.models.user import User
 from app.models.team import Team
 from app.models.user_team import UserTeam
-from app.schemas.team_name_replacer import TeamNameReplacer
+from app.schemas.team import TeamNameReplacer
 
 
 class TeamService:
@@ -70,8 +70,6 @@ class TeamService:
                     )
             return output
     def change_default_team_name(self, user: User, replacer: TeamNameReplacer): 
-        updated_info = {}
-        
         with Session(engine) as session:
             subquery_team_id = select(UserTeam.team_id).where(
                 UserTeam.user_id == user.id,

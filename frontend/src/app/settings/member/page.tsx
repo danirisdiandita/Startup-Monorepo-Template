@@ -44,6 +44,7 @@ import {
 import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { sendTeamInvite } from "../../../../lib/actions/team.action";
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,6 +61,10 @@ const Workspace = () => {
   const [defaultWorkspaceName, setDefaultWorkspaceName] = useState("");
   const [workspaceName, setWorkspaceName] = useState("");
   const session = useSession();
+  const [
+    isSendingMemberInvitationLoading,
+    setIsSendingMemberInvitationLoading,
+  ] = useState(false);
 
   useEffect(() => {
     if (memberData) {
@@ -90,6 +95,20 @@ const Workspace = () => {
       setIsNewMemberDropdownAppear(false);
     }
   }, [newMemberEmail]);
+
+  const onSendingInvitation = async () => {
+    setIsSendingMemberInvitationLoading(true);
+    try {
+      const payload = {
+        email: "norma.risdiandita@gmail.com",
+      };
+
+      const result = await sendTeamInvite(payload);
+      console.log("result", result);
+    } catch (error) {}
+
+    setIsSendingMemberInvitationLoading(false);
+  };
 
   return (
     <>
@@ -211,6 +230,7 @@ const Workspace = () => {
                 <Button
                   onClick={() => {
                     setIsOpenAddMember(false);
+                    onSendingInvitation();
                     setNewMemberEmail("");
                   }}
                   disabled={isNewMemberButtonDisabled}
