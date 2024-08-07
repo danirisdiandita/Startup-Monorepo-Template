@@ -26,10 +26,12 @@ class Constants:
         self.token_type_verification_token = 'verification_token'
         self.token_type_refresh_token = 'refresh_token'
         self.token_type_forgot_password = 'forgot_password'
+        self.token_type_invitation_link = 'invitation'
         self.access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_IN_MINUTES)
         self.refresh_token_expires = timedelta(days=settings.JWT_REFRESH_TOKEN_EXPIRE_IN_DAYS)
         self.verification_token_expires = timedelta(days=settings.JWT_VERIFICATION_TOKEN_EXPIRE_IN_HOURS)
         self.forgot_password_token_expires = timedelta(hours=12)
         self.google_oauth2_token_info_url = 'https://www.googleapis.com/oauth2/v1/tokeninfo'
-
+        
+        
 constants = Constants()

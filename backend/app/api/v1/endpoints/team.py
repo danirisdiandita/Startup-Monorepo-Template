@@ -2,15 +2,17 @@ from fastapi import APIRouter, Body, Depends
 from fastapi.responses import JSONResponse
 from app.models.user import User
 from typing import Annotated, Union
-from app.schemas.email import Email
+from app.schemas.email import Email, InvitationEmail
 from app.schemas.sample import Sample1, Sample2
 from app.schemas.team import TeamNameReplacer
-from app.utils.password_utils import get_current_active_user
+from app.utils.password_utils import PasswordUtils, get_current_active_user
 from app.crud.team import TeamService
+from app.core.config import constants
 
 router = APIRouter()
 
 team_service = TeamService()
+password_utils = PasswordUtils()
 
 
 @router.get("/default-team-members")
@@ -36,17 +38,30 @@ def gitu(sample_input1: Sample2):
     return {"sample_input1": sample_input1.dict(), "sample_input2": {}}
 
 
-@router.get("/invitation-link")
+@router.post("/invitation-link")
 def generate_invitation_link(
-    current_user: Annotated[User, Depends(get_current_active_user)]
+    current_user: Annotated[
+        User,
+        Depends(get_current_active_user),
+    ],
+    email: Email,
 ):
-    
-    return {"url": "https://google.com"}
+
+    invitation_token = password_utils.create_access_token(
+        data={
+            "sub": email.recipient,
+            "sender_email": current_user.email,
+            "recipient_email": email.recipient,
+            "token_type": constants.token_type_invitation_link,
+        }
+    )
+
+    return JSONResponse(status_code=200, content={"link": invitation_token})
 
 
 @router.post("/send-team-email-invitation")
 def send_team_email_invitation(
-    current_user: Annotated[User, Depends(get_current_active_user)], email: Email
+    current_user: Annotated[User, Depends(get_current_active_user)], email: InvitationEmail
 ):
     print("current_user", current_user)
 
