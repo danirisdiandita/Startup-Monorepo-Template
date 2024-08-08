@@ -8,7 +8,7 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
   try {
     const session = await getServerSession(authOptions);
 
-    const config = {
+    let config = {
       method: HttpMethod.POST,
       data: {
         subject: "request invitation link",
@@ -30,6 +30,15 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
 
       console.log("response", response?.link);
 
+      config = {
+        method: HttpMethod.POST,
+        data: {
+          subject: `${session?.first_name} ${session?.last_name} invited you to collaborate on DataQuery`,
+          recipient: email, 
+          sender: session?.email, 
+          body: await 
+        },
+      };
       return parseStringify(response);
     } catch (error) {}
   } catch (error) {}
