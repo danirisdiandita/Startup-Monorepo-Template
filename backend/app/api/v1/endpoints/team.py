@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body, Depends
 from fastapi.responses import JSONResponse
+from app.crud.user import UserService
 from app.models.user import User
 from typing import Annotated, Union
 from app.schemas.email import Email, InvitationEmail
@@ -13,6 +14,7 @@ router = APIRouter()
 
 team_service = TeamService()
 password_utils = PasswordUtils()
+user_service = UserService()
 
 
 @router.get("/default-team-members")
@@ -61,13 +63,23 @@ def generate_invitation_link(
 
 @router.post("/send-team-email-invitation")
 def send_team_email_invitation(
-    current_user: Annotated[User, Depends(get_current_active_user)], email: InvitationEmail
+    current_user: Annotated[User, Depends(get_current_active_user)],
+    email: InvitationEmail,
 ):
-    print("current_user", current_user)
 
     # get payload user email
 
     # check if email is registered or not
+
+    recipient_data = user_service.get_one_user_by_email(User(email=email.recipient))
+
+    if len(recipient_data) < 1:
+        # register
+        print("register")
+    else:
+        print("login")
+
+        # sign in
 
     # if registered then send email with redirection url using /sign-in?<some additional params>
 

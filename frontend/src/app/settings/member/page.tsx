@@ -104,10 +104,17 @@ const Workspace = () => {
       };
 
       const result = await sendTeamInvite(payload);
-      console.log("result", result);
-    } catch (error) {}
+      toast.success(`workspace invitation is sent to `, {
+        position: "bottom-center",
+      });
+    } catch (error) {
+      toast.error("invitation failed please try again", {
+        position: "bottom-center",
+      });
+    }
 
     setIsSendingMemberInvitationLoading(false);
+    setIsOpenAddMember(false);
   };
 
   return (
@@ -229,7 +236,6 @@ const Workspace = () => {
                 </Button>
                 <Button
                   onClick={() => {
-                    setIsOpenAddMember(false);
                     onSendingInvitation();
                     setNewMemberEmail("");
                   }}

@@ -216,14 +216,6 @@ def register(user: User):
         registered_user_data_model = user_service.insert_user_during_registration(user)
         registered_user = registered_user_data_model.model_dump()
 
-        #     class UserTeam(SQLModel, table=True):
-        # __tablename__ = "user_team_s"
-        # id: int | None = Field(default=None, primary_key=True)
-        # user_id: int | None = Field(default=None, foreign_key="users.id")
-        # team_id: int | None = Field(default=None, foreign_key="teams.id")
-        # role: Access
-        # access: Role
-
         # create verification token
         try:
             # 12 hours jwt token

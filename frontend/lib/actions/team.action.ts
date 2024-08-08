@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import BackendService, { HttpMethod } from "@/common/backend.service";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
@@ -10,7 +10,12 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
 
     const config = {
       method: HttpMethod.POST,
-      data: {},
+      data: {
+        subject: "request invitation link",
+        recipient: email,
+        sender: session?.email,
+        body: "",
+      },
     };
 
     const backendService = new BackendService({
@@ -18,9 +23,11 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
     });
 
     const response = await backendService.request(
-      "/v1/teams/send-team-email-invitation",
+      "/v1/teams/invitation-link",
       config
     );
+
+    
 
     return parseStringify(response);
   } catch (error) {}
