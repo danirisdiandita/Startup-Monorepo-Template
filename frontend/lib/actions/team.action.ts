@@ -22,13 +22,15 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
       accessToken: session?.access_token,
     });
 
-    const response = await backendService.request(
-      "/v1/teams/invitation-link",
-      config
-    );
+    try {
+      const response = await backendService.request(
+        "/v1/teams/invitation-link",
+        config
+      );
 
-    
+      console.log("response", response?.link);
 
-    return parseStringify(response);
+      return parseStringify(response);
+    } catch (error) {}
   } catch (error) {}
 };
