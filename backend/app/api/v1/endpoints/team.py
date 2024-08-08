@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from app.crud.user import UserService
 from app.models.user import User
 from typing import Annotated, Union
-from app.schemas.email import Email, InvitationEmail
+from app.schemas.email import Email
 from app.schemas.sample import Sample1, Sample2
 from app.schemas.team import TeamNameReplacer
 from app.utils.password_utils import PasswordUtils, get_current_active_user
@@ -58,31 +58,33 @@ def generate_invitation_link(
         }
     )
 
-    return JSONResponse(status_code=200, content={"link": invitation_token})
+    # check if recipient within database or not
+
+    recipient_data = user_service.get_one_user_by_email(User(email=email.recipient))
+
+    is_user_registered = False
+
+    if len(recipient_data) > 0:
+
+        is_user_registered = True
+
+    return JSONResponse(
+        status_code=200,
+        content={"link": invitation_token, "is_user_registered": is_user_registered},
+    )
 
 
 @router.post("/send-team-email-invitation")
 def send_team_email_invitation(
     current_user: Annotated[User, Depends(get_current_active_user)],
-    email: InvitationEmail,
+    email: Email,
 ):
+    # just sending email
 
-    # get payload user email
-
-    # check if email is registered or not
-
-    recipient_data = user_service.get_one_user_by_email(User(email=email.recipient))
-
-    if len(recipient_data) < 1:
-        # register
-        print("register")
-    else:
-        print("login")
-
-        # sign in
-
-    # if registered then send email with redirection url using /sign-in?<some additional params>
-
-    # if not registered then send email with redirection url using /sign-up?<some additional params>
-
+    user_service.send_email(
+        body=email.body,
+        subject=email.subject,
+        from_email=email.sender,
+        to_email=email.recipient,
+    )
     return {"email": "sent"}

@@ -26,7 +26,7 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "";
 
-export const teamInvitationEmail = ({
+export const TeamInvitationEmail = ({
   username,
   inviteLink,
 }: InvitationEmailProps) => {
@@ -76,9 +76,9 @@ export const teamInvitationEmail = ({
   );
 };
 
-teamInvitationEmail.PreviewProps = {
+TeamInvitationEmail.PreviewProps = {
   username: "Norma Dani Risdiandita",
   inviteLink: "https://vercel.com/teams/invite/foo",
 } as InvitationEmailProps;
 
-export default teamInvitationEmail;
+export default TeamInvitationEmail;

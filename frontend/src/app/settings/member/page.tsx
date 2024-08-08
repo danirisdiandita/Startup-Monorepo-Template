@@ -100,15 +100,15 @@ const Workspace = () => {
     setIsSendingMemberInvitationLoading(true);
     try {
       const payload = {
-        email: "norma.risdiandita@gmail.com",
+        email: newMemberEmail,
       };
 
       const result = await sendTeamInvite(payload);
-      toast.success(`workspace invitation is sent to `, {
+      toast.success(`workspace invitation is sent to ${newMemberEmail}`, {
         position: "bottom-center",
       });
     } catch (error) {
-      toast.error("invitation failed please try again", {
+      toast.error(`invitation to ${newMemberEmail} failed please try again`, {
         position: "bottom-center",
       });
     }
@@ -241,7 +241,14 @@ const Workspace = () => {
                   }}
                   disabled={isNewMemberButtonDisabled}
                 >
-                  Add New Member
+                  {isSendingMemberInvitationLoading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" /> &nbsp;
+                      Loading
+                    </>
+                  ) : (
+                    "Add New Member"
+                  )}
                 </Button>
               </DialogActions>
             </Dialog>

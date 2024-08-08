@@ -12,6 +12,3 @@ class Email(BaseModel):
 class EmailOnly(BaseModel):
     email: str
 
-
-class InvitationEmail(Email):
-    link: str
