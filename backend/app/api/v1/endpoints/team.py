@@ -5,7 +5,7 @@ from app.models.user import User
 from typing import Annotated, Union
 from app.schemas.email import Email
 from app.schemas.sample import Sample1, Sample2
-from app.schemas.team import TeamNameReplacer
+from app.schemas.team import TeamNameReplacer, TeamValidation
 from app.utils.password_utils import PasswordUtils, get_current_active_user
 from app.crud.team import TeamService
 from app.core.config import constants
@@ -90,3 +90,14 @@ def send_team_email_invitation(
         to_email=email.recipient,
     )
     return {"email": "sent"}
+
+@router.post("/validate-team-invitation")
+def validate_team_invitation(
+    current_user: Annotated[User, Depends(get_current_active_user)], 
+    team_validation: TeamValidation 
+): 
+    
+    
+    print("team_validation.invite_link", team_validation.invite_link)
+
+    return {'message': 'gitu'}

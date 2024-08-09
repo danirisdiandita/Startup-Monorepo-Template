@@ -94,7 +94,8 @@ class TeamService:
             return result.one() 
     
     
-    # def insert_user_team_s(self, user: User, )
+    def validate_and_insert_user_team_s(self, current_user, invite_link: str): 
+        return {'gitu': 'gitu'}
 
 
             

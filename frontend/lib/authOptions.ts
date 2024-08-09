@@ -124,6 +124,12 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
+
+            // if logged in successfully then if invited to the workspace then 
+            
+            
+
+
             user = {
               ...user,
               ...results,
@@ -145,22 +151,11 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/sign-in", error: "/sign-in" },
   callbacks: {
-    async signIn({ user, account, profile, credentials }) {
-      let extraParamsObject = {};
-      if (credentials?.callbackUrl) {
-        extraParamsObject = Object.fromEntries(
-          new URLSearchParams(
-            new URL(credentials?.callbackUrl as string).search
-          ).entries()
-        );
-      }
-
+    async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
         return true;
       } else if (account?.provider === "credentials") {
         if (user?.access_token) {
-          // if invite link exists within extra_params add new user_team_s relation to the database
-
           return true;
         } else {
           if (user?.detail) {
