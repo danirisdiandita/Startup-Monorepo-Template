@@ -52,6 +52,7 @@ def generate_invitation_link(
     invitation_token = password_utils.create_access_token(
         data={
             "sub": email.recipient,
+            "email": email.recipient, 
             "sender_email": current_user.email,
             "recipient_email": email.recipient,
             "token_type": constants.token_type_invitation_link,
@@ -98,6 +99,8 @@ def validate_team_invitation(
 ): 
     
     
-    print("team_validation.invite_link", team_validation.invite_link)
+    # print("team_validation.invite_link", team_validation.invite_link)
 
-    return {'message': 'gitu'}
+    result = team_service.validate_and_insert_user_team_s(current_user, team_validation.invite_link)
+
+    return JSONResponse(status_code=200, content=result.dict())

@@ -1,11 +1,17 @@
 from re import sub
+
+from fastapi import HTTPException, status 
 from app.db.base import engine
 
 from sqlmodel import Session, select, update
 from app.models.user import User
 from app.models.team import Team
-from app.models.user_team import UserTeam
+from app.models.user_team import Access, Role, UserTeam
 from app.schemas.team import TeamNameReplacer
+from app.utils.password_utils import PasswordUtils
+from app.core.config import constants
+
+password_utils = PasswordUtils() 
 
 
 class TeamService:
@@ -93,9 +99,53 @@ class TeamService:
             result = session.exec(team_statement)
             return result.one() 
     
-    
+    def insert_user_team_s(self, sender_user: User, recipient_user: User): 
+        with Session(engine) as session: 
+            sender_user_id = select(User.id).where(
+                User.email == sender_user.email
+            )
+
+            subquery_team_id = select(UserTeam.team_id).where(
+                UserTeam.user_id == sender_user_id,
+                UserTeam.role == "admin",
+                UserTeam.access == "admin",
+            ).subquery() 
+
+            insert_stmt = UserTeam(
+                user_id=recipient_user.id, 
+                team_id=subquery_team_id, 
+                role=Role.member, 
+                access=Access.view, 
+                verified=True 
+            )
+
+            session.add(insert_stmt)
+            session.commit() 
+            session.refresh(insert_stmt)
+            return insert_stmt
+
+
+
     def validate_and_insert_user_team_s(self, current_user, invite_link: str): 
-        return {'gitu': 'gitu'}
+        
+        # current_user.email
+        # invite_link
+
+        invitation_info = password_utils.decode_token(token=invite_link, token_type=constants.token_type_invitation_link)
+
+        # print("invitation_info", invitation_info)
+
+        # {'sub': 'sirlcern3@gmail.com', 
+        #  'email': 'sirlcern3@gmail.com', 
+        #  'sender_email': 'norma.risdiandita@gmail.com', 
+        #  'recipient_email': 'sirlcern3@gmail.com', 
+        #  'token_type': 'invitation'} 
+        # 
+        if invitation_info.get('recipient_email') != current_user.email: 
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User and Invitation Link Mismatch")
+        
+        result = self.insert_user_team_s(User(email=invitation_info.get("sender_email")), current_user)
+        return result 
 
 
             
