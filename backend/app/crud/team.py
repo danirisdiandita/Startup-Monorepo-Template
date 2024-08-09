@@ -92,6 +92,9 @@ class TeamService:
 
             result = session.exec(team_statement)
             return result.one() 
+    
+    
+    # def insert_user_team_s(self, user: User, )
 
 
             

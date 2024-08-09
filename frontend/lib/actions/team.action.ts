@@ -36,10 +36,10 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
 
       if (response?.is_user_registered) {
         invitationLink =
-          Env.nextAuthURL + "/sign-in" + `?link=${response?.link}`;
+          Env.nextAuthURL + "/sign-in" + `?invite_link=${response?.link}`;
       } else {
         invitationLink =
-          Env.nextAuthURL + "/sign-up" + `?link=${response?.link}`;
+          Env.nextAuthURL + "/sign-up" + `?invite_link=${response?.link}`;
       }
 
       config = {

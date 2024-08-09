@@ -20,17 +20,20 @@ import { authFormSchema } from "../../lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signUp } from "../../lib/actions/user.action";
-import {
-  signIn as signInWithNextAuth,
-  useSession,
-} from "next-auth/react";
+import { signIn as signInWithNextAuth, useSession } from "next-auth/react";
 
 import { PagePath } from "@/common/constants/page-path.constant";
-import { toast } from 'sonner'; 
+import { toast } from "sonner";
 
 // import PlaidLink from "./PlaidLink";
 
-const AuthForm = ({ type }: { type: string }) => {
+const AuthForm = ({
+  type,
+  extra_params = {},
+}: {
+  type: string;
+  extra_params?: any;
+}) => {
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -64,11 +67,14 @@ const AuthForm = ({ type }: { type: string }) => {
         };
 
         const newUser = await signUp(userData);
-        router.push(`/please-confirm/${JSON.stringify(data)}`)
+        router.push(`/please-confirm/${JSON.stringify(data)}`);
         setUser(newUser);
       } else if (type === "sign-in") {
-        
-        const response = await signInWithNextAuth('credentials', {email: data?.email, password: data?.password, redirect: false})  
+        const response = await signInWithNextAuth("credentials", {
+          email: data?.email,
+          password: data?.password,
+          redirect: false,
+        }, extra_params);
 
         // if success show below
 
@@ -79,7 +85,7 @@ const AuthForm = ({ type }: { type: string }) => {
         //   "url": "http://127.0.0.1:3000/sign-in"
         // }
 
-        // if error show below                
+        // if error show below
         // {
         //   "error": "Incorrect Password",
         //   "status": 200,
@@ -87,37 +93,32 @@ const AuthForm = ({ type }: { type: string }) => {
         //   "url": null
         // }
         if (response?.error) {
-          toast.error(response?.error, {position: 'bottom-center'})
+          toast.error(response?.error, { position: "bottom-center" });
         } else {
           router.push("/dashboard");
         }
-
       }
     } catch (err) {
-
       // console.log('err', err)
 
-      let errorMessage: string = ''; 
+      let errorMessage: string = "";
 
       if (err instanceof Error) {
-        errorMessage = err.message; 
+        errorMessage = err.message;
       } else if (typeof err === "string") {
-        errorMessage = err 
-      } 
+        errorMessage = err;
+      }
 
-      toast.error(errorMessage, {position: 'bottom-center'})
-      
-
+      toast.error(errorMessage, { position: "bottom-center" });
     } finally {
       setIsLoading(false);
     }
   };
 
-
   const onGoogleSignInSubmit = async () => {
-    setIsLoading(true); 
-    const response = await signInWithNextAuth("google", {redirect: false})
-  }
+    setIsLoading(true);
+    const response = await signInWithNextAuth("google", { redirect: false });
+  };
 
   return (
     <section className="auth-form">

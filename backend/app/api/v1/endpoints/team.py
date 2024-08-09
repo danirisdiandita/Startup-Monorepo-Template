@@ -61,11 +61,13 @@ def generate_invitation_link(
     # check if recipient within database or not
 
     recipient_data = user_service.get_one_user_by_email(User(email=email.recipient))
+    
+    # create a user_id to team relation to the database 
+    
 
     is_user_registered = False
 
     if len(recipient_data) > 0:
-
         is_user_registered = True
 
     return JSONResponse(

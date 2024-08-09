@@ -6,15 +6,12 @@ import React from "react";
 
 const SignIn = () => {
   const searchParams = useSearchParams();
-  console.log("searchParams", searchParams);
 
-  if (searchParams.get("link")) {
-    console.log('searchParams.get("link")', searchParams.get("link"));
-  
-  }
+  const extraParamsObject = Object.fromEntries(searchParams.entries());
+
   return (
     <section className="flex-center size-full max-sm:px-6">
-      <AuthForm type="sign-in" />
+      <AuthForm type="sign-in" extra_params={extraParamsObject} />
     </section>
   );
 };
