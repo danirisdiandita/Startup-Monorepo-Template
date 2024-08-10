@@ -103,7 +103,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log("req from authorize", req.query);
         let user = {
           name: credentials?.email,
           password: credentials?.password,
@@ -126,8 +125,25 @@ export const authOptions: NextAuthOptions = {
           if (results?.access_token) {
 
             // if logged in successfully then if invited to the workspace then 
-            
-            
+
+            if (req.query) {
+              if ('invite_link' in req.query) {
+                const backendServiceInvitation = new BackendService({
+                  accessToken: results?.access_token
+                })
+
+                const inviteConfig = {
+                  method: HttpMethod.POST,
+                  data: {
+                    invite_link: req.query.invite_link
+                  }
+                }
+
+                await backendServiceInvitation.request("/v1/teams/validate-team-invitation",
+                  inviteConfig
+                )
+              }
+            }
 
 
             user = {
