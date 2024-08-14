@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from app.crud.user import UserService
 from app.models.user import User
 from typing import Annotated, Union
+from app.models.user_team import UserTeam
 from app.schemas.email import Email
 from app.schemas.sample import Sample1, Sample2
 from app.schemas.team import TeamNameReplacer, TeamValidation
@@ -70,6 +71,16 @@ def generate_invitation_link(
 
     if len(recipient_data) > 0:
         is_user_registered = True
+        
+    # user_id = None 
+    # email = email.recipient 
+    # team_id = 
+    
+        
+        
+    # if is_user_registered == True: 
+        
+
 
     return JSONResponse(
         status_code=200,

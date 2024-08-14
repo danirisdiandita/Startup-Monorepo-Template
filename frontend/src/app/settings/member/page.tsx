@@ -261,6 +261,7 @@ const Workspace = () => {
                   <TableHeader>Email</TableHeader>
                   <TableHeader>Role</TableHeader>
                   <TableHeader>Access</TableHeader>
+                  <TableHeader>Status</TableHeader>
                 </TableRow>
               </TableHead>
               {memberData ? (
@@ -290,6 +291,13 @@ const Workspace = () => {
                       </TableCell>
                       <TableCell className="text-zinc-500 w-32">
                         {user.access}
+                      </TableCell>
+                      <TableCell className="text-zinc-500 w-32">
+                        {user?.verified ? (
+                          <Badge color="lime">active</Badge>
+                        ) : (
+                          <Badge color="rose">request sent</Badge>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
