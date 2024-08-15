@@ -7,3 +7,6 @@ class TeamNameReplacer(BaseModel):
     
 class TeamValidation(BaseModel): 
     invite_link: str 
+    
+class TeamEmailInvitationEmail(Email): 
+    team_id: int 

@@ -7,7 +7,13 @@ import { TeamInvitationEmail } from "../../emails/TeamInvitation";
 import { Env } from "@/common/env";
 import { renderAsync } from "@react-email/components";
 
-export const sendTeamInvite = async ({ email }: { email: string }) => {
+export const sendTeamInvite = async ({
+  email,
+  team_id,
+}: {
+  email: string;
+  team_id: number;
+}) => {
   try {
     const session = await getServerSession(authOptions);
 
@@ -18,6 +24,7 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
         recipient: email,
         sender: session?.email,
         body: "",
+        team_id: team_id 
       },
     };
 
@@ -30,7 +37,6 @@ export const sendTeamInvite = async ({ email }: { email: string }) => {
         "/v1/teams/invitation-link",
         config
       );
-
 
       let invitationLink: string;
 

@@ -3,10 +3,10 @@ from fastapi.responses import JSONResponse
 from app.crud.user import UserService
 from app.models.user import User
 from typing import Annotated, Union
-from app.models.user_team import UserTeam
+from app.models.user_team import Access, Role, UserTeam
 from app.schemas.email import Email
 from app.schemas.sample import Sample1, Sample2
-from app.schemas.team import TeamNameReplacer, TeamValidation
+from app.schemas.team import TeamEmailInvitationEmail, TeamNameReplacer, TeamValidation
 from app.utils.password_utils import PasswordUtils, get_current_active_user
 from app.crud.team import TeamService
 from app.core.config import constants
@@ -47,7 +47,7 @@ def generate_invitation_link(
         User,
         Depends(get_current_active_user),
     ],
-    email: Email,
+    email: TeamEmailInvitationEmail,
 ):
 
     invitation_token = password_utils.create_access_token(
@@ -72,15 +72,27 @@ def generate_invitation_link(
     if len(recipient_data) > 0:
         is_user_registered = True
         
-    # user_id = None 
-    # email = email.recipient 
-    # team_id = 
+    user_id = None 
+    user_email = email.recipient 
+    team_id = email.team_id 
+    role = Role.member 
+    access = Access.view 
+    verified = False 
     
+    if is_user_registered: 
+        # extract user_id 
+        user_id = recipient_data[0].get('id')
         
-        
-    # if is_user_registered == True: 
-        
-
+    user_team_ = UserTeam(
+        user_id=user_id, 
+        user_email=user_email, 
+        team_id=team_id, 
+        role=role, 
+        access=access, 
+        verified=verified 
+    )
+    
+    team_service.create_new_team_user_relation(user_team=user_team_)
 
     return JSONResponse(
         status_code=200,

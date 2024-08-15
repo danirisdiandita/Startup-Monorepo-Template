@@ -253,6 +253,7 @@ def register(user: User):
         new_team_user_relation = UserTeam(
             user_id=user_id,
             team_id=new_team.id,
+            user_email=registered_user_data_model.email, 
             role=Role.admin,
             access=Access.admin,
             verified=True,

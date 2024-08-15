@@ -61,6 +61,9 @@ const Workspace = () => {
   const [defaultWorkspaceName, setDefaultWorkspaceName] = useState("");
   const [workspaceName, setWorkspaceName] = useState("");
   const session = useSession();
+
+  const [teamId, setTeamId] = useState<number | null>(null);
+
   const [
     isSendingMemberInvitationLoading,
     setIsSendingMemberInvitationLoading,
@@ -70,6 +73,7 @@ const Workspace = () => {
     if (memberData) {
       if (memberData.length > 0) {
         setDefaultWorkspaceName(memberData[0].team_name);
+        setTeamId(memberData[0].team_id);
       }
     }
   }, [memberData]);
@@ -99,14 +103,21 @@ const Workspace = () => {
   const onSendingInvitation = async () => {
     setIsSendingMemberInvitationLoading(true);
     try {
-      const payload = {
-        email: newMemberEmail,
-      };
+      if (teamId) {
+        const payload = {
+          email: newMemberEmail,
+          team_id: teamId as number,
+        };
 
-      const result = await sendTeamInvite(payload);
-      toast.success(`workspace invitation is sent to ${newMemberEmail}`, {
-        position: "bottom-center",
-      });
+        const result = await sendTeamInvite(payload);
+        toast.success(`workspace invitation is sent to ${newMemberEmail}`, {
+          position: "bottom-center",
+        });
+      } else {
+        toast.error(`invitation to ${newMemberEmail} failed please try again`, {
+          position: "bottom-center",
+        });
+      }
     } catch (error) {
       toast.error(`invitation to ${newMemberEmail} failed please try again`, {
         position: "bottom-center",
@@ -270,12 +281,21 @@ const Workspace = () => {
                     <TableRow key={user.id}>
                       <TableCell className="font-medium flex justify-start space-x-2 items-center w-72">
                         <Avatar
-                          initials={user?.first_name[0] + user?.last_name[0]}
+                          initials={
+                            user?.first_name && user?.last_name
+                              ? `${user.first_name[0]}${user.last_name[0]}`
+                              : user.email.slice(
+                                  0,
+                                  Math.min(2, user.email.length)
+                                )
+                          }
                           square
                           className="size-8 bg-zinc-900 text-white dark:bg-white dark:text-black-1 font-semibold"
                         />
                         <div>
-                          {user.first_name + " " + user.last_name}
+                          {user?.first_name
+                            ? user.first_name + " " + user.last_name
+                            : "Pending - " +  user.email.split('@')[0]}
                           {session?.data?.email === user.email ? (
                             <Badge color="lime" className="ml-2">
                               you

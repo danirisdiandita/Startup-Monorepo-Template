@@ -31,6 +31,7 @@ class TeamService:
             session.commit()
             session.refresh(user_team)
             return user_team
+    
 
     def get_default_team_member_of_a_user(self, user: User):
         with Session(engine) as session:
@@ -43,7 +44,7 @@ class TeamService:
                 select(
                     UserTeam.id,
                     UserTeam.user_id,
-                    User.email,
+                    UserTeam.user_email,
                     User.first_name,
                     User.last_name,
                     UserTeam.team_id,
@@ -52,7 +53,7 @@ class TeamService:
                     UserTeam.access,
                     UserTeam.verified 
                 )
-                .join(User, User.id == UserTeam.user_id).join(Team, UserTeam.team_id == Team.id)
+                .join(User, User.id == UserTeam.user_id, isouter=True).join(Team, UserTeam.team_id == Team.id)
                 .where(UserTeam.team_id == subquery_team_id)
             )
 
@@ -65,7 +66,7 @@ class TeamService:
                         {
                             "id": doc_.id,
                             "user_id": doc_.user_id,
-                            "email": doc_.email, 
+                            "email": doc_.user_email, 
                             "first_name": doc_.first_name, 
                             "last_name": doc_.last_name, 
                             "team_id": doc_.team_id,
