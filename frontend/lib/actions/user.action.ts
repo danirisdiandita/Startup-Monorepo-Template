@@ -14,6 +14,7 @@ interface SignUpParams {
   firstName?: string;
   lastName?: string;
   password?: string;
+  invite_link?: string; 
 }
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {

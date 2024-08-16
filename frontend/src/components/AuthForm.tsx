@@ -59,22 +59,30 @@ const AuthForm = ({
     setIsLoading(true);
     try {
       if (type === "sign-up") {
+        console.log("extra_params", extra_params, typeof extra_params);
         const userData = {
           firstName: data.firstName!,
           lastName: data.lastName!,
           email: data.email,
           password: data.password,
+          invite_link: extra_params?.invite_link
+            ? extra_params?.invite_link
+            : "",
         };
 
         const newUser = await signUp(userData);
         router.push(`/please-confirm/${JSON.stringify(data)}`);
         setUser(newUser);
       } else if (type === "sign-in") {
-        const response = await signInWithNextAuth("credentials", {
-          email: data?.email,
-          password: data?.password,
-          redirect: false,
-        }, extra_params);
+        const response = await signInWithNextAuth(
+          "credentials",
+          {
+            email: data?.email,
+            password: data?.password,
+            redirect: false,
+          },
+          extra_params
+        );
 
         // if success show below
 

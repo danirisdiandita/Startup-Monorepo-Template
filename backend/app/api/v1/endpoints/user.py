@@ -10,7 +10,7 @@ from app.models.team import Team
 from app.models.user_team import Access, Role, UserTeam
 from app.schemas.change_password import ChangePassword
 from app.schemas.email import Email, EmailOnly
-from app.models.user import User
+from app.models.user import RegisterUser, User
 from app.schemas.password import ResetPassword
 from app.schemas.token import RefreshToken
 from app.crud.user import UserService
@@ -199,7 +199,7 @@ def login_with_google(google_sign_in: GoogleSignIn):
 
 
 @router.post("/register")
-def register(user: User):
+def register(user: RegisterUser):
     # check user within database or not
     user_array = user_service.get_one_user_by_email(user)
 
@@ -259,6 +259,10 @@ def register(user: User):
             verified=True,
         )
         team_service.create_new_team_user_relation(new_team_user_relation)
+        
+        # if user.invite_link: 
+        #     team_service.validate_and_insert_user_team_s()
+            
 
     except Exception as e:
         raise HTTPException(
