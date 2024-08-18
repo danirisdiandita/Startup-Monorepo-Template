@@ -137,7 +137,8 @@ class TeamService:
             session.commit()
             session.refresh(user_team_s)
 
-            print("Updated user_team_s", user_team_s)
+            # print("Updated user_team_s", user_team_s)
+            return user_team_s 
 
             # insert_stmt = UserTeam(
             #     user_id=recipient_user.id,
