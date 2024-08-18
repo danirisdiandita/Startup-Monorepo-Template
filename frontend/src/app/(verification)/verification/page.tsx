@@ -2,15 +2,20 @@
 import { Button } from "@/components/catalyst/button";
 import { Text } from "@/components/catalyst/text";
 import { useGetVerifyStatusToTrueQuery } from "@/lib/services/verification";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 
-const VerificationPage = ({
-  params = { verificationToken: "" },
-}: {
-  params: { verificationToken: string };
-}) => {
+const VerificationPage = () => {
+  const searchParams = useSearchParams();
+  const extraParamsObject = Object.fromEntries(searchParams.entries());
+
+  // {
+  //   params = { verificationToken: "" },
+  // }: {
+  //   params: { verificationToken: string };
+  // }
   const { data, error, isLoading } = useGetVerifyStatusToTrueQuery(
-    params?.verificationToken
+    extraParamsObject
   );
 
   return (

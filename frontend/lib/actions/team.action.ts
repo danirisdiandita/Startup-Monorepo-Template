@@ -1,5 +1,5 @@
 "use server";
-import BackendService, { HttpMethod } from "@/common/backend.service";
+import BackendService, { HttpMethod, RequestConfig } from "@/common/backend.service";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
 import { parseStringify } from "../utils";
@@ -17,7 +17,7 @@ export const sendTeamInvite = async ({
   try {
     const session = await getServerSession(authOptions);
 
-    let config = {
+    let config: RequestConfig = {
       method: HttpMethod.POST,
       data: {
         subject: "request invitation link",

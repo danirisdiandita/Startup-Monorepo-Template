@@ -118,15 +118,20 @@ class TeamService:
                 )
                 .subquery()
             )
+            
+            subquery_recipient_user_id = (
+                select(User.id).where(User.email == recipient_user.email)
+            )
 
             statement = (
                 select(UserTeam)
-                .where(UserTeam.id == subquery_team_id)
+                .where(UserTeam.team_id == subquery_team_id)
                 .where(UserTeam.user_email == recipient_user.email)
             )
             results = session.exec(statement)
             user_team_s = results.one()
             user_team_s.verified = True
+            user_team_s.user_id = subquery_recipient_user_id 
 
             session.add(user_team_s)
             session.commit()

@@ -7,7 +7,7 @@ export enum HttpMethod {
   PUT = "PUT", 
 }
 
-interface RequestConfig {
+export interface RequestConfig {
   method?: HttpMethod;
   timeout?: number;
   headers?: Record<string, any>;

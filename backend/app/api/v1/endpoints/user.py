@@ -1,4 +1,4 @@
-from fastapi import APIRouter, FastAPI, HTTPException, Depends, Request, Response
+from fastapi import APIRouter, FastAPI, HTTPException, Depends, Query, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from app.core.config import settings
@@ -199,7 +199,18 @@ def login_with_google(google_sign_in: GoogleSignIn):
 
 
 @router.post("/register")
-def register(user: RegisterUser):
+def register(register_user: RegisterUser):
+    
+    user = User(
+        email=register_user.email, 
+        password=register_user.password, 
+        first_name=register_user.first_name, 
+        last_name=register_user.last_name, 
+        verified=register_user.verified, 
+        created_at=register_user.created_at, 
+        updated_at=register_user.updated_at 
+    )
+    
     # check user within database or not
     user_array = user_service.get_one_user_by_email(user)
 
@@ -253,18 +264,18 @@ def register(user: RegisterUser):
         new_team_user_relation = UserTeam(
             user_id=user_id,
             team_id=new_team.id,
-            user_email=registered_user_data_model.email, 
+            user_email=registered_user_data_model.email,
             role=Role.admin,
             access=Access.admin,
             verified=True,
         )
         team_service.create_new_team_user_relation(new_team_user_relation)
-        
-        # if user.invite_link: 
+
+        # if user.invite_link:
         #     team_service.validate_and_insert_user_team_s()
-            
 
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=500, detail="Unknown Error, Please Try Again or Contact Us"
         )
@@ -364,8 +375,8 @@ def refresh(token: RefreshToken):
     )
 
 
-@router.get("/verify/{verification_token}")
-def verify_email(verification_token: str):
+@router.get("/verify")
+def verify_email(verification_token: str = Query(...), invite_link: str = Query(None)):
     # check if the verification is the latest verification token
 
     verification_payload = password_utils.decode_token(
@@ -391,6 +402,9 @@ def verify_email(verification_token: str):
             email=verification_payload.get("email"),
         )
 
+    # if contains the invitation link then validate True the user_team_s data
+    if invite_link:
+        team_service.validate_and_insert_user_team_s(user_, invite_link)
     return JSONResponse(status_code=200, content={"verified": True})
 
 

@@ -59,7 +59,6 @@ const AuthForm = ({
     setIsLoading(true);
     try {
       if (type === "sign-up") {
-        console.log("extra_params", extra_params, typeof extra_params);
         const userData = {
           firstName: data.firstName!,
           lastName: data.lastName!,

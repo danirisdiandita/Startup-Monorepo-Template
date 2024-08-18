@@ -14,11 +14,11 @@ interface SignUpParams {
   firstName?: string;
   lastName?: string;
   password?: string;
-  invite_link?: string; 
+  invite_link?: string;
 }
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
-  const { email, firstName, lastName } = userData;
+  const { email, firstName, lastName, invite_link } = userData;
 
   // saving to database
 
@@ -35,6 +35,13 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     };
     let results = await backendService.request("/v1/users/register", config);
 
+    let queryParams: { verification_token: string; invite_link?: string } = {
+      verification_token: results["verification_token"],
+      ...(invite_link && { invite_link: invite_link }),
+    };
+
+    const queryString = new URLSearchParams(queryParams).toString();
+
     const verificationConfig = {
       method: HttpMethod.POST,
       data: {
@@ -44,10 +51,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
         body: await renderAsync(
           VerifyEmail({
             username: firstName + " " + lastName,
-            inviteLink:
-              Env.nextAuthURL +
-              "/verification/" +
-              results["verification_token"],
+            inviteLink: Env.nextAuthURL + "/verification?" + queryString,
           })
         ),
       },
