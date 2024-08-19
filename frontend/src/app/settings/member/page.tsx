@@ -52,7 +52,12 @@ const validateEmail = (email: string) => {
 };
 
 const Workspace = () => {
-  const { data: memberData, error, isLoading } = useGetDefaultMembersQuery();
+  const {
+    data: memberData,
+    error,
+    isLoading,
+    refetch: memberDataRefetch,
+  } = useGetDefaultMembersQuery();
   const [isSavingButtonLoading, setIsSavingButtonLoading] = useState(false);
   const [updateDefaultWorkspaceName, defaultWorkspaceNameResult] =
     useUpdateDefaultWorkspaceNameMutation();
@@ -109,19 +114,26 @@ const Workspace = () => {
           team_id: teamId as number,
         };
 
-        const result = await sendTeamInvite(payload);
+        const result = await sendTeamInvite(payload).then(() => {
+          memberDataRefetch();
+        });
         toast.success(`workspace invitation is sent to ${newMemberEmail}`, {
           position: "bottom-center",
         });
+        setNewMemberEmail("");
       } else {
         toast.error(`invitation to ${newMemberEmail} failed please try again`, {
           position: "bottom-center",
         });
+
+        setNewMemberEmail("");
       }
     } catch (error) {
       toast.error(`invitation to ${newMemberEmail} failed please try again`, {
         position: "bottom-center",
       });
+
+      setNewMemberEmail("");
     }
 
     setIsSendingMemberInvitationLoading(false);
@@ -248,7 +260,6 @@ const Workspace = () => {
                 <Button
                   onClick={() => {
                     onSendingInvitation();
-                    setNewMemberEmail("");
                   }}
                   disabled={isNewMemberButtonDisabled}
                 >
@@ -295,7 +306,7 @@ const Workspace = () => {
                         <div>
                           {user?.first_name
                             ? user.first_name + " " + user.last_name
-                            : "Pending - " +  user.email.split('@')[0]}
+                            : "Pending - " + user.email.split("@")[0]}
                           {session?.data?.email === user.email ? (
                             <Badge color="lime" className="ml-2">
                               you
