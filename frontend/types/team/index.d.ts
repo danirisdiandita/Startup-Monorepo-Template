@@ -17,3 +17,7 @@ interface TeamInvitationEmailInterface {
   body: string;
   team_id: number;
 }
+
+interface ValidateTeamInvitation {
+  invite_link: string;
+}

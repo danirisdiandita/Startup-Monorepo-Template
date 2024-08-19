@@ -33,10 +33,20 @@ export const memberApi = createApi({
         },
       }),
     }),
+    validateTeamMember: builder.mutation<any, ValidateTeamInvitation>({
+      query: ({ invite_link }) => ({
+        url: `/teams/validate-team-member`,
+        method: "POST",
+        body: {
+          invite_link,
+        },
+      }),
+    }),
   }),
 });
 // useUpdateDefaultWorkspaceNameMutation
 export const {
   useGetDefaultMembersQuery,
   useUpdateDefaultWorkspaceNameMutation,
+  useValidateTeamMemberMutation, 
 } = memberApi;
