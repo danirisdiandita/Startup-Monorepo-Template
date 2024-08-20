@@ -68,7 +68,6 @@ declare module "next-auth" {
     access_token_expire?: number;
     refresh_token_expire?: number;
   }
-
 }
 
 // declare module "next-auth" {
@@ -124,28 +123,27 @@ export const authOptions: NextAuthOptions = {
           const results = await backendService.login(loginConfig);
 
           if (results?.access_token) {
-
-            // if logged in successfully then if invited to the workspace then 
+            // if logged in successfully then if invited to the workspace then
 
             if (req.query) {
-              if ('invite_link' in req.query) {
+              if ("invite_link" in req.query) {
                 const backendServiceInvitation = new BackendService({
-                  accessToken: results?.access_token
-                })
+                  accessToken: results?.access_token,
+                });
 
                 const inviteConfig = {
                   method: HttpMethod.POST,
                   data: {
-                    invite_link: req.query.invite_link
-                  }
-                }
+                    invite_link: req.query.invite_link,
+                  },
+                };
 
-                await backendServiceInvitation.request("/v1/teams/validate-team-invitation",
+                await backendServiceInvitation.request(
+                  "/v1/teams/validate-team-invitation",
                   inviteConfig
-                )
+                );
               }
             }
-
 
             user = {
               ...user,

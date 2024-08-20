@@ -131,10 +131,23 @@ def login_with_google(google_sign_in: GoogleSignIn):
                 token_type=constants.token_type_refresh_token, token=refresh_token
             )
 
-            return JSONResponse(
-                status_code=200,
-                content={"access_token": access_token,
-                         "refresh_token": refresh_token},
+            # return JSONResponse(
+            #     status_code=200,
+            #     content={"access_token": access_token,
+            #              "refresh_token": refresh_token},
+            # )
+            return Token(
+                access_token=access_token,
+                refresh_token=refresh_token,
+                first_name=user_data[0].get("first_name"),
+                last_name=user_data[0].get("last_name"),
+                token_type="bearer",
+                access_token_expire=int(
+                    (now + constants.access_token_expires).timestamp()
+                ),
+                refresh_token_expire=int(
+                    (now + constants.refresh_token_expires).timestamp()
+                ),
             )
         else:
             # register to database if the user doesn't exists
@@ -175,18 +188,32 @@ def login_with_google(google_sign_in: GoogleSignIn):
                     token_type=constants.token_type_refresh_token, token=refresh_token
                 )
 
-                return JSONResponse(
-                    status_code=200,
-                    content={
-                        "access_token": access_token,
-                        "refresh_token": refresh_token,
-                        "access_token_expire": int(
-                            (now + constants.access_token_expires).timestamp()
-                        ),
-                        "refresh_token_expire": int(
-                            (now + constants.refresh_token_expires).timestamp()
-                        ),
-                    },
+                # return JSONResponse(
+                #     status_code=200,
+                #     content={
+                #         "access_token": access_token,
+                #         "refresh_token": refresh_token,
+                #         "access_token_expire": int(
+                #             (now + constants.access_token_expires).timestamp()
+                #         ),
+                #         "refresh_token_expire": int(
+                #             (now + constants.refresh_token_expires).timestamp()
+                #         ),
+                #     },
+                # )
+
+                return Token(
+                    access_token=access_token,
+                    refresh_token=refresh_token,
+                    access_token_expire=int(
+                        (now + constants.access_token_expires).timestamp()
+                    ),
+                    refresh_token_expire=int(
+                        (now + constants.refresh_token_expires).timestamp()
+                    ),
+                    first_name=google_sign_in.first_name,
+                    last_name=google_sign_in.last_name,
+                    token_type="bearer",
                 )
 
             except Exception as e:
@@ -201,17 +228,17 @@ def login_with_google(google_sign_in: GoogleSignIn):
 
 @router.post("/register")
 def register(register_user: RegisterUser):
-    
+
     user = User(
-        email=register_user.email, 
-        password=register_user.password, 
-        first_name=register_user.first_name, 
-        last_name=register_user.last_name, 
-        verified=register_user.verified, 
-        created_at=register_user.created_at, 
-        updated_at=register_user.updated_at 
+        email=register_user.email,
+        password=register_user.password,
+        first_name=register_user.first_name,
+        last_name=register_user.last_name,
+        verified=register_user.verified,
+        created_at=register_user.created_at,
+        updated_at=register_user.updated_at,
     )
-    
+
     # check user within database or not
     user_array = user_service.get_one_user_by_email(user)
 
