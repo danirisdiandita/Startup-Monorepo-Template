@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ import { signIn as signInWithNextAuth, useSession } from "next-auth/react";
 
 import { PagePath } from "@/common/constants/page-path.constant";
 import { toast } from "sonner";
+import { useValidateTeamMemberMutation } from "@/lib/services/member";
 
 // import PlaidLink from "./PlaidLink";
 
@@ -36,10 +37,23 @@ const AuthForm = ({
 }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [validateTeamInvitation, validateTeamResults] =
+    useValidateTeamMemberMutation();
 
-  if (status === "authenticated") {
-    router.push(PagePath.DASHBOARD);
-  }
+  useEffect(() => {
+    if (status === "authenticated") {
+      if (extra_params?.invite_link) {
+        // validate the team invitation
+        validateTeamInvitation({ invite_link: extra_params.invite_link }).then(
+          (res) => {
+            router.push(PagePath.DASHBOARD);
+          }
+        );
+      } else {
+        router.push(PagePath.DASHBOARD);
+      }
+    }
+  }, [status]);
 
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

@@ -44,7 +44,7 @@ export const memberApi = createApi({
     }),
   }),
 });
-// useUpdateDefaultWorkspaceNameMutation
+
 export const {
   useGetDefaultMembersQuery,
   useUpdateDefaultWorkspaceNameMutation,

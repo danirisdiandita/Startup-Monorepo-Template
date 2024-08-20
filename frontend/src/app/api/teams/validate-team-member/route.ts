@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   // Do whatever you want
 
-  const teamInvitationEmail: TeamInvitationEmailInterface = await req.json();
+  const validateTeamInvitation: ValidateTeamInvitation = await req.json();
   const headers = req.headers;
   let bearerToken = "";
   headers.forEach((value, key) => {
@@ -18,15 +18,12 @@ export async function POST(req: NextRequest) {
     headers: {
       Authorization: bearerToken,
     },
-    data: teamInvitationEmail,
+    data: validateTeamInvitation,
   };
   const backendService = new BackendService();
   const results = await backendService.request(
-    "/v1/teams/invitation-link",
+    "/v1/teams/validate-team-invitation",
     config
   );
   return NextResponse.json({ results }, { status: 200 });
 }
-
-
-// /v1/teams/validate-team-invitation
