@@ -138,7 +138,7 @@ const AuthForm = ({
 
   const onGoogleSignInSubmit = async () => {
     setIsLoading(true);
-    const response = await signInWithNextAuth("google", { redirect: false });
+    const response = await signInWithNextAuth("google", { redirect: false }, extra_params);
   };
 
   return (

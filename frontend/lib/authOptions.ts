@@ -68,6 +68,7 @@ declare module "next-auth" {
     access_token_expire?: number;
     refresh_token_expire?: number;
   }
+
 }
 
 // declare module "next-auth" {
