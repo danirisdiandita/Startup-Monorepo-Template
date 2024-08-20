@@ -133,7 +133,8 @@ def login_with_google(google_sign_in: GoogleSignIn):
 
             return JSONResponse(
                 status_code=200,
-                content={"access_token": access_token, "refresh_token": refresh_token},
+                content={"access_token": access_token,
+                         "refresh_token": refresh_token},
             )
         else:
             # register to database if the user doesn't exists
