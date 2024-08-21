@@ -188,7 +188,6 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user, account, profile, trigger, session }) {
       if (trigger === "update") {
-        console.log("session?.data;", session?.data);
         return session?.data;
       }
       if (account?.provider === "google") {
