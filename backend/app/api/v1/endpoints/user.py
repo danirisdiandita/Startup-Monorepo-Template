@@ -136,6 +136,9 @@ def login_with_google(google_sign_in: GoogleSignIn):
             #     content={"access_token": access_token,
             #              "refresh_token": refresh_token},
             # )
+            
+            now = datetime.datetime.now() 
+            
             return Token(
                 access_token=access_token,
                 refresh_token=refresh_token,

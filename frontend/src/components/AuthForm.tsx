@@ -36,12 +36,13 @@ const AuthForm = ({
   extra_params?: any;
 }) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
+  const session = useSession();
   const [validateTeamInvitation, validateTeamResults] =
     useValidateTeamMemberMutation();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (session.status === "authenticated") {
       if (extra_params?.invite_link) {
         // validate the team invitation
         validateTeamInvitation({ invite_link: extra_params.invite_link }).then(
@@ -53,7 +54,7 @@ const AuthForm = ({
         router.push(PagePath.DASHBOARD);
       }
     }
-  }, [status]);
+  }, [session.status]);
 
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -138,7 +139,22 @@ const AuthForm = ({
 
   const onGoogleSignInSubmit = async () => {
     setIsLoading(true);
-    const response = await signInWithNextAuth("google", { redirect: false }, extra_params);
+
+    if (extra_params) {
+      session.update({
+        ...session,
+        data: {
+          ...session.data,
+          ...extra_params,
+        },
+      });
+    }
+
+    const response = await signInWithNextAuth(
+      "google",
+      { redirect: false },
+      extra_params
+    );
   };
 
   return (
