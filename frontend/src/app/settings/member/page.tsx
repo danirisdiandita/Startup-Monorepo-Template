@@ -129,7 +129,8 @@ const Workspace = () => {
         setNewMemberEmail("");
       }
     } catch (error) {
-      toast.error(`invitation to ${newMemberEmail} failed please try again`, {
+      const errorMessage = (error as Error).message;
+      toast.error(errorMessage, {
         position: "bottom-center",
       });
 

@@ -68,6 +68,10 @@ export const sendTeamInvite = async ({
         config
       );
       return parseStringify(response);
-    } catch (error) {}
-  } catch (error) {}
+    } catch (error) {
+      throw error 
+    }
+  } catch (error) {
+    throw error 
+  }
 };

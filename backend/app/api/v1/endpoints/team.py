@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from app.crud.user import UserService
 from app.models.user import User
@@ -50,7 +50,7 @@ def generate_invitation_link(
     email: TeamEmailInvitationEmail,
 ):
     
-    # if the user already invited then raise an error 
+    
 
 
     
@@ -96,7 +96,18 @@ def generate_invitation_link(
         access=access, 
         verified=verified 
     )
-    
+
+    # if the user already invited then raise an error 
+
+    existing_user = team_service.get_one_user_team(user_team=user_team_)
+
+    if len(existing_user) > 0: 
+        if existing_user[0].get("user_id") is None: 
+            raise HTTPException(status_code=409, detail="There is already a pending invitation for this email")
+        else: 
+            raise HTTPException(status_code=409, detail="User is already a member of this workspace")
+        
+
     team_service.create_new_team_user_relation(user_team=user_team_)
 
     return JSONResponse(

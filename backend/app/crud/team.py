@@ -24,7 +24,16 @@ class TeamService:
             session.commit()
             session.refresh(team)
             return team
-
+        
+    def get_one_user_team(self, user_team: UserTeam): 
+        with Session(engine) as session:
+            statement = select(UserTeam).where(UserTeam.user_email == user_team.user_email).where(UserTeam.team_id == user_team.team_id)
+            docs = session.exec(statement)
+            output = []
+            for doc_ in docs: 
+                output.append(doc_.dict())
+            return output 
+        
     def create_new_team_user_relation(self, user_team: UserTeam):
         with Session(engine) as session:
             session.add(user_team)
