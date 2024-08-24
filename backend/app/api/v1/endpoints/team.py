@@ -49,6 +49,11 @@ def generate_invitation_link(
     ],
     email: TeamEmailInvitationEmail,
 ):
+    
+    # if the user already invited then raise an error 
+
+
+    
 
     invitation_token = password_utils.create_access_token(
         data={
