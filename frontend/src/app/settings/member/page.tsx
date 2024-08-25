@@ -45,6 +45,7 @@ import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { sendTeamInvite } from "../../../../lib/actions/team.action";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -68,6 +69,40 @@ const Workspace = () => {
   const session = useSession();
 
   const [teamId, setTeamId] = useState<number | null>(null);
+
+  const [page, setPage] = useState({
+    currentPage: 0,
+    elementPerPage: 5,
+    totalPage: 0,
+    emailQuery: '', 
+  });
+
+  const filterByEmail = (item: any, query: any) =>
+    item.email.toLowerCase().includes(query.toLowerCase());
+
+  const paginateArray = (
+    array: any,
+    pageNumber: any,
+    pageSize: any,
+    filterQuery: any
+  ) => {
+    if (typeof array === "undefined") {
+      return array;
+    }
+    // Apply the filter
+    const filteredArray = array.filter((item: any) =>
+      filterByEmail(item, filterQuery)
+    );
+
+    // Calculate start and end indices
+    const startIndex = pageNumber * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    // Return the paginated and filtered array
+    console.log("array", array);
+
+    return filteredArray.slice(startIndex, endIndex);
+  };
 
   const [
     isSendingMemberInvitationLoading,
@@ -287,9 +322,19 @@ const Workspace = () => {
                   <TableHeader>Status</TableHeader>
                 </TableRow>
               </TableHead>
-              {memberData ? (
+              {paginateArray(
+                memberData,
+                page.currentPage,
+                page.elementPerPage,
+                ""
+              ) ? (
                 <TableBody>
-                  {memberData.map((user: any) => (
+                  {paginateArray(
+                    memberData,
+                    page.currentPage,
+                    page.elementPerPage,
+                    ""
+                  ).map((user: any) => (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium flex justify-start space-x-2 items-center w-72">
                         <Avatar
@@ -361,6 +406,19 @@ const Workspace = () => {
               )}
             </Table>
           </div>
+          <div className="flex justify-between items-center">
+            <Text>Showing 1 to 10 of 20 results</Text>
+            <div className="flex justify-end space-x-4">
+              <Button plain>
+                <ArrowLeftIcon />
+                Previous{" "}
+              </Button>
+              <Button plain>
+                Next <ArrowRightIcon />
+              </Button>
+            </div>
+          </div>
+
           {/* <p>{data ? JSON.stringify(data): ''}</p> */}
         </div>
       </div>
