@@ -74,7 +74,7 @@ const Workspace = () => {
     currentPage: 0,
     elementPerPage: 5,
     totalPage: 0,
-    emailQuery: '', 
+    emailQuery: "",
   });
 
   const filterByEmail = (item: any, query: any) =>
@@ -99,7 +99,6 @@ const Workspace = () => {
     const endIndex = startIndex + pageSize;
 
     // Return the paginated and filtered array
-    console.log("array", array);
 
     return filteredArray.slice(startIndex, endIndex);
   };
@@ -231,8 +230,13 @@ const Workspace = () => {
                 <MagnifyingGlassIcon />
                 <Input
                   name="search"
-                  placeholder="Search&hellip;"
+                  placeholder="Search for Email&hellip; "
                   aria-label="Search"
+                  value={page.emailQuery}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setPage({ ...page, emailQuery: e.target.value });
+                  }}
                 />
               </InputGroup>
             </div>
@@ -326,14 +330,14 @@ const Workspace = () => {
                 memberData,
                 page.currentPage,
                 page.elementPerPage,
-                ""
+                page.emailQuery
               ) ? (
                 <TableBody>
                   {paginateArray(
                     memberData,
                     page.currentPage,
                     page.elementPerPage,
-                    ""
+                    page.emailQuery
                   ).map((user: any) => (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium flex justify-start space-x-2 items-center w-72">
@@ -407,13 +411,37 @@ const Workspace = () => {
             </Table>
           </div>
           <div className="flex justify-between items-center">
-            <Text>Showing 1 to 10 of 20 results</Text>
+            <Text>{`Showing ${page.currentPage * page.elementPerPage + 1} to ${
+              memberData
+                ? Math.min(
+                    memberData?.length,
+                    (page.currentPage + 1) * page.elementPerPage
+                  )
+                : 0
+            } of ${memberData ? memberData.length : 0} results`}</Text>
             <div className="flex justify-end space-x-4">
-              <Button plain>
+              <Button
+                plain
+                onClick={() =>
+                  setPage({ ...page, currentPage: page.currentPage - 1 })
+                }
+                disabled={page.currentPage === 0}
+              >
                 <ArrowLeftIcon />
                 Previous{" "}
               </Button>
-              <Button plain>
+              <Button
+                plain
+                onClick={() =>
+                  setPage({ ...page, currentPage: page.currentPage + 1 })
+                }
+                disabled={
+                  memberData
+                    ? page.currentPage ===
+                      Math.ceil(memberData.length / page.elementPerPage) - 1 
+                    : true
+                }
+              >
                 Next <ArrowRightIcon />
               </Button>
             </div>
