@@ -210,15 +210,18 @@ export const authOptions: NextAuthOptions = {
           googleSignInConfig
         );
 
-        return {
+        const output =  {
+          ...token,
           access_token: results?.access_token,
           expires_at: account?.expires_at,
           refresh_token: results?.refresh_token,
-          ...token,
-          first_name: profile?.given_name ? profile?.given_name : "Guest",
-          last_name: profile?.family_name ? profile?.family_name : "Guest",
+          first_name: results?.first_name ? results?.first_name:  (profile?.given_name ? profile?.given_name: "Guest") ,
+          last_name: results?.last_name ? results?.last_name :  ( profile?.family_name ? profile?.family_name : "Guest"),
           signInProvider: "google",
         };
+
+        console.log('output', output)
+        return output 
       }
       if (token?.signInProvider === "google") {
         // do refresh token here
