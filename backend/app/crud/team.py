@@ -191,3 +191,16 @@ class TeamService:
             User(email=invitation_info.get("sender_email")), current_user
         )
         return result
+    
+    def get_team_in_which_user_is_member(self, user: User):
+        with Session(engine) as session:
+            statement = select(UserTeam, Team.name.label('team_name')).join(
+                Team, UserTeam.team_id == Team.id
+            ).where(UserTeam.user_email == user.email)
+            results = session.exec(statement)
+            output = []
+            for user_team, team_name in results:
+                team_info = user_team.dict()
+                team_info['team_name'] = team_name
+                output.append(team_info)
+            return output

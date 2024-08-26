@@ -1,6 +1,8 @@
 "use client";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
+import { TeamForUserState } from "@/lib/features/team/teamSlice";
+
 
 const addTokenToRequest = async (headers: any, { getState }: any) => {
   const session: any = await getSession();
@@ -10,6 +12,7 @@ const addTokenToRequest = async (headers: any, { getState }: any) => {
   return headers;
 };
 
+
 export const memberApi = createApi({
   reducerPath: "memberApi",
   baseQuery: fetchBaseQuery({
@@ -18,7 +21,7 @@ export const memberApi = createApi({
       return addTokenToRequest(headers, { getState });
     },
   }),
-  tagTypes: ["Member"],
+  tagTypes: ["Member", "Team"],
   endpoints: (builder) => ({
     getDefaultMembers: builder.query<Member[], void>({
       query: () => `teams/default-team-members`,
@@ -42,11 +45,17 @@ export const memberApi = createApi({
         },
       }),
     }),
+
+    getTeamInWhichUserIsMember: builder.query<TeamForUserState[], void>({
+      query: () => `teams/team-in-which-user-is-member`,
+      providesTags: ["Team"],
+    }),
   }),
 });
 
 export const {
   useGetDefaultMembersQuery,
   useUpdateDefaultWorkspaceNameMutation,
-  useValidateTeamMemberMutation, 
+  useValidateTeamMemberMutation,
+  useGetTeamInWhichUserIsMemberQuery,
 } = memberApi;

@@ -25,6 +25,13 @@ def get_default_team_members(
     output = team_service.get_default_team_member_of_a_user(current_user)
     return JSONResponse(status_code=200, content=output)
 
+@router.get('/team-in-which-user-is-member')
+def get_team_in_which_user_is_member(
+    current_user: Annotated[User, Depends(get_current_active_user)]
+):
+    output = team_service.get_team_in_which_user_is_member(current_user)
+    return JSONResponse(status_code=200, content=output)
+
 
 @router.put("/change-team-name")
 def change_team_name(
