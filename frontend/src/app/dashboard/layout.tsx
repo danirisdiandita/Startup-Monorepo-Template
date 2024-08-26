@@ -67,10 +67,13 @@ import NextLink from "next/link";
 import { Badge } from "@/components/catalyst/badge";
 import { useGetTeamInWhichUserIsMemberQuery } from "@/lib/services/member";
 import { updateTeamUser, selectTeamUser } from "@/lib/features/team/teamSlice";
+import { Loader2 } from "lucide-react";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  const { data: teamInWhichUserIsMember, isLoading: isTeamInWhichUserIsMemberLoading } =
-    useGetTeamInWhichUserIsMemberQuery();
+  const {
+    data: teamInWhichUserIsMember,
+    isLoading: isTeamInWhichUserIsMemberLoading,
+  } = useGetTeamInWhichUserIsMemberQuery();
   const team = useAppSelector((state) => state.team.team_user);
   const [isTeamChangingState, setIsTeamChangingState] = useState(false);
   const dispatch = useAppDispatch();
@@ -254,9 +257,13 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
               <SidebarSection>
                 <Dropdown>
                   <DropdownButton outline className="w-full p-0 m-0">
-                    <p className="w-48 truncate dark:text-white text-zinc-900">
-                      {team.find((team_) => team_.selected)?.team_name ||
-                        "No team selected"}
+                    <p className="w-48 truncate dark:text-white text-zinc-900 flex justify-start">
+                      {team.find((team_) => team_.selected)?.team_name || (
+                        <>
+                          <Loader2 size={20} className="animate-spin" /> &nbsp;
+                          Please wait
+                        </>
+                      )}
                     </p>
                     <ChevronDownIcon />
                   </DropdownButton>
