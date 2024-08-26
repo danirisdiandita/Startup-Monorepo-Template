@@ -51,7 +51,7 @@ export const sendTeamInvite = async ({
       config = {
         method: HttpMethod.POST,
         data: {
-          subject: `${session?.first_name} ${session?.last_name} invited you to collaborate on DataQuery`,
+          subject: `${session?.first_name} ${session?.last_name} invited you to collaborate on ${Env.productName}`,
           recipient: email,
           sender: session?.email,
           body: await renderAsync(

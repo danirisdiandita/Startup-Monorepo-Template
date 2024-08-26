@@ -17,6 +17,7 @@ import { Text } from "../catalyst/text";
 import FeatureDropdown from "../catalyst/feature-dropdown";
 import MegaMenu from "../catalyst/mega-menu";
 import ThemeToggle from "../atoms/themeToggle";
+import NavbarLink from "../catalyst/navbar-button";
 
 function MobileNavLink({
   href,
@@ -124,7 +125,7 @@ export function Header() {
     <header className={`py-2 dark:bg-zinc-900 w-full fixed z-50 ${value.mode}`}>
       <Container>
         <nav className="relative z-50 flex justify-between">
-          <div className="flex items-center md:gap-x-12">
+          <div className="flex items-center">
             <Image
               width={80}
               height={80}
@@ -134,11 +135,12 @@ export function Header() {
                   : "/images/logos/logo-dark.svg"
               }
               alt="product_logo"
+              className="md:mr-12"
             />
             <div className="hidden md:flex md:gap-x-6">
               <MegaMenu mode={isLightOrDark(value.mode)} />
-              
             </div>
+            <NavbarLink href={"/blog"} text={"Blog"} />
           </div>
           <div className="flex items-center justify-between space-x-2">
             <div className="hidden md:block">

@@ -5,9 +5,10 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/20/solid";
+import Link from "next/link";
 // hover:bg-zinc-500
 
-const FeatureDropdown = ({ text }: { text: string }) => {
+const NavbarLink = ({ text, href }: { text: string; href: string }) => {
   const [styleArray, setStyleArray] = useState([
     "group cursor-pointer rounded-full px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5",
     "text-left text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]",
@@ -43,16 +44,11 @@ const FeatureDropdown = ({ text }: { text: string }) => {
         setIsOpen(false);
       }}
     >
-      <div className="flex items-center space-x-2">
+      <Link className="flex items-center space-x-2" href={href}>
         <p className={textColor}>{text}</p>
-        {isOpen ? (
-          <ChevronUpIcon width={20} height={20} className={textColor} />
-        ) : (
-          <ChevronDownIcon width={20} height={20} className={textColor} />
-        )}
-      </div>
+      </Link>
     </div>
   );
 };
 
-export default FeatureDropdown;
+export default NavbarLink;
