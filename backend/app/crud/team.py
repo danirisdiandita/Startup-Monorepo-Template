@@ -194,9 +194,13 @@ class TeamService:
     
     def get_team_in_which_user_is_member(self, user: User):
         with Session(engine) as session:
-            statement = select(UserTeam).where(UserTeam.user_email == user.email)
-            docs = session.exec(statement)
+            statement = select(UserTeam, Team.name.label('team_name')).join(
+                Team, UserTeam.team_id == Team.id
+            ).where(UserTeam.user_email == user.email)
+            results = session.exec(statement)
             output = []
-            for doc_ in docs:
-                output.append(doc_.dict())
+            for user_team, team_name in results:
+                team_info = user_team.dict()
+                team_info['team_name'] = team_name
+                output.append(team_info)
             return output

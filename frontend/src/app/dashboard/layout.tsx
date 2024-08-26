@@ -66,8 +66,18 @@ import { Divider } from "@/components/catalyst/divider";
 import Image from "next/image";
 import NextLink from "next/link";
 import { Badge } from "@/components/catalyst/badge";
+import { useGetTeamInWhichUserIsMemberQuery } from "@/lib/services/member";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  const { data: teamInWhichUserIsMember } = useGetTeamInWhichUserIsMemberQuery();
+  console.log("teamInWhichUserIsMember", teamInWhichUserIsMember);
+
+
+  useEffect(() => {
+    if (teamInWhichUserIsMember) {
+      console.log("teamInWhichUserIsMember", teamInWhichUserIsMember);
+    }
+  }, [teamInWhichUserIsMember]);
   const session = useSession();
   const router = useRouter();
   const [mode, setMode] = useState("dark");
