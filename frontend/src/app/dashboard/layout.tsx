@@ -59,7 +59,6 @@ import { Strong, Text } from "@/components/catalyst/text";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/atoms/themeToggle";
 import clsx from "clsx";
-import { updateThemeMode } from "@/lib/features/theme/themeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
 import { Divider } from "@/components/catalyst/divider";
@@ -70,25 +69,67 @@ import { useGetTeamInWhichUserIsMemberQuery } from "@/lib/services/member";
 import { updateTeamUser, selectTeamUser } from "@/lib/features/team/teamSlice";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  const { data: teamInWhichUserIsMember } =
+  const { data: teamInWhichUserIsMember, isLoading: isTeamInWhichUserIsMemberLoading } =
     useGetTeamInWhichUserIsMemberQuery();
   const team = useAppSelector((state) => state.team.team_user);
+  const [isTeamChangingState, setIsTeamChangingState] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (teamInWhichUserIsMember) {
-      if (teamInWhichUserIsMember.length > 0) {
+    if (
+      typeof teamInWhichUserIsMember !== "undefined" &&
+      typeof team !== "undefined"
+    ) {
+      if (teamInWhichUserIsMember.length === team.length) {
+        let isTeamChange = false;
+
+        teamInWhichUserIsMember.forEach((team_, idx_) => {
+          if (
+            team_.team_id !== team[idx_].team_id ||
+            team_.verified !== team[idx_].verified ||
+            team_.role !== team[idx_].role ||
+            team_.access !== team[idx_].access ||
+            team_.team_name !== team[idx_].team_name
+          ) {
+            isTeamChange = true;
+          }
+        });
+
+        if (isTeamChange) {
+          dispatch(updateTeamUser(teamInWhichUserIsMember));
+          setIsTeamChangingState(true);
+        }
+      }
+
+      if (teamInWhichUserIsMember.length !== team.length) {
         dispatch(updateTeamUser(teamInWhichUserIsMember));
-        console.log("teamInWhichUserIsMember", teamInWhichUserIsMember);
+        setIsTeamChangingState(true);
       }
     }
   }, [teamInWhichUserIsMember]);
 
   useEffect(() => {
     if (team.length > 0) {
-      dispatch(selectTeamUser(team[0].team_id));
+      if (isTeamChangingState) {
+        // check the previous selected team_id
+        const previousSelectedTeamId = team.find(
+          (item_) => item_.selected === true
+        )?.team_id;
+
+        if (previousSelectedTeamId) {
+          dispatch(selectTeamUser(previousSelectedTeamId));
+        } else {
+          const adminTeam = team.find((item) => item.role === "admin");
+          if (adminTeam) {
+            dispatch(selectTeamUser(adminTeam.team_id));
+          } else {
+            dispatch(selectTeamUser(team[0].team_id));
+          }
+        }
+        setIsTeamChangingState(false);
+      }
     }
-  }, [team]);
+  }, [isTeamChangingState]);
 
   useEffect(() => {
     console.log("team", team);
@@ -96,7 +137,6 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
 
   const session = useSession();
   const router = useRouter();
-  const [mode, setMode] = useState("dark");
   const value = useAppSelector((state) => state.theme);
 
   // useEffect(() => {
@@ -215,7 +255,8 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <Dropdown>
                   <DropdownButton outline className="w-full p-0 m-0">
                     <p className="w-48 truncate dark:text-white text-zinc-900">
-                      norma.risdiandita@gmail.com
+                      {team.find((team_) => team_.selected)?.team_name ||
+                        "No team selected"}
                     </p>
                     <ChevronDownIcon />
                   </DropdownButton>
@@ -225,24 +266,53 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                         Workspace
                       </DropdownHeading>
                       <div className="p-3 dark:text-white text-zinc-900 sm:text-sm/6 flex space-x-2 items-center">
-                        <p>norma.risdiandita@gmail.com </p>
-                        <Badge>admin</Badge>
+                        <p>
+                          {team.find((team_) => team_.selected)?.team_name ||
+                            "No team selected"}
+                        </p>
+                        <Badge>
+                          {team.find((team_) => team_.selected)?.role ||
+                            "No team selected"}
+                        </Badge>
                         <CheckIcon width={20} height={20} />
                       </div>
-                      <DropdownDivider />
-                      <DropdownHeading>My Active Workspace</DropdownHeading>
-                      <DropdownItem>
-                        <div className="flex justify-start space-x-2">
-                          <Text>dani@gmail.com</Text>
-                          <Badge>member</Badge>
-                        </div>
-                      </DropdownItem>
-                      <DropdownItem>
-                        <div className="flex justify-start space-x-2">
-                          <Text>sirlcern3@gmail.com</Text>
-                          <Badge>member</Badge>
-                        </div>
-                      </DropdownItem>
+
+                      {typeof team !== "undefined" && (
+                        <>
+                          {team.filter((item_) => item_.selected !== true)
+                            .length > 0 && (
+                            <>
+                              <DropdownDivider />
+                              <DropdownHeading>
+                                My Active Workspace
+                              </DropdownHeading>
+                            </>
+                          )}
+                          {team
+                            .filter((item_) => item_.selected !== true)
+                            .map((item_, idx_) => (
+                              <DropdownItem
+                                key={idx_}
+                                onClick={() =>
+                                  dispatch(selectTeamUser(item_.team_id))
+                                }
+                                disabled={item_.verified === false}
+                              >
+                                <div className="flex-col justify-start space-y-1">
+                                  <div className="flex justify-start space-x-2">
+                                    <Text>{item_.team_name}</Text>
+                                    <Badge>{item_.role}</Badge>
+                                  </div>
+                                  {item_.verified === false && (
+                                    <Badge color="rose">
+                                      Check Your Email to Accept Invitation
+                                    </Badge>
+                                  )}
+                                </div>
+                              </DropdownItem>
+                            ))}
+                        </>
+                      )}
                     </DropdownSection>
                     <DropdownDivider />
                     <DropdownSection>
