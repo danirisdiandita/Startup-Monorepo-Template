@@ -15,10 +15,12 @@ import {
   persistReducer,
 } from "redux-persist";
 import { memberApi } from "./services/member";
+import teamSlice from "./features/team/teamSlice";
 
 const rootReducer = combineReducers({
   callStatus: callStatusSlice,
   theme: themeSlice,
+  team: teamSlice,
   [pokemonApi.reducerPath]: pokemonApi.reducer,
   [verificationApi.reducerPath]: verificationApi.reducer,
   [memberApi.reducerPath]: memberApi.reducer,
@@ -27,7 +29,7 @@ const rootReducer = combineReducers({
 export const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["theme"],
+  whitelist: ["theme", "team"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

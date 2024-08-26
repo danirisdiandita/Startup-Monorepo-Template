@@ -67,22 +67,38 @@ import Image from "next/image";
 import NextLink from "next/link";
 import { Badge } from "@/components/catalyst/badge";
 import { useGetTeamInWhichUserIsMemberQuery } from "@/lib/services/member";
+import { updateTeamUser, selectTeamUser } from "@/lib/features/team/teamSlice";
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  const { data: teamInWhichUserIsMember } = useGetTeamInWhichUserIsMemberQuery();
-  console.log("teamInWhichUserIsMember", teamInWhichUserIsMember);
-
+  const { data: teamInWhichUserIsMember } =
+    useGetTeamInWhichUserIsMemberQuery();
+  const team = useAppSelector((state) => state.team.team_user);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (teamInWhichUserIsMember) {
-      console.log("teamInWhichUserIsMember", teamInWhichUserIsMember);
+      if (teamInWhichUserIsMember.length > 0) {
+        dispatch(updateTeamUser(teamInWhichUserIsMember));
+        console.log("teamInWhichUserIsMember", teamInWhichUserIsMember);
+      }
     }
   }, [teamInWhichUserIsMember]);
+
+  useEffect(() => {
+    if (team.length > 0) {
+      dispatch(selectTeamUser(team[0].team_id));
+    }
+  }, [team]);
+
+  useEffect(() => {
+    console.log("team", team);
+  }, [team]);
+
   const session = useSession();
   const router = useRouter();
   const [mode, setMode] = useState("dark");
   const value = useAppSelector((state) => state.theme);
-  const dispatch = useAppDispatch();
+
   // useEffect(() => {
   //   if (localStorage.getItem("theme")) {
   //     const themeStorage = localStorage.getItem("theme") as
