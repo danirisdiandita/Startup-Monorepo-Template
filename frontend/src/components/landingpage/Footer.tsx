@@ -26,46 +26,19 @@ const productFeatureList: FeatureList[] = [
   {
     featureTitle: "USE CASES",
     featureItems: [
-      { name: "UI design", link: "#" },
-      { name: "UX design", link: "#" },
-      { name: "Wireframing", link: "#" },
-      { name: "Diagramming", link: "#" },
-      { name: "Prototyping", link: "#" },
-      { name: "Brainstorming", link: "#" },
-      { name: "Presentation maker", link: "#" },
-      { name: "Online whiteboard", link: "#" },
-      { name: "Agile", link: "#" },
-      { name: "Strategic planning", link: "#" },
-      { name: "Mind mapping", link: "#" },
+      { name: "Schedule SQL in a browser", link: "#" },
+      { name: "Running a Python Script on a schedule", link: "#" },
     ],
   },
   {
     featureTitle: "RESOURCES",
-    featureItems: [
-      { name: "Blog", link: "#" },
-      { name: "Best practices", link: "#" },
-      { name: "Color wheel", link: "#" },
-      { name: "Colors", link: "#" },
-      { name: "Templates", link: "#" },
-      { name: "Developers", link: "#" },
-      { name: "Integrations", link: "#" },
-      { name: "Affiliate program", link: "#" },
-      { name: "Resource library", link: "#" },
-      { name: "Reports and insights", link: "#" },
-      { name: "Support", link: "#" },
-      { name: "Status", link: "#" },
-      { name: "Legal and privacy", link: "#" },
-      { name: "Modern slavery statement", link: "#" },
-      { name: "Climate disclosure statement", link: "#" },
-    ],
+    featureItems: [{ name: "Blog", link: "/blog" }],
   },
   {
     featureTitle: "COMPARE",
     featureItems: [
-      { name: "Sketch", link: "#" },
-      { name: "Adobe XD", link: "#" },
-      { name: "Framer", link: "#" },
-      { name: "Miro", link: "#" },
+      { name: "Airbyte", link: "#" },
+      { name: "Apache Airflow", link: "#" },
     ],
   },
   {
@@ -82,7 +55,9 @@ const productFeatureList: FeatureList[] = [
 export function FeatureFooter({ feature }: { feature: FeatureList }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-4 text-zinc-500">{feature.featureTitle}</h3>
+      <h3 className="text-lg font-semibold mb-4 text-zinc-500 dark:text-white">
+        {feature.featureTitle}
+      </h3>
       <ul className="space-y-2">
         {feature.featureItems.map((featureItem: FeatureItem, index: number) => (
           <li key={index}>

@@ -16,12 +16,12 @@ export default function HomePage() {
       <Header />
       <main className="dark:bg-zinc-900">
         <Hero />
-        <PrimaryFeatures />
+        {/* <PrimaryFeatures />
         <SecondaryFeatures />
         <CallToAction />
         <Testimonials />
-        <Pricing />
-        <Faqs />
+        <Pricing /> */}
+        {/* <Faqs /> */}
       </main>
       <Footer />
     </>
