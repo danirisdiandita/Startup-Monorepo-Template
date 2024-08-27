@@ -7,6 +7,7 @@ import NextLink from "next/link";
 interface FeatureItem {
   name: string;
   link: string;
+  description?: string;
 }
 
 interface FeatureList {
@@ -14,13 +15,14 @@ interface FeatureList {
   featureItems: FeatureItem[];
 }
 
-const productFeatureList: FeatureList[] = [
+export const productFeatureList: FeatureList[] = [
   {
     featureTitle: "PRODUCT",
     featureItems: [
-      { name: "Cron Job Scheduler", link: "#" },
-      { name: "SQL Scheduler", link: "#" },
-      { name: "In-Browser Code Editor", link: "#" },
+      { name: "Cron Job Scheduler", link: "#", description: "Schedule cron jobs in a browser" },
+      { name: "SQL Scheduler", link: "#", description: "Schedule SQL in a browser" },
+      { name: "In-Browser Code Editor", link: "#", description: "Developers" },
+      { name: "Python Script Scheduler", link: "#", description: "Run Python scripts on a schedule" },
     ],
   },
   {
