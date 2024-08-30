@@ -1,13 +1,43 @@
 import React from "react";
-import { Header } from "@/components/landingpage/Header";
 import { InputGroup, Input } from "@/components/catalyst/input";
-import { MagnifyingGlassIcon } from '@heroicons/react/16/solid'
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { Env } from "@/common/env";
+import Image from "next/image";
+import NextLink from "next/link";
+import { Button } from "@/components/catalyst/button";
+import { useAppSelector } from "@/lib/hooks";
 
 const Blog = () => {
   return (
     <>
-      <Header />
+      <nav className="bg-white shadow-md dark:bg-zinc-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center h-16 items-center">
+            <div className="flex">
+              <Button
+                className="rounded-l-xl rounded-r-none text-lg"
+                href="/blog/engineering"
+                color="dark"
+              >
+                Engineering
+              </Button>
+              <Button className="rounded-none text-lg" href="/blog/products" color="dark">
+                Products
+              </Button>
+              <Button className="rounded-none text-lg" href="/blog/life" color="dark">
+                Life
+              </Button>
+              <Button
+                className="rounded-l-none rounded-r-xl text-lg"
+                href="/blog/miscellaneous"
+                color="dark"
+              >
+                Miscellaneous
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
       <div>
         <div className="hero-image relative">
           <svg width="100%" height="300" xmlns="http://www.w3.org/2000/svg">
