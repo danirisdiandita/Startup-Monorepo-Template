@@ -4,6 +4,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { Env } from "@/common/env";
 import BlogLink from "@/components/landingpage/BlogLink";
 import Image from "next/image";
+import { Text } from "@/components/catalyst/text";
+
 const Blog = () => {
   return (
     <>
@@ -19,10 +21,10 @@ const Blog = () => {
           <h1 className="text-4xl font-bold text-black dark:text-white mt-4 mb-2">
             Welcome to DataQuery
           </h1>
-          <p className="text-sm text-gray-600 mb-4 dark:text-white">
+          <Text className="text-sm text-gray-600 mb-4 dark:text-white">
             By Norma Dani Risdiandita
-          </p>
-          <p className="text-lg text-gray-800 dark:text-white">
+          </Text>
+          <Text className="text-lg text-gray-800 dark:text-white">
             Programming is the process of designing and writing instructions
             that a computer can execute to perform specific tasks. It involves
             using various languages, such as Python, JavaScript, or C++, to
@@ -30,7 +32,7 @@ const Blog = () => {
             Through programming, ideas are transformed into functional
             applications, enabling innovation and technology advancement across
             numerous fields.
-          </p>
+          </Text>
         </div>
 
         {/* Content Cards */}
@@ -47,16 +49,16 @@ const Blog = () => {
             <h2 className="text-xl font-bold text-black mb-2 dark:text-white mt-4">
               Hidup itu lucu
             </h2>
-            <p className="text-sm text-gray-600 mb-4 dark:text-white">
+            <Text className="text-sm text-gray-600 mb-4 dark:text-white">
               by Norma Dani Risdiandita
-            </p>
-            <p className="text-gray-800 dark:text-white">
+            </Text>
+            <Text className="text-gray-800 dark:text-white">
               Programming is the process of designing and writing instructions
               that a computer can execute to perform specific tasks. It involves
               using various languages, such as Python, JavaScript, or C++, to
               create software, automate processes, and solve problems
               efficiently.
-            </p>
+            </Text>
           </div>
 
           {/* Card 2 */}
@@ -71,16 +73,16 @@ const Blog = () => {
             <h2 className="text-xl font-bold text-black mb-2 dark:text-white mt-4">
               Hidup itu lucu
             </h2>
-            <p className="text-sm text-gray-600 mb-4 dark:text-white">
+            <Text className="text-sm text-gray-600 mb-4 dark:text-white">
               by Norma Dani Risdiandita
-            </p>
-            <p className="text-gray-800 dark:text-white">
+            </Text>
+            <Text className="text-gray-800 dark:text-white">
               Programming is the process of designing and writing instructions
               that a computer can execute to perform specific tasks. It involves
               using various languages, such as Python, JavaScript, or C++, to
               create software, automate processes, and solve problems
               efficiently.
-            </p>
+            </Text>
           </div>
 
           {/* Card 3 */}
@@ -95,16 +97,16 @@ const Blog = () => {
             <h2 className="text-xl font-bold text-black mb-2 dark:text-white mt-4">
               Hidup itu lucu
             </h2>
-            <p className="text-sm text-gray-600 mb-4 dark:text-white">
+            <Text className="text-sm text-gray-600 mb-4 dark:text-white">
               by Norma Dani Risdiandita
-            </p>
-            <p className="text-gray-800 dark:text-white">
+            </Text>
+            <Text className="text-gray-800 dark:text-white">
               Programming is the process of designing and writing instructions
               that a computer can execute to perform specific tasks. It involves
               using various languages, such as Python, JavaScript, or C++, to
               create software, automate processes, and solve problems
               efficiently.
-            </p>
+            </Text>
           </div>
         </div>
       </div>

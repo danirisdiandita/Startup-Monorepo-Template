@@ -814,6 +814,7 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       'manyToOne',
       'api::category.category'
     >;
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

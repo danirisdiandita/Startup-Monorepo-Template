@@ -44,7 +44,7 @@ export default function BlogLayout({
   };
 
   return (
-    <main className={`bg-white dark:bg-[#000000] ${isLightOrDark(value.mode)}`}>
+    <main className={`bg-white dark:bg-[#000000] ${isLightOrDark(value.mode)} max-w-7xl mx-auto`}>
       <BlogHeader />
       <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 ">{children}</div>
     </main>
