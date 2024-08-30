@@ -2,6 +2,7 @@
 import React from "react";
 import { useAppSelector } from "@/lib/hooks";
 import { useEffect } from "react";
+import BlogHeader from "@/components/blog/BlogHeader";
 
 export default function BlogLayout({
   children,
@@ -43,8 +44,9 @@ export default function BlogLayout({
   };
 
   return (
-    <main className={`bg-white dark:bg-zinc-800 ${isLightOrDark(value.mode)}`}>
-      {children}
+    <main className={`bg-white dark:bg-[#000000] ${isLightOrDark(value.mode)}`}>
+      <BlogHeader />
+      <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 ">{children}</div>
     </main>
   );
 }
