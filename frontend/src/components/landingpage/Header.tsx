@@ -126,17 +126,20 @@ export function Header() {
       <Container>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center">
-            <Image
-              width={80}
-              height={80}
-              src={
-                isLightOrDark(value.mode) === "light"
-                  ? "/images/logos/logo.svg"
-                  : "/images/logos/logo-dark.svg"
-              }
-              alt="product_logo"
-              className="md:mr-12"
-            />
+            <NextLink href="/">
+              <Image
+                width={80}
+                height={80}
+                src={
+                  isLightOrDark(value.mode) === "light"
+                    ? "/images/logos/logo.svg"
+                    : "/images/logos/logo-dark.svg"
+                }
+                alt="product_logo"
+                className="md:mr-12"
+              />
+            </NextLink>
+
             <div className="hidden md:flex md:gap-x-6">
               <MegaMenu mode={isLightOrDark(value.mode)} />
             </div>
@@ -144,12 +147,12 @@ export function Header() {
           </div>
           <div className="flex items-center justify-between space-x-2">
             <div className="hidden md:block">
-            <ThemeToggle/>
+              <ThemeToggle />
             </div>
             <Button href={"/sign-in"} outline>
               Sign In
             </Button>
-            <Button href="/sign-up">Sign Up</Button>
+            <Button href="/sign-up" color="white">Sign Up</Button>
             <div className="-mr-1 md:hidden">
               <MobileNavigation />
             </div>

@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Button } from "../catalyst/button";
 import Image from "next/image";
+import  CTAButton  from "../catalyst/CTAButton";
 
 export function Hero() {
   return (
@@ -72,10 +73,11 @@ export function Hero() {
             Use Your Jupyter Notebook and SQL Query to automate data pipeline
           </p>
           <div className="mt-10 flex items-center gap-x-6">
-            <Button
+            {/* <Button
             href={'/sign-up'}
             
-            >Get Started</Button>
+            >Get Started</Button> */}
+            <CTAButton />
           </div>
         </div>
         <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
