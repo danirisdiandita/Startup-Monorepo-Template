@@ -60,8 +60,8 @@
       "name": "Workspace",
       "features": [
         {
-          "name": "24/7 customer support",
-          "tiers": { "Free": true, "Premium": true }
+          "name": "Team Members",
+          "tiers": { "Free": false, "Premium": "Unlimited" }
         },
         {
           "name": "Instant notifications",

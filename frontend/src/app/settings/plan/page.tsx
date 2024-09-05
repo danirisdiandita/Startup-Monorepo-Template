@@ -62,7 +62,7 @@ const Plan = () => {
 
       {/* Pricing section */}
 
-      <div className="relative bg-gray-50 dark:bg-zinc-950 py-16">
+      <div className="relative bg-gray-50 dark:bg-zinc-950 py-16 mt-3 rounded-lg border-zinc-200 dark:border-white/10 border-[0.5px]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           {/* Feature comparison (up to lg) */}
           <section
