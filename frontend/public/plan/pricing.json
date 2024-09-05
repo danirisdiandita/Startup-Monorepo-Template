@@ -1,0 +1,107 @@
+{
+  "tiers": [
+    {
+      "name": "Free",
+      "id": "tier-starter",
+      "href": "#",
+      "featured": false,
+      "description": "Free for limited features and monthly quota",
+      "price": { "monthly": "$0", "annually": "$0" },
+      "mainFeatures": [
+        "Basic invoicing",
+        "Easy to use accounting",
+        "Mutli-accounts"
+      ]
+    },
+    {
+      "name": "Premium",
+      "id": "tier-premium",
+      "href": "#",
+      "featured": true,
+      "description": "For serious users",
+      "price": { "monthly": "$25 + usage fees", "annually": "$25 + usage fees" },
+      "mainFeatures": [
+        "Advanced invoicing",
+        "Easy to use accounting",
+        "Mutli-accounts",
+        "Tax planning toolkit",
+        "VAT & VATMOSS filing",
+        "Free bank transfers"
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "name": "Main Features",
+      "features": [
+        {
+          "name": "SQL Scheduler",
+          "tiers": { "Free": true, "Premium": true }
+        },
+        {
+          "name": "Script Scheduler",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "Multi-accounts",
+          "tiers": {
+            "Free": "3 accounts",
+            "Premium": "Unlimited accounts"
+          }
+        },
+        {
+          "name": "Invoicing",
+          "tiers": {
+            "Free": "3 invoices",
+            "Premium": "Unlimited invoices"
+          }
+        },
+        {
+          "name": "Exclusive offers",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "6 months free advisor",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "Mobile and web access",
+          "tiers": { "Free": false, "Premium": true }
+        }
+      ]
+    },
+    {
+      "name": "Other perks",
+      "features": [
+        {
+          "name": "24/7 customer support",
+          "tiers": { "Free": true, "Premium": true }
+        },
+        {
+          "name": "Instant notifications",
+          "tiers": { "Free": true, "Premium": true }
+        },
+        {
+          "name": "Budgeting tools",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "Digital receipts",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "Pots to separate money",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "Free bank transfers",
+          "tiers": { "Free": false, "Premium": true }
+        },
+        {
+          "name": "Business debit card",
+          "tiers": { "Free": false, "Premium": true }
+        }
+      ]
+    }
+  ]
+}

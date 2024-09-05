@@ -8,7 +8,8 @@ import {
   CheckIcon,
   XMarkIcon as XMarkIconMini,
 } from "@heroicons/react/20/solid";
-
+import { CheckIcon as CheckIconMini } from "@heroicons/react/24/outline";
+import pricingTemplate from "../../../../public/plan/pricing.json";
 
 interface Pricing {
   tiers: {
@@ -29,124 +30,14 @@ interface Pricing {
   }[];
 }
 
-const pricing: Pricing = {
-  tiers: [
-    {
-      name: "Free",
-      id: "tier-starter",
-      href: "#",
-      featured: false,
-      description: "0 $/month",
-      price: { monthly: "$15", annually: "$144" },
-      mainFeatures: [
-        "Basic invoicing",
-        "Easy to use accounting",
-        "Mutli-accounts",
-      ],
-    },
-    {
-      name: "Scale",
-      id: "tier-scale",
-      href: "#",
-      featured: true,
-      description: "25 $/month + Usage fees",
-      price: { monthly: "$60", annually: "$576" },
-      mainFeatures: [
-        "Advanced invoicing",
-        "Easy to use accounting",
-        "Mutli-accounts",
-        "Tax planning toolkit",
-        "VAT & VATMOSS filing",
-        "Free bank transfers",
-      ],
-    },
-  
-  ],
-  sections: [
-    {
-      name: "Catered for business",
-      features: [
-        {
-          name: "Tax Savings",
-          tiers: { Free: true, Scale: true  },
-        },
-        {
-          name: "Easy to use accounting",
-          tiers: { Free: true, Scale: true  },
-        },
-        {
-          name: "Multi-accounts",
-          tiers: {
-            Free: "3 accounts",
-            Scale: "Unlimited accounts",
-          
-          },
-        },
-        {
-          name: "Invoicing",
-          tiers: {
-            Free: "3 invoices",
-            Scale: "Unlimited invoices",
-         
-          },
-        },
-        {
-          name: "Exclusive offers",
-          tiers: { Free: false, Scale: true,   },
-        },
-        {
-          name: "6 months free advisor",
-          tiers: { Free: false, Scale: true,  },
-        },
-        {
-          name: "Mobile and web access",
-          tiers: { Free: false, Scale: true,   },
-        },
-      ],
-    },
-    {
-      name: "Other perks",
-      features: [
-        {
-          name: "24/7 customer support",
-          tiers: { Free: true, Scale: true,   },
-        },
-        {
-          name: "Instant notifications",
-          tiers: { Free: true, Scale: true,   },
-        },
-        {
-          name: "Budgeting tools",
-          tiers: { Free: true, Scale: true,   },
-        },
-        {
-          name: "Digital receipts",
-          tiers: { Free: true, Scale: true,   },
-        },
-        {
-          name: "Pots to separate money",
-          tiers: { Free: false, Scale: true,   },
-        },
-        {
-          name: "Free bank transfers",
-          tiers: { Free: false, Scale: true,   },
-        },
-        {
-          name: "Business debit card",
-          tiers: { Free: false, Scale: true,   },
-        },
-      ],
-    },
-  ],
-};
-
+const pricing: Pricing = pricingTemplate;
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
 const Plan = () => {
-    const [ currentPlan, setCurrentPlan ] = useState<string>("Free Plan");
+  const [currentPlan, setCurrentPlan] = useState<string>("Free Plan");
   return (
     <div>
       <Heading>Plan</Heading>
@@ -202,9 +93,12 @@ const Plan = () => {
                     >
                       {tier.name + "gitu"}
                     </h3>
-                    <Text className="mt-1 leading-6 ">
-                      {tier.description}
-                    </Text>
+                    <div className="mt-1 leading-6 flex justify-between">
+                      <h1 className="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">
+                        {tier.price.monthly}
+                      </h1>
+                      <Text>{tier.description}</Text>
+                    </div>
                   </div>
 
                   <div className="mt-10 space-y-10">
@@ -315,12 +209,15 @@ const Plan = () => {
                       "border-t-2 pt-10"
                     )}
                   >
-                    <h1
-                      className="text-xl font-semibold leading-6 text-zinc-950 dark:text-white text-center"
-                    >
+                    <h1 className="text-xl font-semibold leading-6 text-zinc-950 dark:text-white text-center">
                       {tier.name}
                     </h1>
-                    <Text className="mt-1 text-center">{tier.description}</Text>
+                    <div className="mt-1 text-center">
+                      <h1 className="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">
+                        {tier.price.monthly}
+                      </h1>
+                      <Text>{tier.description}</Text>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -328,7 +225,7 @@ const Plan = () => {
 
             <div className="-mt-6 space-y-16">
               {pricing.sections.map((section) => (
-                <div key={section.name} className='mt-10'>
+                <div key={section.name} className="mt-10">
                   <h3 className="text-sm font-semibold leading-6 text-zinc-950 dark:text-white">
                     {section.name}
                   </h3>
