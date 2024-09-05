@@ -21,6 +21,7 @@ import {
   QuestionMarkCircleIcon,
   SparklesIcon,
   Square2StackIcon,
+  Square3Stack3DIcon,
   TicketIcon,
   UserCircleIcon,
   UsersIcon,
@@ -64,7 +65,6 @@ import PlanOnSidebar from "@/components/molecules/PlanOnSidebar";
 import { Divider } from "@/components/catalyst/divider";
 import NextLink from "next/link";
 import Image from "next/image";
-
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const session = useSession();
@@ -196,8 +196,12 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   <CreditCardIcon />
                   <SidebarLabel>Billing</SidebarLabel>
                 </SidebarItem>
+                <SidebarItem href="/settings/plan">
+                  <Square3Stack3DIcon />
+                  <SidebarLabel>Plan</SidebarLabel>
+                </SidebarItem>
                 <SidebarItem href="/settings/member">
-                  <UsersIcon/>
+                  <UsersIcon />
                   <SidebarLabel>Members</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
