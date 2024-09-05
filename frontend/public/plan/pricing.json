@@ -28,13 +28,16 @@
       "features": [
         {
           "name": "SQL Scheduler",
-          "tiers": { "Free": "1 hour / month", "Premium": "100 hours per month + $0.01/extra hour" }
+          "tiers": {
+            "Free": "1 compute hour / month",
+            "Premium": "100 compute hours / month + $0.01/extra compute hour"
+          }
         },
         {
           "name": "Script Scheduler",
           "tiers": {
-            "Free": "1 hour / month",
-            "Premium": "100 hours per month + $0.01/extra hour"
+            "Free": "1 compute hour / month",
+            "Premium": "100 compute hours / month + $0.01/extra compute hour"
           }
         },
         {
@@ -54,7 +57,7 @@
       ]
     },
     {
-      "name": "Other perks",
+      "name": "Workspace",
       "features": [
         {
           "name": "24/7 customer support",

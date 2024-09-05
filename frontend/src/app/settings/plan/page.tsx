@@ -37,7 +37,7 @@ function classNames(...classes: any) {
 }
 
 const Plan = () => {
-  const [currentPlan, setCurrentPlan] = useState<string>("Free Plan");
+  const [currentPlan, setCurrentPlan] = useState<string>("free");
   return (
     <div>
       <Heading>Plan</Heading>
@@ -48,11 +48,12 @@ const Plan = () => {
             <div className="flex-col">
               <Text>Plan</Text>
               <h1 className="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">
-                Free Plan
+                {currentPlan === "free" ? "Free Plan" : "Premium Plan"}
               </h1>
               <Text>
-                You are using the free plan. You can upgrade to a paid plan to
-                get more features.
+                {currentPlan === "free"
+                  ? "You are using the free plan. You can upgrade to a paid plan to get more features."
+                  : "You are using the premium plan. You can downgrade to a free plan to save money."}
               </Text>
             </div>
           </div>
