@@ -7,11 +7,7 @@
       "featured": false,
       "description": "Free for limited features and monthly quota",
       "price": { "monthly": "$0", "annually": "$0" },
-      "mainFeatures": [
-        "Basic invoicing",
-        "Easy to use accounting",
-        "Mutli-accounts"
-      ]
+      "mainFeatures": []
     },
     {
       "name": "Premium",
@@ -19,15 +15,11 @@
       "href": "#",
       "featured": true,
       "description": "For serious users",
-      "price": { "monthly": "$25 + usage fees", "annually": "$25 + usage fees" },
-      "mainFeatures": [
-        "Advanced invoicing",
-        "Easy to use accounting",
-        "Mutli-accounts",
-        "Tax planning toolkit",
-        "VAT & VATMOSS filing",
-        "Free bank transfers"
-      ]
+      "price": {
+        "monthly": "$25 + usage fees",
+        "annually": "$25 + usage fees"
+      },
+      "mainFeatures": []
     }
   ],
   "sections": [
@@ -36,37 +28,28 @@
       "features": [
         {
           "name": "SQL Scheduler",
-          "tiers": { "Free": true, "Premium": true }
+          "tiers": { "Free": "1 hour / month", "Premium": "100 hours per month + $0.01/extra hour" }
         },
         {
           "name": "Script Scheduler",
-          "tiers": { "Free": false, "Premium": true }
-        },
-        {
-          "name": "Multi-accounts",
           "tiers": {
-            "Free": "3 accounts",
-            "Premium": "Unlimited accounts"
+            "Free": "1 hour / month",
+            "Premium": "100 hours per month + $0.01/extra hour"
           }
         },
         {
-          "name": "Invoicing",
+          "name": "Code in Browser",
           "tiers": {
-            "Free": "3 invoices",
-            "Premium": "Unlimited invoices"
+            "Free": true,
+            "Premium": true
           }
         },
         {
-          "name": "Exclusive offers",
-          "tiers": { "Free": false, "Premium": true }
-        },
-        {
-          "name": "6 months free advisor",
-          "tiers": { "Free": false, "Premium": true }
-        },
-        {
-          "name": "Mobile and web access",
-          "tiers": { "Free": false, "Premium": true }
+          "name": "Command Line Interface (CLI)",
+          "tiers": {
+            "Free": true,
+            "Premium": true
+          }
         }
       ]
     },
