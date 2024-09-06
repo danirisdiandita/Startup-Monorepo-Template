@@ -10,5 +10,7 @@ export const Env = {
     googleClientId: serverRuntimeConfig.GOOGLE_CLIENT_ID as string, 
     googleClientSecret: serverRuntimeConfig.GOOGLE_CLIENT_SECRET as string, 
     backendUrl: serverRuntimeConfig.BACKEND_URL as string, 
-    productName: publicRuntimeConfig.PRODUCT_NAME as string
+    productName: publicRuntimeConfig.PRODUCT_NAME as string, 
+    lemonSqueezyApiKey: serverRuntimeConfig.LEMONSQUEEZY_API_KEY as string, 
+    lemonSqueezyApiUrl: serverRuntimeConfig.LEMONSQUEEZY_API_URL as string, 
 }

@@ -24,7 +24,9 @@ const nextConfig = {
         GITHUB_SECRET: process.env.GITHUB_SECRET, 
         GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID, 
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET, 
-        BACKEND_URL: process.env.BACKEND_URL
+        BACKEND_URL: process.env.BACKEND_URL, 
+        LEMONSQUEEZY_API_KEY: process.env.LEMONSQUEEZY_API_KEY, 
+        LEMONSQUEEZY_API_URL: process.env.LEMONSQUEEZY_API_URL
     }, 
     publicRuntimeConfig: {
         PRODUCT_NAME: process.env.NEXT_PUBLIC_PRODUCT_NAME
