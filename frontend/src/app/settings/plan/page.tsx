@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { CheckIcon as CheckIconMini } from "@heroicons/react/24/outline";
 import pricingTemplate from "../../../../public/plan/pricing.json";
+import { Button } from "@/components/catalyst/button";
 
 interface Pricing {
   tiers: {
@@ -55,6 +56,7 @@ const Plan = () => {
                   ? "You are using the free plan. You can upgrade to a paid plan to get more features."
                   : "You are using the premium plan. You can downgrade to a free plan to save money."}
               </Text>
+
             </div>
           </div>
         </div>
@@ -99,6 +101,7 @@ const Plan = () => {
                         {tier.price.monthly}
                       </h1>
                       <Text>{tier.description}</Text>
+                    
                     </div>
                   </div>
 
@@ -112,7 +115,7 @@ const Plan = () => {
                           {/* Fake card background */}
                           <div
                             aria-hidden="true"
-                            className="absolute inset-y-0 right-0 hidden w-1/2 rounded-lg bg-white dark:bg-zinc-950 shadow-sm sm:block"
+                            className="absolute inset-y-0 right-0 hidden w-1/2 rounded-lg bg-gray-50 dark:bg-zinc-950 shadow-sm sm:block"
                           />
 
                           <div
@@ -120,7 +123,7 @@ const Plan = () => {
                               tier.featured
                                 ? "ring-2 ring-indigo-600"
                                 : "ring-1 ring-gray-900/10",
-                              "relative rounded-lg bg-white dark:bg-zinc-950 shadow-sm sm:rounded-none dark:shadow-none sm:bg-transparent sm:shadow-none sm:ring-0"
+                              "relative rounded-lg bg-gray-50 dark:bg-zinc-950 shadow-sm sm:rounded-none dark:shadow-none sm:bg-transparent sm:shadow-none sm:ring-0"
                             )}
                           >
                             <dl className="divide-y divide-gray-200 text-sm leading-6">
@@ -218,6 +221,9 @@ const Plan = () => {
                         {tier.price.monthly}
                       </h1>
                       <Text>{tier.description}</Text>
+                      {tier.name !== "Free" && (
+                        <Button>Upgrade</Button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -234,11 +240,11 @@ const Plan = () => {
                     {/* Fake card backgrounds */}
                     <div
                       aria-hidden="true"
-                      className="absolute inset-x-8 inset-y-0 grid grid-cols-4 gap-x-8 before:block"
+                      className="absolute inset-x-8 inset-y-0 grid grid-cols-3 gap-x-8 before:block"
                     >
-                      <div className="h-full w-full rounded-lg bg-white dark:bg-zinc-950 shadow-sm" />
-                      <div className="h-full w-full rounded-lg bg-white dark:bg-zinc-950 shadow-sm" />
-                      <div className="h-full w-full rounded-lg bg-white dark:bg-zinc-950 shadow-sm" />
+                      <div className="h-full w-full rounded-lg bg-gray-50 dark:bg-zinc-950 shadow-sm" />
+                      <div className="h-full w-full rounded-lg bg-gray-50 dark:bg-zinc-950 shadow-sm" />
+                      <div className="h-full w-full rounded-lg bg-gray-50 dark:bg-zinc-950 shadow-sm" />
                     </div>
 
                     <table className="relative w-full border-separate border-spacing-x-8">

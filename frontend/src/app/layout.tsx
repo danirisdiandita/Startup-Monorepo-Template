@@ -21,7 +21,7 @@ export default function RootLayout({
     <SessionWrapper>
       <StoreProvider>
         <html lang="en">
-          <body className={`${inter.className} dark:bg-[#000000] bg-zinc-900`}>{children}</body>
+          <body className={`${inter.className} dark:bg-[#000000]`}>{children}</body>
           <Toaster richColors />
         </html>
       </StoreProvider>
