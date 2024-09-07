@@ -62,7 +62,7 @@ const Billing = () => {
             </div>
             <div className="flex space-x-2 items-center justify-end">
               <Button plain>Cancel Subscription</Button>
-              <Button>Upgrade</Button>
+              <Button href={"/settings/plan"}>Upgrade</Button>
             </div>
           </div>
           <Divider className="my-2" />

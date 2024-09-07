@@ -1,37 +1,65 @@
 "use server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
-import BackendService, { RequestConfig, HttpMethod } from "@/common/backend.service";
+import BackendService, {
+  RequestConfig,
+  HttpMethod,
+} from "@/common/backend.service";
 import { Env } from "@/common/env";
 
-
 export const generateSubscriptionInfo = async () => {
+  const session = await getServerSession(authOptions);
 
+  console.log("session", session);
 
-    const session = await getServerSession(authOptions);
+  const config: RequestConfig = {
+    method: HttpMethod.GET,
+    data: {},
+  };
 
-    const config: RequestConfig = {
-        method: HttpMethod.GET,
-        data: {}
-    };
+  console.log("lemon squeezy api url", Env.lemonSqueezyApiUrl);
+  try {
+    const checkoutEndpointUrl = Env.lemonSqueezyApiUrl + "/checkouts";
 
-    console.log("lemon squeezy api url", Env.lemonSqueezyApiUrl);
-    try {
-        const lemonSqueezyUrl = Env.lemonSqueezyApiUrl + "/billing/subscription";
-        const response = await fetch(lemonSqueezyUrl, {
-            method: 'GET',
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${Env.lemonSqueezyApiKey}`
-            }
-        });
-       
-        const data = await response.json();
-        console.log("data from lemon squeezy", data);
-        return data;
-    } catch (error) {
-        console.error(error);
+    const response = await fetch(checkoutEndpointUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.api+json",
+        "Content-Type": "application/vnd.api+json",
+        Authorization: `Bearer ${Env.lemonSqueezyApiKey}`,
+      },
+      body: JSON.stringify({
+        data: {
+          type: "checkouts",
+          attributes: {
+            checkout_data: {
+              custom: {
+                user_email: session?.user?.email,
+              },
+            },
+          },
+          relationships: {
+            store: {
+              data: {
+                type: "stores",
+                id: Env.lemonSqueezyStoreId,
+              },
+            },
+            variant: {
+              data: {
+                type: "variants",
+                id: Env.lemonSqueezyVariantId,
+              },
+            },
+          },
+        },
+      }),
+    });
 
-
-    }
-}
+    const data = await response.json();
+    const checkoutUrl = data.data.attributes.url;
+    return { checkoutUrl };
+  } catch (error) {
+    console.error(error);
+  }
+};

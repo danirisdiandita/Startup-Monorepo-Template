@@ -11,7 +11,7 @@ import {
 import { CheckIcon as CheckIconMini } from "@heroicons/react/24/outline";
 import pricingTemplate from "../../../../public/plan/pricing.json";
 import { Button } from "@/components/catalyst/button";
-import  { generateSubscriptionInfo }  from "../../../../lib/actions/billing.action"; 
+import { generateSubscriptionInfo } from "../../../../lib/actions/billing.action";
 
 interface Pricing {
   tiers: {
@@ -41,11 +41,12 @@ function classNames(...classes: any) {
 const Plan = () => {
   const [currentPlan, setCurrentPlan] = useState<string>("free");
 
-
   const upgradeToPlan = async (plan: string) => {
-    console.log("upgrading to plan", plan);
     const response = await generateSubscriptionInfo();
-    console.log("response from upgrade to plan", response);
+
+    if (response?.checkoutUrl) {
+      window.open(response.checkoutUrl, "_blank");
+    }
   };
 
   return (
@@ -65,7 +66,6 @@ const Plan = () => {
                   ? "You are using the free plan. You can upgrade to a paid plan to get more features."
                   : "You are using the premium plan. You can downgrade to a free plan to save money."}
               </Text>
-
             </div>
           </div>
         </div>
@@ -110,7 +110,6 @@ const Plan = () => {
                         {tier.price.monthly}
                       </h1>
                       <Text>{tier.description}</Text>
-                    
                     </div>
                   </div>
 
@@ -232,12 +231,12 @@ const Plan = () => {
                       <Text>{tier.description}</Text>
                       {tier.name !== "Free" && (
                         <Button
-                        
-                        onClick={() => {
-                          upgradeToPlan(tier.name);
-                        }}
-                        
-                        >Upgrade</Button>
+                          onClick={() => {
+                            upgradeToPlan(tier.name);
+                          }}
+                        >
+                          Upgrade
+                        </Button>
                       )}
                     </div>
                   </div>
