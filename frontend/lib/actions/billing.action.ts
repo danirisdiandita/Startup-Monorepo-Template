@@ -10,14 +10,11 @@ import { Env } from "@/common/env";
 export const generateSubscriptionInfo = async () => {
   const session = await getServerSession(authOptions);
 
-  console.log("session", session);
-
   const config: RequestConfig = {
     method: HttpMethod.GET,
     data: {},
   };
 
-  console.log("lemon squeezy api url", Env.lemonSqueezyApiUrl);
   try {
     const checkoutEndpointUrl = Env.lemonSqueezyApiUrl + "/checkouts";
 

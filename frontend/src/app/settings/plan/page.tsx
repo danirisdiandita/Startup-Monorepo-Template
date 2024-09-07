@@ -12,6 +12,7 @@ import { CheckIcon as CheckIconMini } from "@heroicons/react/24/outline";
 import pricingTemplate from "../../../../public/plan/pricing.json";
 import { Button } from "@/components/catalyst/button";
 import { generateSubscriptionInfo } from "../../../../lib/actions/billing.action";
+import { Loader2 } from "lucide-react";
 
 interface Pricing {
   tiers: {
@@ -40,13 +41,16 @@ function classNames(...classes: any) {
 
 const Plan = () => {
   const [currentPlan, setCurrentPlan] = useState<string>("free");
+  const [isUpgradeLoading, setIsUpgradeLoading] = useState<boolean>(false);
 
   const upgradeToPlan = async (plan: string) => {
+    setIsUpgradeLoading(true);
     const response = await generateSubscriptionInfo();
 
     if (response?.checkoutUrl) {
       window.open(response.checkoutUrl, "_blank");
     }
+    setIsUpgradeLoading(false);
   };
 
   return (
@@ -235,7 +239,13 @@ const Plan = () => {
                             upgradeToPlan(tier.name);
                           }}
                         >
-                          Upgrade
+                          {isUpgradeLoading ? (
+                            <>
+                              <Loader2 /> <p>Loading...</p>{" "}
+                            </>
+                          ) : (
+                            "Upgrade"
+                          )}
                         </Button>
                       )}
                     </div>

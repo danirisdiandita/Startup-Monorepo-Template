@@ -14,5 +14,6 @@ export const Env = {
     lemonSqueezyApiKey: serverRuntimeConfig.LEMONSQUEEZY_API_KEY as string, 
     lemonSqueezyApiUrl: serverRuntimeConfig.LEMONSQUEEZY_API_URL as string, 
     lemonSqueezyStoreId: serverRuntimeConfig.LEMONSQUEEZY_STORE_ID as string, 
-    lemonSqueezyVariantId: serverRuntimeConfig.LEMONSQUEEZY_VARIANT_ID as string
+    lemonSqueezyVariantId: serverRuntimeConfig.LEMONSQUEEZY_VARIANT_ID as string, 
+    lemonSqueezyWebhookSignature: serverRuntimeConfig.LEMONSQUEEZY_WEBHOOK_SIGNATURE as string, 
 }
