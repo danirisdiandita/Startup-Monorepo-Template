@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "test_mode": true,
+    "event_name": "order_created",
+    "custom_data": {
+      "user_email": "norma.risdiandita@gmail.com"
+    },
+    "webhook_id": "db66e054-344e-499b-be90-9d9defb9df72"
+  },
+  "data": {
+    "type": "orders",
+    "id": "3523157",
+    "attributes": {
+      "store_id": 110429,
+      "customer_id": 3336270,
+      "identifier": "63fbff44-2d9a-404e-8954-ba012b8317e0",
+      "order_number": 11042915,
+      "user_name": "Anak Lucu",
+      "user_email": "norma.risdiandita@gmail.com",
+      "currency": "USD",
+      "currency_rate": "1.00000000",
+      "tax_name": "",
+      "tax_rate": 0,
+      "tax_inclusive": false,
+      "status": "paid",
+      "status_formatted": "Paid",
+      "refunded": false,
+      "refunded_at": null,
+      "subtotal": 999,
+      "discount_total": 0,
+      "tax": 0,
+      "setup_fee": 0,
+      "total": 999,
+      "refunded_amount": 0,
+      "subtotal_usd": 999,
+      "discount_total_usd": 0,
+      "tax_usd": 0,
+      "setup_fee_usd": 0,
+      "total_usd": 999,
+      "refunded_amount_usd": 0,
+      "subtotal_formatted": "$9.99",
+      "discount_total_formatted": "$0.00",
+      "tax_formatted": "$0.00",
+      "setup_fee_formatted": "$0.00",
+      "total_formatted": "$9.99",
+      "refunded_amount_formatted": "$0.00",
+      "first_order_item": {
+        "id": 3466532,
+        "order_id": 3523157,
+        "product_id": 315785,
+        "variant_id": 458034,
+        "price_id": 679605,
+        "product_name": "Single Payment Sample",
+        "variant_name": "Default",
+        "price": 999,
+        "quantity": 1,
+        "created_at": "2024-09-07T04:15:15.000000Z",
+        "updated_at": "2024-09-07T04:15:15.000000Z",
+        "test_mode": true
+      },
+      "urls": {
+        "receipt": "https://app.lemonsqueezy.com/my-orders/63fbff44-2d9a-404e-8954-ba012b8317e0?signature=97a93ac32d4e0092616649691c50099e0c379204ac385d44af7b192aa6d25354"
+      },
+      "created_at": "2024-09-07T04:15:14.000000Z",
+      "updated_at": "2024-09-07T04:15:15.000000Z",
+      "test_mode": true
+    },
+    "relationships": {
+      "store": {
+        "links": {
+          "related": "https://api.lemonsqueezy.com/v1/orders/3523157/store",
+          "self": "https://api.lemonsqueezy.com/v1/orders/3523157/relationships/store"
+        }
+      },
+      "customer": {
+        "links": {
+          "related": "https://api.lemonsqueezy.com/v1/orders/3523157/customer",
+          "self": "https://api.lemonsqueezy.com/v1/orders/3523157/relationships/customer"
+        }
+      },
+      "order-items": {
+        "links": {
+          "related": "https://api.lemonsqueezy.com/v1/orders/3523157/order-items",
+          "self": "https://api.lemonsqueezy.com/v1/orders/3523157/relationships/order-items"
+        }
+      },
+      "subscriptions": {
+        "links": {
+          "related": "https://api.lemonsqueezy.com/v1/orders/3523157/subscriptions",
+          "self": "https://api.lemonsqueezy.com/v1/orders/3523157/relationships/subscriptions"
+        }
+      },
+      "license-keys": {
+        "links": {
+          "related": "https://api.lemonsqueezy.com/v1/orders/3523157/license-keys",
+          "self": "https://api.lemonsqueezy.com/v1/orders/3523157/relationships/license-keys"
+        }
+      },
+      "discount-redemptions": {
+        "links": {
+          "related": "https://api.lemonsqueezy.com/v1/orders/3523157/discount-redemptions",
+          "self": "https://api.lemonsqueezy.com/v1/orders/3523157/relationships/discount-redemptions"
+        }
+      }
+    },
+    "links": {
+      "self": "https://api.lemonsqueezy.com/v1/orders/3523157"
+    }
+  }
+}

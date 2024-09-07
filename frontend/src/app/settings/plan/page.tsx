@@ -241,7 +241,8 @@ const Plan = () => {
                         >
                           {isUpgradeLoading ? (
                             <>
-                              <Loader2 /> <p>Loading...</p>{" "}
+                              <Loader2 size={20} className="animate-spin" />{" "}
+                              &nbsp; Please wait
                             </>
                           ) : (
                             "Upgrade"
