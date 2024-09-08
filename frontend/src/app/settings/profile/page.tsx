@@ -9,11 +9,12 @@ import { changeFirstNameAndLastName } from "../../../../lib/actions/user.action"
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const ProfilePage = () => {
   const session = useSession();
-  const [firstName, setFirstName] = useState<string|undefined>("");
-  const [lastName, setLastName] = useState<string|undefined>("");
+  const [firstName, setFirstName] = useState<string | undefined>("");
+  const [lastName, setLastName] = useState<string | undefined>("");
   const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -59,7 +60,6 @@ const ProfilePage = () => {
       setFirstName(session?.data?.first_name);
       setLastName(session?.data?.last_name);
     }
-   
   }, [session?.data]);
 
   useEffect(() => {
@@ -76,7 +76,14 @@ const ProfilePage = () => {
   return (
     <>
       <div className="border-b border-zinc-950/10 dark:border-white/10 pb-6">
-        <Heading>My Profile</Heading>
+        <div className="flex justify-start space-x-2">
+          <UserCircleIcon
+            className="dark:text-white text-black"
+            width={30}
+            height={30}
+          />
+          <Heading>My Profile</Heading>
+        </div>
       </div>
       <div className="mt-3">
         <Text>Name</Text>

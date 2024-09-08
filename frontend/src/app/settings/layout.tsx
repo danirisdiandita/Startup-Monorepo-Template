@@ -11,6 +11,7 @@ import {
   UserIcon,
 } from "@heroicons/react/16/solid";
 import {
+  ChartBarSquareIcon,
   Cog6ToothIcon,
   CreditCardIcon,
   HomeIcon,
@@ -185,7 +186,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
             <SidebarBody>
               <SidebarSection>
                 <SidebarItem href="/dashboard">
-                  <HomeIcon />
+                  <ChartBarSquareIcon />
                   <SidebarLabel>Dashboard</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem href="/settings/profile">

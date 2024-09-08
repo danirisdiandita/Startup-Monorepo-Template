@@ -11,8 +11,11 @@ import {
   UserIcon,
 } from "@heroicons/react/16/solid";
 import {
+  ChartBarSquareIcon,
   CheckCircleIcon,
   CheckIcon,
+  CircleStackIcon,
+  ClockIcon,
   Cog6ToothIcon,
   HomeIcon,
   InboxIcon,
@@ -330,25 +333,21 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                   </DropdownMenu>
                 </Dropdown>
 
-                <SidebarItem href="/">
-                  <HomeIcon />
-                  <SidebarLabel>Home</SidebarLabel>
+                <SidebarItem href="/dashboard/" className="mt-4">
+                  <ChartBarSquareIcon/>
+                  <SidebarLabel>Dashboard</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="/events">
-                  <Square2StackIcon />
-                  <SidebarLabel>Events</SidebarLabel>
+                <SidebarItem href="/dashboard/database">
+                  <CircleStackIcon/>
+                  <SidebarLabel>Database</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="/orders">
-                  <TicketIcon />
-                  <SidebarLabel>Orders</SidebarLabel>
+                <SidebarItem href="/dashboard/jobs">
+               <ClockIcon/>
+                  <SidebarLabel>Jobs</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem href="/settings/profile">
                   <Cog6ToothIcon />
                   <SidebarLabel>Settings</SidebarLabel>
-                </SidebarItem>
-                <SidebarItem href="/broadcasts">
-                  <MegaphoneIcon />
-                  <SidebarLabel>Broadcasts</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
               <SidebarSpacer />
