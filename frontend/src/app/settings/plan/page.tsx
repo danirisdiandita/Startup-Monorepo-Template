@@ -13,6 +13,7 @@ import pricingTemplate from "../../../../public/plan/pricing.json";
 import { Button } from "@/components/catalyst/button";
 import { generateSubscriptionInfo } from "../../../../lib/actions/billing.action";
 import { Loader2 } from "lucide-react";
+import { Square3Stack3DIcon } from "@heroicons/react/20/solid";
 
 interface Pricing {
   tiers: {
@@ -39,7 +40,6 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-
 const Plan = () => {
   const [currentPlan, setCurrentPlan] = useState<string>("free");
   const [isUpgradeLoading, setIsUpgradeLoading] = useState<boolean>(false);
@@ -56,7 +56,14 @@ const Plan = () => {
 
   return (
     <div>
-      <Heading>Plan</Heading>
+      <div className="justify-start flex space-x-2">
+        <Square3Stack3DIcon
+          width={30}
+          height={30}
+          className="dark:text-white text-black"
+        />
+        <Heading>Plan</Heading>
+      </div>
       <Divider className="mt-6" />
       <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-4 dark:bg-zinc-950">
         <div className="px-4 py-5 sm:p-6 flex-col">
@@ -236,7 +243,7 @@ const Plan = () => {
                       <Text>{tier.description}</Text>
                       {tier.name !== "Free" && (
                         <Button
-                          className="w-full mt-4" 
+                          className="w-full mt-4"
                           onClick={() => {
                             upgradeToPlan(tier.name);
                           }}
