@@ -45,7 +45,7 @@ import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { sendTeamInvite } from "../../../../lib/actions/team.action";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftIcon, ArrowRightIcon, UserIcon } from "@heroicons/react/20/solid";
 
 const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -180,7 +180,13 @@ const Workspace = () => {
       <Head>
         <meta name="viewport" content="viewport-fit=cover" />
       </Head>
+      <div className="flex justify-start space-x-2">
+        <UserIcon
+        className="dark:text-white text-black"
+        width={30} height={30}
+        />
       <Heading>Invite Your Team Member to your Workspace</Heading>
+      </div>
       <Divider className="mt-6" />
       <div className="overflow-hidden bg-white shadow sm:rounded-lg dark:bg-zinc-900">
         <div className="px-4 py-5 sm:p-6 flex-col space-y-4">
