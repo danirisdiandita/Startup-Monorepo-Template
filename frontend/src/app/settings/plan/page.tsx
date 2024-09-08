@@ -36,6 +36,7 @@ interface Pricing {
 
 const pricing: Pricing = pricingTemplate;
 
+
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
