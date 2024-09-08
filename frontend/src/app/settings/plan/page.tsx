@@ -39,6 +39,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 const Plan = () => {
   const [currentPlan, setCurrentPlan] = useState<string>("free");
   const [isUpgradeLoading, setIsUpgradeLoading] = useState<boolean>(false);
@@ -235,6 +236,7 @@ const Plan = () => {
                       <Text>{tier.description}</Text>
                       {tier.name !== "Free" && (
                         <Button
+                          className="w-full mt-4" 
                           onClick={() => {
                             upgradeToPlan(tier.name);
                           }}
