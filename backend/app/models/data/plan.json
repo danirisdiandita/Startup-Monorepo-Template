@@ -1,5 +1,6 @@
 [
     {
+      "id": 0,
       "name": "Free",
       "price": 0,
       "description": "Access essential features with a limited monthly quota, perfect for small projects or getting started.",
@@ -17,6 +18,7 @@
       }
     },
     {
+      "id": 1,
       "name": "Starter",
       "price": 25,
       "description": "Designed for growing users who need more flexibility, with increased limits and additional tools to help scale your projects.",
@@ -34,6 +36,7 @@
       }
     },
     {
+      "id": 2,
       "name": "Premium",
       "price": 50,
       "description": "Ideal for power users or businesses requiring advanced features, priority support, and higher usage limits for scaling operations smoothly.",
@@ -51,6 +54,7 @@
       }
     },
     {
+      "id": 3,
       "name": "Free",
       "price": 0,
       "description": "Access essential features with a limited yearly quota, perfect for small projects or getting started.",
@@ -68,6 +72,7 @@
       }
     },
     {
+      "id": 4,
       "name": "Starter",
       "price": 22.5,
       "description": "Designed for growing users who need more flexibility, with increased limits and additional tools to help scale your projects.",
@@ -85,6 +90,7 @@
       }
     },
     {
+      "id": 5,
       "name": "Premium",
       "price": 45,
       "description": "Ideal for power users or businesses requiring advanced features, priority support, and higher usage limits for scaling operations smoothly.",

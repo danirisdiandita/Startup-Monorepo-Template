@@ -1,47 +1,55 @@
 [
     {
+      "id": 0,
       "name": "SQL Scheduler",
       "description": "Schedule SQL query cron jobs in Postgres, MySQL, BigQuery, and other databases.",
       "category": "Main Features",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 1,
       "name": "Code in Browser",
       "description": "In the browser, optimize your code to run the script faster.",
       "category": "Main Features",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 2,
       "name": "Script Scheduler",
       "description": "You can schedule your Python script with cron jobs.",
       "category": "Main Features",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 3,
       "name": "Job Timeout",
       "description": "The duration after which the job will time out.",
       "category": "Quotas",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 4,
       "name": "Jobs",
       "description": "The number of unique jobs that can be scheduled.",
       "category": "Quotas",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 5,
       "name": "Executions",
       "description": "The number of job executions per month.",
       "category": "Quotas",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 6,
       "name": "Users",
       "description": "The number of users that can be invited to the workspace.",
       "category": "Quotas",
       "plans": ["Free", "Starter", "Premium"]
     },
     {
+      "id": 7,
       "name": "Support",
       "description": "How to get support?",
       "category": "Support",
