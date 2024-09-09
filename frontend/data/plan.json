@@ -1,0 +1,105 @@
+[
+    {
+      "name": "Free",
+      "price": 0,
+      "description": "Access essential features with a limited monthly quota, perfect for small projects or getting started.",
+      "slug": "free_monthly",
+      "billing_cycle": "monthly",
+      "features_description": {
+        "SQL Scheduler": true,
+        "Code in Browser": true,
+        "Script Scheduler": false,
+        "Job Timeout": "1 minute",
+        "Jobs": 3,
+        "Executions": 100,
+        "Users": 3,
+        "Support": "Community"
+      }
+    },
+    {
+      "name": "Starter",
+      "price": 25,
+      "description": "Designed for growing users who need more flexibility, with increased limits and additional tools to help scale your projects.",
+      "slug": "starter_monthly",
+      "billing_cycle": "monthly",
+      "features_description": {
+        "SQL Scheduler": true,
+        "Code in Browser": true,
+        "Script Scheduler": true,
+        "Job Timeout": "15 minutes",
+        "Jobs": "Unlimited",
+        "Executions": 10000,
+        "Users": "Unlimited",
+        "Support": "Email & Community"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 50,
+      "description": "Ideal for power users or businesses requiring advanced features, priority support, and higher usage limits for scaling operations smoothly.",
+      "slug": "premium_monthly",
+      "billing_cycle": "monthly",
+      "features_description": {
+        "SQL Scheduler": true,
+        "Code in Browser": true,
+        "Script Scheduler": true,
+        "Job Timeout": "30 minutes",
+        "Jobs": "Unlimited",
+        "Executions": 50000,
+        "Users": "Unlimited",
+        "Support": "Email & Community"
+      }
+    },
+    {
+      "name": "Free",
+      "price": 0,
+      "description": "Access essential features with a limited yearly quota, perfect for small projects or getting started.",
+      "slug": "free_yearly",
+      "billing_cycle": "yearly",
+      "features_description": {
+        "SQL Scheduler": true,
+        "Code in Browser": true,
+        "Script Scheduler": false,
+        "Job Timeout": "1 minute",
+        "Jobs": 3,
+        "Executions": 100,
+        "Users": 3,
+        "Support": "Community"
+      }
+    },
+    {
+      "name": "Starter",
+      "price": 22.5,
+      "description": "Designed for growing users who need more flexibility, with increased limits and additional tools to help scale your projects.",
+      "slug": "starter_yearly",
+      "billing_cycle": "yearly",
+      "features_description": {
+        "SQL Scheduler": true,
+        "Code in Browser": true,
+        "Script Scheduler": true,
+        "Job Timeout": "15 minutes",
+        "Jobs": "Unlimited",
+        "Executions": 10000,
+        "Users": "Unlimited",
+        "Support": "Email & Community"
+      }
+    },
+    {
+      "name": "Premium",
+      "price": 45,
+      "description": "Ideal for power users or businesses requiring advanced features, priority support, and higher usage limits for scaling operations smoothly.",
+      "slug": "premium_yearly",
+      "billing_cycle": "yearly",
+      "features_description": {
+        "SQL Scheduler": true,
+        "Code in Browser": true,
+        "Script Scheduler": true,
+        "Job Timeout": "30 minutes",
+        "Jobs": "Unlimited",
+        "Executions": 50000,
+        "Users": "Unlimited",
+        "Support": "Email & Community"
+      }
+    }
+  ]
+  
