@@ -15,6 +15,18 @@ import { generateSubscriptionInfo } from "../../../../lib/actions/billing.action
 import { Loader2 } from "lucide-react";
 import { Square3Stack3DIcon } from "@heroicons/react/20/solid";
 
+import features from "../../../../data/features.json";
+import plans from "../../../../data/plan.json";
+
+interface Plan {
+  name: string;
+  price: number;
+  description: string;
+  slug: string;
+  billing_cycle: string;
+  features_description: { [key: string]: boolean | string };
+}
+
 interface Pricing {
   tiers: {
     name: string;
@@ -34,8 +46,8 @@ interface Pricing {
   }[];
 }
 
-const pricing: Pricing = pricingTemplate;
 
+const pricing: Pricing = pricingTemplate;
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");

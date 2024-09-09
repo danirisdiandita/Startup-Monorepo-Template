@@ -33,6 +33,9 @@
       "relation": "manyToMany",
       "target": "api::feature.feature",
       "mappedBy": "plans"
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }
