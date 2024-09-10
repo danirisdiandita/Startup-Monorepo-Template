@@ -963,7 +963,6 @@ export interface ApiPlanPlan extends Schema.CollectionType {
       'manyToMany',
       'api::feature.feature'
     >;
-    slug: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
