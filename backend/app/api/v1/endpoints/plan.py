@@ -43,19 +43,22 @@ def get_plans_and_features():
         
         if feature.id not in feature_ids_in_monthly_plans: 
             feature_ids_in_monthly_plans.add(feature.id)
-            output_template["monthly_plans"]["sections"].append({"id": feature.id})
+            output_template["monthly_plans"]["sections"].append({"id": feature.id, "name": feature.name, "tiers": {}})
         else: 
             if feature.id not in feature_ids_in_yearly_plans: 
                 feature_ids_in_yearly_plans.add(feature.id)
-                output_template["yearly_plans"]["sections"].append({"id": feature.id})
+                output_template["yearly_plans"]["sections"].append({"id": feature.id, "name": feature.name, "tiers": {}})
     
     for plan, feature, plan_feature in plans_and_features:
+        description_ = plan_feature.description if plan_feature.description else plan_feature.is_feature_plan_active
+        # output_template[plan.billing_cycle]['sections'][feature.id][plan.name] = description_
         if plan.billing_cycle == "monthly":
             output_template["monthly_plans"]["tiers"][plan.id]["name"] = plan.name 
             output_template["monthly_plans"]["tiers"][plan.id]["id"] = plan.id 
             output_template["monthly_plans"]["tiers"][plan.id]["href"] = plan.name.lower().replace(" ", "-") + "_" + "monthly"
             output_template["monthly_plans"]["tiers"][plan.id]["description"] = plan.description
             output_template["monthly_plans"]["tiers"][plan.id]["price"] = plan.price
+           
         elif plan.billing_cycle == "yearly":
             output_template["yearly_plans"]["tiers"][plan.id - len(output_template["monthly_plans"]["tiers"])]["name"] = plan.name 
             output_template["yearly_plans"]["tiers"][plan.id - len(output_template["monthly_plans"]["tiers"])]["id"] = plan.id 
@@ -63,6 +66,9 @@ def get_plans_and_features():
             output_template["yearly_plans"]["tiers"][plan.id - len(output_template["monthly_plans"]["tiers"])]["description"] = plan.description
             output_template["yearly_plans"]["tiers"][plan.id - len(output_template["monthly_plans"]["tiers"])]["price"] = plan.price
         
+        
+        
+       
         
         # plans_and_features_list.append({
         #     "plan": {
